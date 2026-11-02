@@ -1,15 +1,15 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
 import {
   IconBolt,
   IconBriefcase,
   IconHeartHandshake,
   IconTerminal2,
 } from "@tabler/icons-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { InterviewSetupCard } from "@/components/interview/interview-setup-card";
 import {
   ReminderOffsetField,
@@ -37,16 +37,13 @@ import {
   REMINDER_OFFSET_MAX_MINUTES,
   REMINDER_OFFSET_MIN,
 } from "@/lib/interview/reminder";
-import type {
-  ExperienceLevel,
-  InterviewType,
-} from "@/lib/interview/types";
+import type { ExperienceLevel, InterviewType } from "@/lib/interview/types";
+import { cn } from "@/lib/utils";
+import { createZodResolver } from "@/lib/validations/create-zod-resolver";
 import {
   type InterviewSetupFormValues,
   interviewSetupSchema,
 } from "@/lib/validations/interview";
-import { createZodResolver } from "@/lib/validations/create-zod-resolver";
-import { cn } from "@/lib/utils";
 
 const TYPE_ICONS: Record<InterviewType, typeof IconHeartHandshake> = {
   hr: IconHeartHandshake,
@@ -116,7 +113,11 @@ export function ScheduleEditForm({ initial }: ScheduleEditFormProps) {
     clearErrors("root");
 
     const date = new Date(scheduledAt);
-    if (!scheduledAt || Number.isNaN(date.getTime()) || date.getTime() <= Date.now()) {
+    if (
+      !scheduledAt ||
+      Number.isNaN(date.getTime()) ||
+      date.getTime() <= Date.now()
+    ) {
       setScheduleError("Selecciona una fecha futura para la cita.");
       return;
     }
@@ -174,7 +175,9 @@ export function ScheduleEditForm({ initial }: ScheduleEditFormProps) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FieldGroup>
           <Field data-invalid={!!scheduleError}>
-            <FieldLabel htmlFor="scheduledAt">Fecha y hora de la cita</FieldLabel>
+            <FieldLabel htmlFor="scheduledAt">
+              Fecha y hora de la cita
+            </FieldLabel>
             <Input
               id="scheduledAt"
               type="datetime-local"
@@ -244,7 +247,9 @@ export function ScheduleEditForm({ initial }: ScheduleEditFormProps) {
             </Field>
 
             <Field data-invalid={!!errors.language}>
-              <FieldLabel htmlFor="language">Idioma de la entrevista</FieldLabel>
+              <FieldLabel htmlFor="language">
+                Idioma de la entrevista
+              </FieldLabel>
               <Controller
                 name="language"
                 control={control}
@@ -300,12 +305,16 @@ export function ScheduleEditForm({ initial }: ScheduleEditFormProps) {
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="stack">Stack tecnológico (opcional)</FieldLabel>
+            <FieldLabel htmlFor="stack">
+              Stack tecnológico (opcional)
+            </FieldLabel>
             <Input id="stack" disabled={isSubmitting} {...register("stack")} />
           </Field>
 
           <Field data-invalid={!!errors.extraContext}>
-            <FieldLabel htmlFor="extraContext">Perfil y contexto adicional</FieldLabel>
+            <FieldLabel htmlFor="extraContext">
+              Perfil y contexto adicional
+            </FieldLabel>
             <Textarea
               id="extraContext"
               rows={4}

@@ -1,11 +1,12 @@
-import { FeatureCards } from "@/components/layout/feature-cards";
+import { headers } from "next/headers";
 import { AuthBackground } from "@/components/layout/auth-background";
+import { FeatureCards } from "@/components/layout/feature-cards";
 import { HomeHeroActions } from "@/components/layout/home-hero-actions";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { UfgPartnershipSection } from "@/components/layout/ufg-partnership-section";
 import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { INTERVIEW_TYPE_OPTIONS } from "@/lib/interview/constants";
 
 export default async function HomePage() {
   const session = await auth.api.getSession({
@@ -28,14 +29,16 @@ export default async function HomePage() {
 
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             Interactúa por voz con simuladores avanzados. Supera el{" "}
-            <span className="font-semibold text-destructive">Stress Mode</span> y
-            recibe feedback instantáneo basado en datos reales de reclutamiento.
+            <span className="font-semibold text-destructive">Stress Mode</span>{" "}
+            y recibe feedback instantáneo basado en datos reales de
+            reclutamiento.
           </p>
 
           <HomeHeroActions isAuthenticated={!!session} />
 
           <p className="mt-6 text-sm text-muted-foreground">
-            Únete a +2.000 profesionales
+            {INTERVIEW_TYPE_OPTIONS.length} modalidades de entrevista · Voz en
+            tiempo real · Respaldado por la UFG
           </p>
 
           <UfgPartnershipSection />

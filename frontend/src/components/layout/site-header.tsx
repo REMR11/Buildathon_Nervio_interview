@@ -1,8 +1,8 @@
 "use client";
 
+import { IconBrain } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { IconBrain } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 

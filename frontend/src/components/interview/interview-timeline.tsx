@@ -6,7 +6,10 @@ interface InterviewTimelineProps {
   className?: string;
 }
 
-export function InterviewTimeline({ messages, className }: InterviewTimelineProps) {
+export function InterviewTimeline({
+  messages,
+  className,
+}: InterviewTimelineProps) {
   if (messages.length === 0) return null;
 
   const latestMessage = messages[messages.length - 1];
@@ -37,7 +40,9 @@ export function InterviewTimeline({ messages, className }: InterviewTimelineProp
               <span
                 className={cn(
                   "font-medium",
-                  msg.role === "interviewer" ? "text-primary" : "text-secondary",
+                  msg.role === "interviewer"
+                    ? "text-primary"
+                    : "text-secondary",
                 )}
               >
                 {msg.role === "interviewer" ? "IA" : "Tú"}:

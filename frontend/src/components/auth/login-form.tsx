@@ -20,7 +20,7 @@ import { createZodResolver } from "@/lib/validations/create-zod-resolver";
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/";
+  const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"));
   const {
     register,
     handleSubmit,
@@ -85,9 +85,16 @@ export function LoginForm() {
             <FieldError errors={[errors.password]} />
           </Field>
 
-          {errors.root && (
-            <FieldError>{errors.root.message}</FieldError>
-          )}
+          <div className="-mt-2 text-right text-sm">
+            <Link
+              href="/forgot-password"
+              className="text-primary hover:underline"
+            >
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
+
+          {errors.root && <FieldError>{errors.root.message}</FieldError>}
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? <Spinner data-icon="inline-start" /> : null}
@@ -104,4 +111,17 @@ export function LoginForm() {
       </p>
     </AuthCard>
   );
+}
+
+/** Only allow same-origin relative paths ("/x"), never "//host" or "/\\host". */
+function safeCallbackUrl(raw: string | null): string {
+  if (
+    !raw ||
+    !raw.startsWith("/") ||
+    raw.startsWith("//") ||
+    raw.startsWith("/\\")
+  ) {
+    return "/";
+  }
+  return raw;
 }

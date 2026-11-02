@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { IconBrain, IconLanguage, IconWorld } from "@tabler/icons-react";
+import Link from "next/link";
 
 export function SiteFooter() {
   return (

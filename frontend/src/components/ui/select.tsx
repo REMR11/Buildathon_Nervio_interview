@@ -7,12 +7,7 @@ interface SelectProps extends React.ComponentProps<"select"> {
   placeholder?: string;
 }
 
-function Select({
-  className,
-  children,
-  placeholder,
-  ...props
-}: SelectProps) {
+function Select({ className, children, placeholder, ...props }: SelectProps) {
   return (
     <select
       data-slot="select"

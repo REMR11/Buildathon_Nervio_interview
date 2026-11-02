@@ -1,7 +1,7 @@
+import { InterviewSetupForm } from "@/components/interview/interview-setup-form";
 import { AuthBackground } from "@/components/layout/auth-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { InterviewSetupForm } from "@/components/interview/interview-setup-form";
 import { requireAuth } from "@/lib/auth-server";
 
 export default async function InterviewSetupPage() {

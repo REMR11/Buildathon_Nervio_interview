@@ -1,11 +1,11 @@
-import Link from "next/link";
 import { IconChartBar, IconClock } from "@tabler/icons-react";
+import Link from "next/link";
 import { AuthBackground } from "@/components/layout/auth-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Button } from "@/components/ui/button";
-import { INTERVIEW_TYPE_OPTIONS } from "@/lib/interview";
 import { requireAuth } from "@/lib/auth-server";
+import { INTERVIEW_TYPE_OPTIONS } from "@/lib/interview";
 import { prisma } from "@/lib/prisma";
 
 function formatDate(value: Date | null) {
@@ -90,7 +90,9 @@ export default async function InterviewReportsPage() {
                           : "--"}
                       </p>
                     </div>
-                    <Button render={<Link href={`/interview/${report.id}/report`} />}>
+                    <Button
+                      render={<Link href={`/interview/${report.id}/report`} />}
+                    >
                       Ver reporte
                     </Button>
                   </div>

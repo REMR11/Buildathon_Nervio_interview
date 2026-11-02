@@ -117,9 +117,7 @@ export function RegisterForm() {
             <FieldError errors={[errors.confirmPassword]} />
           </Field>
 
-          {errors.root && (
-            <FieldError>{errors.root.message}</FieldError>
-          )}
+          {errors.root && <FieldError>{errors.root.message}</FieldError>}
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? <Spinner data-icon="inline-start" /> : null}
