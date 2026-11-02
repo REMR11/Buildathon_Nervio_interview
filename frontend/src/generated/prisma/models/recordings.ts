@@ -42,6 +42,9 @@ export type RecordingsMinAggregateOutputType = {
   audioUrl: string | null
   durationSeconds: number | null
   createdAt: Date | null
+  storagePath: string | null
+  expiresAt: Date | null
+  deletedAt: Date | null
 }
 
 export type RecordingsMaxAggregateOutputType = {
@@ -52,6 +55,9 @@ export type RecordingsMaxAggregateOutputType = {
   audioUrl: string | null
   durationSeconds: number | null
   createdAt: Date | null
+  storagePath: string | null
+  expiresAt: Date | null
+  deletedAt: Date | null
 }
 
 export type RecordingsCountAggregateOutputType = {
@@ -62,6 +68,9 @@ export type RecordingsCountAggregateOutputType = {
   audioUrl: number
   durationSeconds: number
   createdAt: number
+  storagePath: number
+  expiresAt: number
+  deletedAt: number
   _all: number
 }
 
@@ -82,6 +91,9 @@ export type RecordingsMinAggregateInputType = {
   audioUrl?: true
   durationSeconds?: true
   createdAt?: true
+  storagePath?: true
+  expiresAt?: true
+  deletedAt?: true
 }
 
 export type RecordingsMaxAggregateInputType = {
@@ -92,6 +104,9 @@ export type RecordingsMaxAggregateInputType = {
   audioUrl?: true
   durationSeconds?: true
   createdAt?: true
+  storagePath?: true
+  expiresAt?: true
+  deletedAt?: true
 }
 
 export type RecordingsCountAggregateInputType = {
@@ -102,6 +117,9 @@ export type RecordingsCountAggregateInputType = {
   audioUrl?: true
   durationSeconds?: true
   createdAt?: true
+  storagePath?: true
+  expiresAt?: true
+  deletedAt?: true
   _all?: true
 }
 
@@ -199,6 +217,9 @@ export type RecordingsGroupByOutputType = {
   audioUrl: string
   durationSeconds: number | null
   createdAt: Date
+  storagePath: string | null
+  expiresAt: Date | null
+  deletedAt: Date | null
   _count: RecordingsCountAggregateOutputType | null
   _avg: RecordingsAvgAggregateOutputType | null
   _sum: RecordingsSumAggregateOutputType | null
@@ -232,6 +253,9 @@ export type recordingsWhereInput = {
   audioUrl?: Prisma.StringFilter<"recordings"> | string
   durationSeconds?: Prisma.IntNullableFilter<"recordings"> | number | null
   createdAt?: Prisma.DateTimeFilter<"recordings"> | Date | string
+  storagePath?: Prisma.StringNullableFilter<"recordings"> | string | null
+  expiresAt?: Prisma.DateTimeNullableFilter<"recordings"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"recordings"> | Date | string | null
   interviewSession?: Prisma.XOR<Prisma.InterviewSessionScalarRelationFilter, Prisma.InterviewSessionWhereInput>
 }
 
@@ -243,6 +267,9 @@ export type recordingsOrderByWithRelationInput = {
   audioUrl?: Prisma.SortOrder
   durationSeconds?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  storagePath?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   interviewSession?: Prisma.InterviewSessionOrderByWithRelationInput
 }
 
@@ -257,6 +284,9 @@ export type recordingsWhereUniqueInput = Prisma.AtLeast<{
   audioUrl?: Prisma.StringFilter<"recordings"> | string
   durationSeconds?: Prisma.IntNullableFilter<"recordings"> | number | null
   createdAt?: Prisma.DateTimeFilter<"recordings"> | Date | string
+  storagePath?: Prisma.StringNullableFilter<"recordings"> | string | null
+  expiresAt?: Prisma.DateTimeNullableFilter<"recordings"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"recordings"> | Date | string | null
   interviewSession?: Prisma.XOR<Prisma.InterviewSessionScalarRelationFilter, Prisma.InterviewSessionWhereInput>
 }, "id">
 
@@ -268,6 +298,9 @@ export type recordingsOrderByWithAggregationInput = {
   audioUrl?: Prisma.SortOrder
   durationSeconds?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  storagePath?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.recordingsCountOrderByAggregateInput
   _avg?: Prisma.recordingsAvgOrderByAggregateInput
   _max?: Prisma.recordingsMaxOrderByAggregateInput
@@ -286,6 +319,9 @@ export type recordingsScalarWhereWithAggregatesInput = {
   audioUrl?: Prisma.StringWithAggregatesFilter<"recordings"> | string
   durationSeconds?: Prisma.IntNullableWithAggregatesFilter<"recordings"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"recordings"> | Date | string
+  storagePath?: Prisma.StringNullableWithAggregatesFilter<"recordings"> | string | null
+  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"recordings"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"recordings"> | Date | string | null
 }
 
 export type recordingsCreateInput = {
@@ -295,6 +331,9 @@ export type recordingsCreateInput = {
   audioUrl: string
   durationSeconds?: number | null
   createdAt?: Date | string
+  storagePath?: string | null
+  expiresAt?: Date | string | null
+  deletedAt?: Date | string | null
   interviewSession: Prisma.InterviewSessionCreateNestedOneWithoutRecordingsInput
 }
 
@@ -306,6 +345,9 @@ export type recordingsUncheckedCreateInput = {
   audioUrl: string
   durationSeconds?: number | null
   createdAt?: Date | string
+  storagePath?: string | null
+  expiresAt?: Date | string | null
+  deletedAt?: Date | string | null
 }
 
 export type recordingsUpdateInput = {
@@ -315,6 +357,9 @@ export type recordingsUpdateInput = {
   audioUrl?: Prisma.StringFieldUpdateOperationsInput | string
   durationSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   interviewSession?: Prisma.InterviewSessionUpdateOneRequiredWithoutRecordingsNestedInput
 }
 
@@ -326,6 +371,9 @@ export type recordingsUncheckedUpdateInput = {
   audioUrl?: Prisma.StringFieldUpdateOperationsInput | string
   durationSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type recordingsCreateManyInput = {
@@ -336,6 +384,9 @@ export type recordingsCreateManyInput = {
   audioUrl: string
   durationSeconds?: number | null
   createdAt?: Date | string
+  storagePath?: string | null
+  expiresAt?: Date | string | null
+  deletedAt?: Date | string | null
 }
 
 export type recordingsUpdateManyMutationInput = {
@@ -345,6 +396,9 @@ export type recordingsUpdateManyMutationInput = {
   audioUrl?: Prisma.StringFieldUpdateOperationsInput | string
   durationSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type recordingsUncheckedUpdateManyInput = {
@@ -355,6 +409,9 @@ export type recordingsUncheckedUpdateManyInput = {
   audioUrl?: Prisma.StringFieldUpdateOperationsInput | string
   durationSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type RecordingsListRelationFilter = {
@@ -375,6 +432,9 @@ export type recordingsCountOrderByAggregateInput = {
   audioUrl?: Prisma.SortOrder
   durationSeconds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  storagePath?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type recordingsAvgOrderByAggregateInput = {
@@ -389,6 +449,9 @@ export type recordingsMaxOrderByAggregateInput = {
   audioUrl?: Prisma.SortOrder
   durationSeconds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  storagePath?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type recordingsMinOrderByAggregateInput = {
@@ -399,6 +462,9 @@ export type recordingsMinOrderByAggregateInput = {
   audioUrl?: Prisma.SortOrder
   durationSeconds?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  storagePath?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
 }
 
 export type recordingsSumOrderByAggregateInput = {
@@ -462,6 +528,9 @@ export type recordingsCreateWithoutInterviewSessionInput = {
   audioUrl: string
   durationSeconds?: number | null
   createdAt?: Date | string
+  storagePath?: string | null
+  expiresAt?: Date | string | null
+  deletedAt?: Date | string | null
 }
 
 export type recordingsUncheckedCreateWithoutInterviewSessionInput = {
@@ -471,6 +540,9 @@ export type recordingsUncheckedCreateWithoutInterviewSessionInput = {
   audioUrl: string
   durationSeconds?: number | null
   createdAt?: Date | string
+  storagePath?: string | null
+  expiresAt?: Date | string | null
+  deletedAt?: Date | string | null
 }
 
 export type recordingsCreateOrConnectWithoutInterviewSessionInput = {
@@ -510,6 +582,9 @@ export type recordingsScalarWhereInput = {
   audioUrl?: Prisma.StringFilter<"recordings"> | string
   durationSeconds?: Prisma.IntNullableFilter<"recordings"> | number | null
   createdAt?: Prisma.DateTimeFilter<"recordings"> | Date | string
+  storagePath?: Prisma.StringNullableFilter<"recordings"> | string | null
+  expiresAt?: Prisma.DateTimeNullableFilter<"recordings"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"recordings"> | Date | string | null
 }
 
 export type recordingsCreateManyInterviewSessionInput = {
@@ -519,6 +594,9 @@ export type recordingsCreateManyInterviewSessionInput = {
   audioUrl: string
   durationSeconds?: number | null
   createdAt?: Date | string
+  storagePath?: string | null
+  expiresAt?: Date | string | null
+  deletedAt?: Date | string | null
 }
 
 export type recordingsUpdateWithoutInterviewSessionInput = {
@@ -528,6 +606,9 @@ export type recordingsUpdateWithoutInterviewSessionInput = {
   audioUrl?: Prisma.StringFieldUpdateOperationsInput | string
   durationSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type recordingsUncheckedUpdateWithoutInterviewSessionInput = {
@@ -537,6 +618,9 @@ export type recordingsUncheckedUpdateWithoutInterviewSessionInput = {
   audioUrl?: Prisma.StringFieldUpdateOperationsInput | string
   durationSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type recordingsUncheckedUpdateManyWithoutInterviewSessionInput = {
@@ -546,6 +630,9 @@ export type recordingsUncheckedUpdateManyWithoutInterviewSessionInput = {
   audioUrl?: Prisma.StringFieldUpdateOperationsInput | string
   durationSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  storagePath?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -558,6 +645,9 @@ export type recordingsSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   audioUrl?: boolean
   durationSeconds?: boolean
   createdAt?: boolean
+  storagePath?: boolean
+  expiresAt?: boolean
+  deletedAt?: boolean
   interviewSession?: boolean | Prisma.InterviewSessionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordings"]>
 
@@ -569,6 +659,9 @@ export type recordingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   audioUrl?: boolean
   durationSeconds?: boolean
   createdAt?: boolean
+  storagePath?: boolean
+  expiresAt?: boolean
+  deletedAt?: boolean
   interviewSession?: boolean | Prisma.InterviewSessionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordings"]>
 
@@ -580,6 +673,9 @@ export type recordingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   audioUrl?: boolean
   durationSeconds?: boolean
   createdAt?: boolean
+  storagePath?: boolean
+  expiresAt?: boolean
+  deletedAt?: boolean
   interviewSession?: boolean | Prisma.InterviewSessionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["recordings"]>
 
@@ -591,9 +687,12 @@ export type recordingsSelectScalar = {
   audioUrl?: boolean
   durationSeconds?: boolean
   createdAt?: boolean
+  storagePath?: boolean
+  expiresAt?: boolean
+  deletedAt?: boolean
 }
 
-export type recordingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sessionId" | "type" | "referenceId" | "audioUrl" | "durationSeconds" | "createdAt", ExtArgs["result"]["recordings"]>
+export type recordingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sessionId" | "type" | "referenceId" | "audioUrl" | "durationSeconds" | "createdAt" | "storagePath" | "expiresAt" | "deletedAt", ExtArgs["result"]["recordings"]>
 export type recordingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   interviewSession?: boolean | Prisma.InterviewSessionDefaultArgs<ExtArgs>
 }
@@ -617,6 +716,9 @@ export type $recordingsPayload<ExtArgs extends runtime.Types.Extensions.Internal
     audioUrl: string
     durationSeconds: number | null
     createdAt: Date
+    storagePath: string | null
+    expiresAt: Date | null
+    deletedAt: Date | null
   }, ExtArgs["result"]["recordings"]>
   composites: {}
 }
@@ -1048,6 +1150,9 @@ export interface recordingsFieldRefs {
   readonly audioUrl: Prisma.FieldRef<"recordings", 'String'>
   readonly durationSeconds: Prisma.FieldRef<"recordings", 'Int'>
   readonly createdAt: Prisma.FieldRef<"recordings", 'DateTime'>
+  readonly storagePath: Prisma.FieldRef<"recordings", 'String'>
+  readonly expiresAt: Prisma.FieldRef<"recordings", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"recordings", 'DateTime'>
 }
     
 

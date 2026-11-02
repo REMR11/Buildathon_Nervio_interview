@@ -14,7 +14,11 @@ const phaseLabels: Partial<Record<InterviewPhase, string>> = {
   thinking: "Analizando respuesta...",
 };
 
-export function InterviewBubble({ text, phase, className }: InterviewBubbleProps) {
+export function InterviewBubble({
+  text,
+  phase,
+  className,
+}: InterviewBubbleProps) {
   return (
     <div
       className={cn(

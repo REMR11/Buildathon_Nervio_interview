@@ -96,3 +96,23 @@ export type schedules = Prisma.schedulesModel
  * 
  */
 export type webhook_logs = Prisma.webhook_logsModel
+/**
+ * Model transcript_turns
+ * 
+ */
+export type transcript_turns = Prisma.transcript_turnsModel
+/**
+ * Model report_shares
+ * 
+ */
+export type report_shares = Prisma.report_sharesModel
+/**
+ * Model SupportTicket
+ * Módulo de soporte: tickets abiertos por usuarios y atendidos por admins.
+ */
+export type SupportTicket = Prisma.SupportTicketModel
+/**
+ * Model SupportReply
+ * 
+ */
+export type SupportReply = Prisma.SupportReplyModel

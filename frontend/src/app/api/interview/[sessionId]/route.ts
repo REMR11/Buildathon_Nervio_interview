@@ -1,8 +1,8 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
 import type { PersistedInterviewSession } from "@/lib/interview/types";
+import { prisma } from "@/lib/prisma";
 
 interface RouteContext {
   params: Promise<{ sessionId: string }>;
@@ -36,7 +36,10 @@ export async function GET(_request: Request, { params }: RouteContext) {
     });
 
     if (!interview) {
-      return NextResponse.json({ error: "Sesión no encontrada" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Sesión no encontrada" },
+        { status: 404 },
+      );
     }
 
     const interviewerMessages = interview.questions.map((question) => ({

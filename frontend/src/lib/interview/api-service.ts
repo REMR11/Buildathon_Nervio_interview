@@ -28,7 +28,9 @@ async function apiJson<T>(url: string, init?: RequestInit): Promise<T> {
   });
 
   if (!response.ok) {
-    const body = (await response.json().catch(() => ({}))) as { error?: string };
+    const body = (await response.json().catch(() => ({}))) as {
+      error?: string;
+    };
     throw new Error(body.error ?? `Error HTTP ${response.status}`);
   }
 
@@ -54,7 +56,9 @@ export const apiInterviewService: InterviewService = {
 
   async getOpeningQuestion(sessionId: string) {
     const session = getSession(sessionId);
-    const cached = session?.messages.find((m) => m.role === "interviewer")?.text;
+    const cached = session?.messages.find(
+      (m) => m.role === "interviewer",
+    )?.text;
     if (cached) return cached;
 
     const persisted = await this.getSession(sessionId);

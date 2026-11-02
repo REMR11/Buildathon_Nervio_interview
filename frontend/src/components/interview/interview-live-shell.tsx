@@ -1,15 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { AuthBackground } from "@/components/layout/auth-background";
+import Link from "next/link";
 import { InterviewBubble } from "@/components/interview/interview-bubble";
 import { InterviewControls } from "@/components/interview/interview-controls";
 import { InterviewOrb } from "@/components/interview/interview-orb";
 import { InterviewTimeline } from "@/components/interview/interview-timeline";
+import { AuthBackground } from "@/components/layout/auth-background";
 import { Button } from "@/components/ui/button";
-import type { InterviewPhase, InterviewType, OrbState } from "@/lib/interview/types";
 import { INTERVIEW_TYPE_OPTIONS } from "@/lib/interview/constants";
+import type {
+  InterviewPhase,
+  InterviewType,
+  OrbState,
+} from "@/lib/interview/types";
 
 interface InterviewLiveShellProps {
   sessionId: string;
@@ -59,7 +63,11 @@ export function InterviewLiveShell({
       <AuthBackground />
       <div className="relative z-10 flex min-h-screen flex-col">
         <header className="flex items-center justify-between border-b border-white/5 bg-background/40 px-6 py-4 backdrop-blur-md">
-          <Button variant="ghost" size="sm" render={<Link href="/interview/setup" />}>
+          <Button
+            variant="ghost"
+            size="sm"
+            render={<Link href="/interview/setup" />}
+          >
             <IconArrowLeft className="size-4" data-icon="inline-start" />
             Salir
           </Button>
@@ -85,7 +93,7 @@ export function InterviewLiveShell({
                 ? "Conectando con el entrevistador..."
                 : phase === "ended"
                   ? (error ?? "Entrevista finalizada")
-                : "La conversación está en curso")
+                  : "La conversación está en curso")
             }
             phase={phase}
           />

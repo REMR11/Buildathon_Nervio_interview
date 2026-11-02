@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   IconChartBar,
   IconCheck,
@@ -6,9 +5,11 @@ import {
   IconRefresh,
   IconWifiOff,
 } from "@tabler/icons-react";
+import Link from "next/link";
 import { AuthBackground } from "@/components/layout/auth-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ReportReadyNotice } from "@/components/realtime/report-ready-notice";
 import { Button } from "@/components/ui/button";
 import { requireAuth } from "@/lib/auth-server";
 import { prisma } from "@/lib/prisma";
@@ -47,19 +48,29 @@ export default async function InterviewEndedPage({
 
           <div>
             <p className="text-sm text-muted-foreground">
-              {endedByPoorConnection ? "Conexión insuficiente" : "Llamada finalizada"}
+              {endedByPoorConnection
+                ? "Conexión insuficiente"
+                : "Llamada finalizada"}
             </p>
             <h1 className="mt-2 font-[family-name:var(--font-heading)] text-3xl font-bold gradient-text">
-              {endedByPoorConnection ? "Entrevista no calificable" : "Entrevista terminada"}
+              {endedByPoorConnection
+                ? "Entrevista no calificable"
+                : "Entrevista terminada"}
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               {endedByPoorConnection
                 ? "La entrevista terminó porque la calidad de conexión/audio no fue suficiente para evaluar al candidato con justicia."
-                : `${interview?.role
-                    ? `La llamada para ${interview.role} terminó correctamente.`
-                    : "La llamada terminó correctamente."} Si el análisis post-llamada de ElevenLabs aún no está listo, podrás revisar el reporte cuando la evaluación quede disponible.`}
+                : `${
+                    interview?.role
+                      ? `La llamada para ${interview.role} terminó correctamente.`
+                      : "La llamada terminó correctamente."
+                  } Si el análisis post-llamada de ElevenLabs aún no está listo, podrás revisar el reporte cuando la evaluación quede disponible.`}
             </p>
           </div>
+
+          {!endedByPoorConnection && interview ? (
+            <ReportReadyNotice sessionId={sessionId} />
+          ) : null}
 
           <div className="flex flex-col gap-3 sm:flex-row">
             {!endedByPoorConnection ? (

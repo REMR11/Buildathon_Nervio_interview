@@ -42,9 +42,9 @@ export function UfgPartnershipSection() {
           Nervio + Universidad Francisco Gavidia
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-          Enlazamos la plataforma con la UFG para que la preparación
-          profesional no quede solo en el aula: puedes entrenar entrevistas con
-          IA como complemento de tu formación universitaria.
+          Enlazamos la plataforma con la UFG para que la preparación profesional
+          no quede solo en el aula: puedes entrenar entrevistas con IA como
+          complemento de tu formación universitaria.
         </p>
 
         <div className="mt-8 grid gap-8 sm:grid-cols-2">
@@ -54,7 +54,10 @@ export function UfgPartnershipSection() {
             </h3>
             <ul className="mt-4 space-y-4">
               {whyPoints.map((item) => (
-                <li key={item.text} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                <li
+                  key={item.text}
+                  className="flex gap-3 text-sm leading-relaxed text-muted-foreground"
+                >
                   <item.icon
                     className="mt-0.5 size-5 shrink-0 text-secondary"
                     stroke={1.5}
@@ -71,7 +74,10 @@ export function UfgPartnershipSection() {
             </h3>
             <ul className="mt-4 space-y-4">
               {purposePoints.map((item) => (
-                <li key={item.text} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                <li
+                  key={item.text}
+                  className="flex gap-3 text-sm leading-relaxed text-muted-foreground"
+                >
                   <item.icon
                     className="mt-0.5 size-5 shrink-0 text-primary"
                     stroke={1.5}

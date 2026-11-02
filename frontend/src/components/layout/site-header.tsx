@@ -1,19 +1,26 @@
 "use client";
 
+import { IconBrain } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { IconBrain } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 
-const navLinks = [
+const navLinks: NavLink[] = [
   { href: "/", label: "Inicio" },
   { href: "/interview/setup", label: "Practicar", requiresAuth: true },
   { href: "/interview/schedules", label: "Agenda", requiresAuth: true },
   { href: "/interview/reports", label: "Reportes", requiresAuth: true },
-  { href: "#", label: "Metodología" },
-  { href: "#", label: "Precios" },
+  { href: "/support", label: "Soporte", requiresAuth: true },
+  { href: "/admin", label: "Admin", requiresAuth: true, requiresAdmin: true },
 ];
+
+type NavLink = {
+  href: string;
+  label: string;
+  requiresAuth?: boolean;
+  requiresAdmin?: boolean;
+};
 
 export function SiteHeader() {
   const router = useRouter();
@@ -42,6 +49,12 @@ export function SiteHeader() {
       <nav className="hidden gap-12 md:flex">
         {navLinks.map((link) => {
           if (link.requiresAuth && !session) return null;
+          if (
+            link.requiresAdmin &&
+            !(session?.user.role ?? "").split(",").includes("admin")
+          ) {
+            return null;
+          }
           return (
             <Link
               key={link.label}
@@ -60,9 +73,12 @@ export function SiteHeader() {
           <div className="h-8 w-24 animate-pulse rounded-xl bg-muted" />
         ) : session ? (
           <>
-            <span className="hidden text-sm text-muted-foreground md:inline">
+            <Link
+              href="/profile"
+              className="hidden text-sm text-muted-foreground hover:text-primary md:inline"
+            >
               {session.user.name}
-            </span>
+            </Link>
             <Button variant="outline" size="sm" onClick={handleSignOut}>
               Cerrar sesión
             </Button>

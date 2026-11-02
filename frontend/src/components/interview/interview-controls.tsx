@@ -1,9 +1,13 @@
 "use client";
 
-import { IconMicrophone, IconMicrophoneOff, IconPhoneOff } from "@tabler/icons-react";
-import type { InterviewPhase } from "@/lib/interview/types";
+import {
+  IconMicrophone,
+  IconMicrophoneOff,
+  IconPhoneOff,
+} from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import type { InterviewPhase } from "@/lib/interview/types";
 import { cn } from "@/lib/utils";
 
 interface InterviewControlsProps {
@@ -81,7 +85,8 @@ export function InterviewControls({
       </div>
 
       <p className="text-center text-xs text-muted-foreground/80">
-        Conversación por voz con el agente ElevenLabs — habla cuando el orbe esté en modo escucha
+        Conversación por voz con el agente ElevenLabs — habla cuando el orbe
+        esté en modo escucha
       </p>
     </div>
   );

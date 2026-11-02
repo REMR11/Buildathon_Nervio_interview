@@ -7,3 +7,7 @@ backend/env
 backend/.env
 frontend/.env
 frontend/.next
+# Backups de variables de entorno
+*.env*.bak
+.env*.bak
+.env.*.bak

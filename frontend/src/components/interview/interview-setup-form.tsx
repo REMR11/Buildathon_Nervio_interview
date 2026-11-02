@@ -1,16 +1,20 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
 import {
   IconBolt,
   IconBriefcase,
   IconHeartHandshake,
   IconTerminal2,
 } from "@tabler/icons-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { InterviewSetupCard } from "@/components/interview/interview-setup-card";
+import {
+  ReminderOffsetField,
+  useReminderOffsetState,
+} from "@/components/interview/reminder-offset-field";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -29,21 +33,17 @@ import {
   interviewService,
 } from "@/lib/interview";
 import {
-  ReminderOffsetField,
-  useReminderOffsetState,
-} from "@/components/interview/reminder-offset-field";
-import {
+  formatReminderOffset,
   REMINDER_OFFSET_MAX_MINUTES,
   REMINDER_OFFSET_MIN,
-  formatReminderOffset,
 } from "@/lib/interview/reminder";
 import type { InterviewType } from "@/lib/interview/types";
+import { cn } from "@/lib/utils";
+import { createZodResolver } from "@/lib/validations/create-zod-resolver";
 import {
   type InterviewSetupFormValues,
   interviewSetupSchema,
 } from "@/lib/validations/interview";
-import { createZodResolver } from "@/lib/validations/create-zod-resolver";
-import { cn } from "@/lib/utils";
 
 const TYPE_ICONS: Record<InterviewType, typeof IconHeartHandshake> = {
   hr: IconHeartHandshake,
@@ -110,7 +110,11 @@ export function InterviewSetupForm({
     try {
       if (actionMode === "schedule") {
         const date = new Date(scheduledAt);
-        if (!scheduledAt || Number.isNaN(date.getTime()) || date.getTime() <= Date.now()) {
+        if (
+          !scheduledAt ||
+          Number.isNaN(date.getTime()) ||
+          date.getTime() <= Date.now()
+        ) {
           setScheduleError("Selecciona una fecha futura para agendar la cita.");
           return;
         }
@@ -128,8 +132,7 @@ export function InterviewSetupForm({
           return;
         }
 
-        const reminderAt =
-          date.getTime() - reminderOffsetMinutes * 60 * 1000;
+        const reminderAt = date.getTime() - reminderOffsetMinutes * 60 * 1000;
         if (reminderAt <= Date.now()) {
           setReminderError(
             "Ese aviso quedaría en el pasado. Elige una cita más lejana o un margen más corto.",
@@ -267,7 +270,9 @@ export function InterviewSetupForm({
             </Field>
 
             <Field data-invalid={!!errors.language}>
-              <FieldLabel htmlFor="language">Idioma de la entrevista</FieldLabel>
+              <FieldLabel htmlFor="language">
+                Idioma de la entrevista
+              </FieldLabel>
               <Controller
                 name="language"
                 control={control}
@@ -329,7 +334,9 @@ export function InterviewSetupForm({
           </Field>
 
           <Field>
-            <FieldLabel htmlFor="stack">Stack tecnológico (opcional)</FieldLabel>
+            <FieldLabel htmlFor="stack">
+              Stack tecnológico (opcional)
+            </FieldLabel>
             <Input
               id="stack"
               placeholder="Ej. React, TypeScript, Node.js"
@@ -355,7 +362,9 @@ export function InterviewSetupForm({
 
           {actionMode === "schedule" ? (
             <Field data-invalid={!!scheduleError}>
-              <FieldLabel htmlFor="scheduledAt">Fecha y hora de la cita</FieldLabel>
+              <FieldLabel htmlFor="scheduledAt">
+                Fecha y hora de la cita
+              </FieldLabel>
               <Input
                 id="scheduledAt"
                 type="datetime-local"
@@ -415,6 +424,12 @@ export function InterviewSetupForm({
             {isSubmitting ? <Spinner data-icon="inline-start" /> : null}
             {submitLabel}
           </Button>
+          <p className="text-center text-xs text-muted-foreground">
+            La entrevista se graba (audio y transcripción) para generar tu
+            reporte. El audio se elimina automáticamente a los 14 días; la
+            transcripción y el feedback se conservan en tu historial. Al
+            continuar aceptas la grabación.
+          </p>
         </FieldGroup>
       </form>
     </InterviewSetupCard>

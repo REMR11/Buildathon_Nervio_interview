@@ -1,7 +1,4 @@
-import {
-  getMockQuestions,
-  MOCK_ANSWER_PLACEHOLDERS,
-} from "./constants";
+import { getMockQuestions, MOCK_ANSWER_PLACEHOLDERS } from "./constants";
 import type { InterviewService } from "./interview-service";
 import {
   getSession,
@@ -10,6 +7,7 @@ import {
   persistStartSession,
   saveSession,
 } from "./session-storage";
+import { buildTranscriptItems, pairTranscript } from "./transcript";
 import type {
   CloseInterviewResponse,
   InterviewReport,
@@ -112,7 +110,19 @@ function generateMockReport(session: ReturnType<typeof getSession>) {
     interviewType: session.setup.interviewType,
     role: session.setup.role,
     candidateName: session.setup.candidateName,
+    transcript: buildTranscriptItems(
+      pairTranscript(
+        session.messages.map((message) => ({
+          role: message.role === "candidate" ? "user" : "agent",
+          message: message.text,
+          timeInCallSecs: null,
+        })),
+      ),
+      [],
+    ),
+    transcriptSource: "local",
   };
+  report.transcriptSource = report.transcript.length > 0 ? "local" : "none";
 
   return report;
 }
@@ -292,4 +302,7 @@ export const mockInterviewService: InterviewService = {
   },
 };
 
-export { getSessionMessages as getMockSessionMessages, getSessionSetup as getMockSessionSetup };
+export {
+  getSessionMessages as getMockSessionMessages,
+  getSessionSetup as getMockSessionSetup,
+};

@@ -3,12 +3,13 @@
 import { ConversationProvider } from "@elevenlabs/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { AuthBackground } from "@/components/layout/auth-background";
 import { InterviewLiveShell } from "@/components/interview/interview-live-shell";
+import { InterviewMicCheck } from "@/components/interview/interview-mic-check";
+import { AuthBackground } from "@/components/layout/auth-background";
 import { interviewService } from "@/lib/interview";
 import { getSessionSetup } from "@/lib/interview/session-storage";
-import { useInterviewConversation } from "@/lib/interview/use-interview-conversation";
 import type { InterviewSetupInput } from "@/lib/interview/types";
+import { useInterviewConversation } from "@/lib/interview/use-interview-conversation";
 
 function InterviewLiveLoading() {
   return (
@@ -51,39 +52,42 @@ function InterviewLiveInner({ sessionId }: { sessionId: string }) {
     return () => clearInterval(interval);
   }, []);
 
-  const handleEndInterview = useCallback(async (skipEvaluation = false) => {
-    if (isEnding) return;
-    setIsEnding(true);
-    try {
-      endInterview();
-      const result = await interviewService.end(
-        sessionId,
-        skipEvaluation ? null : conversationId,
-        {
-          reason: skipEvaluation ? "poor_connection" : "manual",
-          skipEvaluation,
-        },
-      );
-      if (skipEvaluation) {
-        router.push(`/interview/${sessionId}/ended?reason=poor-connection`);
-        return;
-      }
+  const handleEndInterview = useCallback(
+    async (skipEvaluation = false) => {
+      if (isEnding) return;
+      setIsEnding(true);
+      try {
+        endInterview();
+        const result = await interviewService.end(
+          sessionId,
+          skipEvaluation ? null : conversationId,
+          {
+            reason: skipEvaluation ? "poor_connection" : "manual",
+            skipEvaluation,
+          },
+        );
+        if (skipEvaluation) {
+          router.push(`/interview/${sessionId}/ended?reason=poor-connection`);
+          return;
+        }
 
-      router.push(
-        result.reportReady
-          ? `/interview/${sessionId}/report`
-          : `/interview/${sessionId}/ended`,
-      );
-    } catch (error) {
-      console.error("No se pudo finalizar la entrevista:", error);
-      if (skipEvaluation) {
-        router.push(`/interview/${sessionId}/ended?reason=poor-connection`);
-        return;
-      }
+        router.push(
+          result.reportReady
+            ? `/interview/${sessionId}/report`
+            : `/interview/${sessionId}/ended`,
+        );
+      } catch (error) {
+        console.error("No se pudo finalizar la entrevista:", error);
+        if (skipEvaluation) {
+          router.push(`/interview/${sessionId}/ended?reason=poor-connection`);
+          return;
+        }
 
-      setIsEnding(false);
-    }
-  }, [conversationId, endInterview, isEnding, router, sessionId]);
+        setIsEnding(false);
+      }
+    },
+    [conversationId, endInterview, isEnding, router, sessionId],
+  );
 
   useEffect(() => {
     if (!endedByPoorConnection) return;
@@ -130,6 +134,7 @@ export function InterviewLiveClient({ sessionId }: InterviewLiveClientProps) {
   const router = useRouter();
   const [setup, setSetup] = useState<InterviewSetupInput | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const [micChecked, setMicChecked] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -162,6 +167,18 @@ export function InterviewLiveClient({ sessionId }: InterviewLiveClientProps) {
 
   if (!isReady || !setup) {
     return <InterviewLiveLoading />;
+  }
+
+  if (!micChecked) {
+    return (
+      <>
+        <AuthBackground />
+        <InterviewMicCheck
+          role={setup.role}
+          onReady={() => setMicChecked(true)}
+        />
+      </>
+    );
   }
 
   return (

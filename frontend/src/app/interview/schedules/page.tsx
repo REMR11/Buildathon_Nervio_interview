@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   IconCalendarEvent,
   IconClock,
@@ -6,13 +5,14 @@ import {
   IconPencil,
   IconPlus,
 } from "@tabler/icons-react";
+import Link from "next/link";
 import { AuthBackground } from "@/components/layout/auth-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Button } from "@/components/ui/button";
+import { requireAuth } from "@/lib/auth-server";
 import { INTERVIEW_TYPE_OPTIONS } from "@/lib/interview";
 import { formatReminderOffset } from "@/lib/interview/reminder";
-import { requireAuth } from "@/lib/auth-server";
 import { prisma } from "@/lib/prisma";
 
 function formatDate(value: Date) {
@@ -45,7 +45,8 @@ export default async function InterviewSchedulesPage() {
             Entrevistas agendadas
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Tus citas guardadas y el enlace directo para entrar a cada entrevista.
+            Tus citas guardadas y el enlace directo para entrar a cada
+            entrevista.
           </p>
         </div>
 
@@ -69,9 +70,9 @@ export default async function InterviewSchedulesPage() {
             {schedules.map((schedule) => {
               const interview = schedule.interviewSession;
               const typeLabel = interview
-                ? INTERVIEW_TYPE_OPTIONS.find(
+                ? (INTERVIEW_TYPE_OPTIONS.find(
                     (option) => option.value === interview.interviewType,
-                  )?.label ?? interview.interviewType
+                  )?.label ?? interview.interviewType)
                 : "Sin sesión asociada";
               const state = getScheduleState(schedule.scheduledAt);
 
@@ -105,18 +106,21 @@ export default async function InterviewSchedulesPage() {
 
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex flex-wrap gap-2 text-xs">
-                    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-muted-foreground">
-                      <IconMail className="size-4" />
-                      Recordatorio ({formatReminderOffset(schedule.reminderOffsetMinutes)}):{" "}
-                      {schedule.reminderEmailSent ? "enviado" : "pendiente"}
-                    </span>
+                      <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-muted-foreground">
+                        <IconMail className="size-4" />
+                        Recordatorio (
+                        {formatReminderOffset(schedule.reminderOffsetMinutes)}):{" "}
+                        {schedule.reminderEmailSent ? "enviado" : "pendiente"}
+                      </span>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {state === "Próxima" ? (
                         <Button
                           variant="outline"
                           render={
-                            <Link href={`/interview/schedules/${schedule.id}/edit`} />
+                            <Link
+                              href={`/interview/schedules/${schedule.id}/edit`}
+                            />
                           }
                         >
                           <IconPencil className="size-4" />
@@ -124,7 +128,11 @@ export default async function InterviewSchedulesPage() {
                         </Button>
                       ) : null}
                       {schedule.sessionId ? (
-                        <Button render={<Link href={`/interview/${schedule.sessionId}`} />}>
+                        <Button
+                          render={
+                            <Link href={`/interview/${schedule.sessionId}`} />
+                          }
+                        >
                           Entrar
                         </Button>
                       ) : null}

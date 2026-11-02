@@ -1,6 +1,6 @@
 import { apiInterviewService } from "./api-service";
-import { mockInterviewService } from "./mock-service";
 import type { InterviewService } from "./interview-service";
+import { mockInterviewService } from "./mock-service";
 
 /**
  * Usa mock local si NEXT_PUBLIC_USE_MOCK_INTERVIEW=true.

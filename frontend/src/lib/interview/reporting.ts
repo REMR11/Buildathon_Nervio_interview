@@ -1,10 +1,33 @@
-import type { InterviewReport, InterviewType } from "./types";
+import {
+  buildTranscriptItems,
+  type NormalizedTurn,
+  pairTranscript,
+  type StoredFeedback,
+  type TranscriptPair,
+} from "./transcript";
+import type { InterviewReport, InterviewType, TranscriptItem } from "./types";
+
+interface StoredResponse {
+  responseText: string | null;
+  feedback?: string | null;
+  score?: number | null;
+  suggestion?: string | null;
+}
 
 interface ReportSource {
   id: string;
   interviewType: string;
   role: string;
   user?: { name: string } | null;
+  transcriptTurns?: {
+    role: string;
+    message: string;
+    timeInCallSecs: number | null;
+  }[];
+  questions?: {
+    questionText: string;
+    responses?: StoredResponse[];
+  }[];
   evaluations?: {
     scoreGlobal: unknown;
     scoreClarity: unknown;
@@ -57,15 +80,50 @@ function resultNumber(
   return Math.round(toNumber(results[key]?.value, fallback));
 }
 
+/**
+ * Normaliza una lista que el agente puede devolver como arreglo, JSON en texto
+ * o texto libre separado por saltos de línea, viñetas, punto y coma o comas.
+ */
+export function normalizeResultList(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value
+      .filter((item): item is string => typeof item === "string")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+  if (typeof value !== "string") return [];
+  const text = value.trim();
+  if (!text) return [];
+  if (text.startsWith("[")) {
+    try {
+      const parsed = JSON.parse(text) as unknown;
+      if (Array.isArray(parsed)) return normalizeResultList(parsed);
+    } catch {
+      // texto libre que empieza con "["
+    }
+  }
+  const byLines = text
+    .split(/\r?\n|\s*[•·▪●]\s*|\s+-\s+(?=[A-ZÁÉÍÓÚÑ])|;/)
+    .map((item) => item.replace(/^\s*(?:[-*•·]|\d+[.)])\s*/, "").trim())
+    .filter(Boolean);
+  if (byLines.length > 1) return byLines;
+  const byCommas = text
+    .split(/,\s*/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return byCommas.length > 1
+    ? byCommas
+    : [text.replace(/^\s*(?:[-*•·]|\d+[.)])\s*/, "")];
+}
+
 function resultStringList(
   results: Record<string, ElevenLabsResult>,
-  key: string,
+  ...keys: string[]
 ) {
-  const value = results[key]?.value;
-  if (Array.isArray(value)) {
-    return value.filter((item): item is string => typeof item === "string");
+  for (const key of keys) {
+    const list = normalizeResultList(results[key]?.value);
+    if (list.length > 0) return list;
   }
-  if (typeof value === "string" && value.trim()) return [value.trim()];
   return [];
 }
 
@@ -73,7 +131,8 @@ export function parseStoredList(value: string | null | undefined) {
   if (!value) return [];
   try {
     const parsed = JSON.parse(value) as unknown;
-    if (Array.isArray(parsed)) return parsed.filter((item): item is string => typeof item === "string");
+    if (Array.isArray(parsed))
+      return parsed.filter((item): item is string => typeof item === "string");
   } catch {
     return value
       .split("\n")
@@ -84,13 +143,25 @@ export function parseStoredList(value: string | null | undefined) {
 }
 
 export function buildLocalEvaluation(responseTexts: string[]): LocalEvaluation {
-  const totalWords = responseTexts.join(" ").split(/\s+/).filter(Boolean).length;
+  const totalWords = responseTexts
+    .join(" ")
+    .split(/\s+/)
+    .filter(Boolean).length;
   const responseCount = responseTexts.length;
   const averageWords = responseCount > 0 ? totalWords / responseCount : 0;
-  const scoreKnowledge = Math.min(95, Math.max(55, Math.round(averageWords * 4)));
+  const scoreKnowledge = Math.min(
+    95,
+    Math.max(55, Math.round(averageWords * 4)),
+  );
   const scoreStructure = Math.min(95, Math.max(50, 62 + responseCount * 6));
-  const scoreClarity = Math.min(95, Math.max(55, 58 + Math.round(averageWords * 2)));
-  const scoreConfidence = Math.min(95, Math.max(50, responseCount > 1 ? 72 : 60));
+  const scoreClarity = Math.min(
+    95,
+    Math.max(55, 58 + Math.round(averageWords * 2)),
+  );
+  const scoreConfidence = Math.min(
+    95,
+    Math.max(50, responseCount > 1 ? 72 : 60),
+  );
   const scoreGlobal = Math.round(
     (scoreClarity + scoreKnowledge + scoreConfidence + scoreStructure) / 4,
   );
@@ -141,8 +212,8 @@ export function buildElevenLabsEvaluation(
     Math.round(
       (scoreClarity + scoreKnowledge + scoreConfidence + scoreStructure) / 4,
     );
-  const strengths = resultStringList(results, "fortalezas");
-  const weaknesses = resultStringList(results, "areas_de_mejora");
+  const strengths = resultStringList(results, "strengths", "fortalezas");
+  const weaknesses = resultStringList(results, "weaknesses", "areas_de_mejora");
 
   if (!scoreGlobal) return null;
 
@@ -157,8 +228,76 @@ export function buildElevenLabsEvaluation(
     recommendation:
       typeof results.recommendation?.value === "string"
         ? results.recommendation.value
-        : results.scoreGlobal?.rationale ??
-          "Reporte generado desde el análisis post-llamada de ElevenLabs.",
+        : (results.scoreGlobal?.rationale ??
+          "Reporte generado desde el análisis post-llamada de ElevenLabs."),
+  };
+}
+
+function buildReportTranscript(session: ReportSource): {
+  transcript: TranscriptItem[];
+  transcriptSource: InterviewReport["transcriptSource"];
+} {
+  const responses = (session.questions ?? []).flatMap((q) => q.responses ?? []);
+  const turns = session.transcriptTurns ?? [];
+
+  if (turns.length > 0) {
+    const pairs = pairTranscript(
+      turns.map(
+        (turn): NormalizedTurn => ({
+          role: turn.role === "user" ? "user" : "agent",
+          message: turn.message,
+          timeInCallSecs: turn.timeInCallSecs,
+        }),
+      ),
+    );
+    // Las respuestas se guardan en el mismo orden que los pares de la transcripción.
+    const ordered = [...responses];
+    const stored: (StoredFeedback | undefined)[] = pairs.map((pair, i) => {
+      const match =
+        ordered.find((r) => r.responseText?.trim() === pair.answer.trim()) ??
+        ordered[i];
+      return match
+        ? {
+            feedback: match.feedback ?? null,
+            score: match.score ?? null,
+            suggestion: match.suggestion ?? null,
+          }
+        : undefined;
+    });
+    return {
+      transcript: buildTranscriptItems(pairs, stored),
+      transcriptSource: "elevenlabs",
+    };
+  }
+
+  const pairs: TranscriptPair[] = [];
+  const stored: (StoredFeedback | undefined)[] = [];
+  for (const question of session.questions ?? []) {
+    const answers = (question.responses ?? []).filter((r) =>
+      r.responseText?.trim(),
+    );
+    if (answers.length === 0) continue;
+    pairs.push({
+      question: question.questionText,
+      answer: answers.map((r) => r.responseText?.trim()).join(" "),
+      questionAtSecs: null,
+      answerAtSecs: null,
+    });
+    const withFeedback = answers.find((r) => r.feedback);
+    stored.push(
+      withFeedback
+        ? {
+            feedback: withFeedback.feedback ?? null,
+            score: withFeedback.score ?? null,
+            suggestion: withFeedback.suggestion ?? null,
+          }
+        : undefined,
+    );
+  }
+
+  return {
+    transcript: buildTranscriptItems(pairs, stored),
+    transcriptSource: pairs.length > 0 ? "local" : "none",
   };
 }
 
@@ -178,9 +317,11 @@ export function toInterviewReport(session: ReportSource): InterviewReport {
     scoreStructure: Math.round(toNumber(evaluation.scoreStructure)),
     strengths: parseStoredList(evaluation.strengths),
     weaknesses: parseStoredList(evaluation.weaknesses),
-    recommendation: evaluation.recommendation ?? "Sigue practicando para mejorar.",
+    recommendation:
+      evaluation.recommendation ?? "Sigue practicando para mejorar.",
     interviewType: session.interviewType as InterviewType,
     role: session.role,
     candidateName: session.user?.name ?? "Candidato",
+    ...buildReportTranscript(session),
   };
 }

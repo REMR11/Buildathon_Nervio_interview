@@ -1,6 +1,6 @@
 import { Resend } from "resend";
-import { buildInterviewJoinUrl } from "@/lib/email/schedule-confirmation";
 import { buildNervioEmail } from "@/lib/email/nervio-email-layout";
+import { buildInterviewJoinUrl } from "@/lib/email/schedule-confirmation";
 import {
   EXPERIENCE_LEVEL_OPTIONS,
   INTERVIEW_TYPE_OPTIONS,
@@ -24,11 +24,13 @@ export interface ScheduleReminderEmailInput {
   scheduledAt: Date;
   reminderOffsetMinutes: number;
   sessionId: string;
+  /** Si se indica (y es futuro), Resend programa el envío para esa hora. */
+  sendAt?: Date;
 }
 
 export async function sendScheduleReminderEmail(
   input: ScheduleReminderEmailInput,
-): Promise<{ ok: true } | { ok: false; error: string }> {
+): Promise<{ ok: true; id: string | null } | { ok: false; error: string }> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.EMAIL_FROM;
 
@@ -49,7 +51,9 @@ export async function sendScheduleReminderEmail(
     { label: "Puesto", value: input.role },
     { label: "Tipo", value: typeLabel },
     { label: "Nivel", value: levelLabel },
-    ...(input.stack?.trim() ? [{ label: "Stack", value: input.stack.trim() }] : []),
+    ...(input.stack?.trim()
+      ? [{ label: "Stack", value: input.stack.trim() }]
+      : []),
     { label: "Fecha", value: formattedDate },
     { label: "Aviso", value: offsetLabel },
   ];
@@ -73,17 +77,33 @@ export async function sendScheduleReminderEmail(
       to: input.to,
       subject: `Recordatorio: entrevista de ${input.role} (${offsetLabel})`,
       html,
+      ...(input.sendAt && input.sendAt.getTime() > Date.now() + 60_000
+        ? { scheduledAt: input.sendAt.toISOString() }
+        : {}),
     });
 
     if (result.error) {
       return { ok: false, error: result.error.message };
     }
 
-    return { ok: true };
+    return { ok: true, id: result.data?.id ?? null };
   } catch (error) {
     return {
       ok: false,
-      error: error instanceof Error ? error.message : "Error al enviar recordatorio",
+      error:
+        error instanceof Error ? error.message : "Error al enviar recordatorio",
     };
+  }
+}
+
+/** Cancela un recordatorio programado en Resend. Ignora errores (p. ej. ya enviado). */
+export async function cancelScheduledReminderEmail(emailId: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return false;
+  try {
+    const result = await new Resend(apiKey).emails.cancel(emailId);
+    return !result.error;
+  } catch {
+    return false;
   }
 }
