@@ -27,22 +27,23 @@ model User {
   schedules         schedules[]
   supportTickets    SupportTicket[]
   supportReplies    SupportReply[]
+  candidateCvs      CandidateCv[]
 
   @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
+  id             String   @id
+  expiresAt      DateTime
+  token          String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  ipAddress      String?
+  userAgent      String?
   impersonatedBy String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
   @@index([userId])
@@ -98,6 +99,8 @@ model InterviewSession {
   endedAt                  DateTime?          @map("ended_at") @db.Timestamptz(6)
   createdAt                DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
   elevenlabsConversationId String?            @map("elevenlabs_conversation_id")
+  cvId                     String?            @map("cv_id") @db.Uuid
+  cv                       CandidateCv?       @relation(fields: [cvId], references: [id], onDelete: SetNull, onUpdate: NoAction)
   transcriptTurns          transcript_turns[]
   user                     User?              @relation(fields: [userId], references: [id], onUpdate: NoAction)
   evaluations              evaluations?
@@ -111,6 +114,25 @@ model InterviewSession {
   @@index([status], map: "idx_sessions_status")
   @@index([userId], map: "idx_sessions_user_id")
   @@map("interview_sessions")
+}
+
+/// CV subido por el candidato (RF-CV-01 / RF-CV-02). El archivo vive en el bucket privado `cvs`.
+model CandidateCv {
+  id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId            String             @map("user_id")
+  fileName          String             @map("file_name")
+  mimeType          String             @map("mime_type")
+  sizeBytes         Int                @map("size_bytes")
+  pageCount         Int?               @map("page_count")
+  storagePath       String?            @map("storage_path")
+  extractedText     String             @map("extracted_text")
+  truncated         Boolean            @default(false)
+  createdAt         DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interviewSessions InterviewSession[]
+
+  @@index([userId, createdAt], map: "idx_candidate_cvs_user_created")
+  @@map("candidate_cvs")
 }
 
 model evaluations {

@@ -21,6 +21,10 @@ export interface InterviewSetupInput {
   interviewType: InterviewType;
   stack?: string;
   extraContext: string;
+  /** CV subido (candidate_cvs.id), si el candidato adjuntó uno. */
+  cvId?: string | null;
+  /** Texto del CV (editable en la vista previa), máx. 8000 caracteres. */
+  cvText?: string;
 }
 
 export interface InterviewQuestion {

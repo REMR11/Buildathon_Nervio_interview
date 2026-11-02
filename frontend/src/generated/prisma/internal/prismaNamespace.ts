@@ -389,6 +389,7 @@ export const ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   InterviewSession: 'InterviewSession',
+  CandidateCv: 'CandidateCv',
   evaluations: 'evaluations',
   questions: 'questions',
   recordings: 'recordings',
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "interviewSession" | "evaluations" | "questions" | "recordings" | "responses" | "schedules" | "webhook_logs" | "transcript_turns" | "report_shares" | "supportTicket" | "supportReply"
+    modelProps: "user" | "session" | "account" | "verification" | "interviewSession" | "candidateCv" | "evaluations" | "questions" | "recordings" | "responses" | "schedules" | "webhook_logs" | "transcript_turns" | "report_shares" | "supportTicket" | "supportReply"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -785,6 +786,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.InterviewSessionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.InterviewSessionCountAggregateOutputType> | number
+        }
+      }
+    }
+    CandidateCv: {
+      payload: Prisma.$CandidateCvPayload<ExtArgs>
+      fields: Prisma.CandidateCvFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CandidateCvFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CandidateCvFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload>
+        }
+        findFirst: {
+          args: Prisma.CandidateCvFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CandidateCvFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload>
+        }
+        findMany: {
+          args: Prisma.CandidateCvFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload>[]
+        }
+        create: {
+          args: Prisma.CandidateCvCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload>
+        }
+        createMany: {
+          args: Prisma.CandidateCvCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CandidateCvCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload>[]
+        }
+        delete: {
+          args: Prisma.CandidateCvDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload>
+        }
+        update: {
+          args: Prisma.CandidateCvUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload>
+        }
+        deleteMany: {
+          args: Prisma.CandidateCvDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CandidateCvUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CandidateCvUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload>[]
+        }
+        upsert: {
+          args: Prisma.CandidateCvUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CandidateCvPayload>
+        }
+        aggregate: {
+          args: Prisma.CandidateCvAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCandidateCv>
+        }
+        groupBy: {
+          args: Prisma.CandidateCvGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CandidateCvGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CandidateCvCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CandidateCvCountAggregateOutputType> | number
         }
       }
     }
@@ -1643,10 +1718,27 @@ export const InterviewSessionScalarFieldEnum = {
   startedAt: 'startedAt',
   endedAt: 'endedAt',
   createdAt: 'createdAt',
-  elevenlabsConversationId: 'elevenlabsConversationId'
+  elevenlabsConversationId: 'elevenlabsConversationId',
+  cvId: 'cvId'
 } as const
 
 export type InterviewSessionScalarFieldEnum = (typeof InterviewSessionScalarFieldEnum)[keyof typeof InterviewSessionScalarFieldEnum]
+
+
+export const CandidateCvScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  fileName: 'fileName',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  pageCount: 'pageCount',
+  storagePath: 'storagePath',
+  extractedText: 'extractedText',
+  truncated: 'truncated',
+  createdAt: 'createdAt'
+} as const
+
+export type CandidateCvScalarFieldEnum = (typeof CandidateCvScalarFieldEnum)[keyof typeof CandidateCvScalarFieldEnum]
 
 
 export const EvaluationsScalarFieldEnum = {
@@ -1881,20 +1973,6 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1905,6 +1983,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -2050,6 +2142,7 @@ export type GlobalOmitConfig = {
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
   interviewSession?: Prisma.InterviewSessionOmit
+  candidateCv?: Prisma.CandidateCvOmit
   evaluations?: Prisma.evaluationsOmit
   questions?: Prisma.questionsOmit
   recordings?: Prisma.recordingsOmit

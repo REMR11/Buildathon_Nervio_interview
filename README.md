@@ -32,6 +32,14 @@ Detalle de prerrequisitos, variables de entorno, base de datos, pruebas de API y
 Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS · Better Auth · Prisma ORM +
 PostgreSQL · ElevenLabs (ConvAI / TTS) · Resend · Vercel (hosting + cron).
 
+## Funcionalidades clave
+
+- Entrevista por voz con IA (Nova, ElevenLabs) personalizada por puesto, nivel y tipo.
+- **Subida de CV (PDF/DOCX)**: se extrae el texto y Nova lo usa para personalizar las
+  preguntas. Detalle en [`frontend/README.md`](./frontend/README.md#subida-de-cv-rf-cv-01--rf-cv-02).
+- Reporte con puntajes, transcripción y feedback; agenda con recordatorios por correo.
+- Soporte con tiempo real (SSE) y panel de administración por roles.
+
 ## Ramas y demo
 
 - Estrategia de ramas (`feature/*` → `develop` → `main` vía PR): ver [CONTRIBUTING.md](CONTRIBUTING.md).

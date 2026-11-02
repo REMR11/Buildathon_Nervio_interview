@@ -56,6 +56,7 @@ export const ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   InterviewSession: 'InterviewSession',
+  CandidateCv: 'CandidateCv',
   evaluations: 'evaluations',
   questions: 'questions',
   recordings: 'recordings',
@@ -160,10 +161,27 @@ export const InterviewSessionScalarFieldEnum = {
   startedAt: 'startedAt',
   endedAt: 'endedAt',
   createdAt: 'createdAt',
-  elevenlabsConversationId: 'elevenlabsConversationId'
+  elevenlabsConversationId: 'elevenlabsConversationId',
+  cvId: 'cvId'
 } as const
 
 export type InterviewSessionScalarFieldEnum = (typeof InterviewSessionScalarFieldEnum)[keyof typeof InterviewSessionScalarFieldEnum]
+
+
+export const CandidateCvScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  fileName: 'fileName',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  pageCount: 'pageCount',
+  storagePath: 'storagePath',
+  extractedText: 'extractedText',
+  truncated: 'truncated',
+  createdAt: 'createdAt'
+} as const
+
+export type CandidateCvScalarFieldEnum = (typeof CandidateCvScalarFieldEnum)[keyof typeof CandidateCvScalarFieldEnum]
 
 
 export const EvaluationsScalarFieldEnum = {

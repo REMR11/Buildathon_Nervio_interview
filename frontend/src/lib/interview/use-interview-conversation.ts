@@ -56,6 +56,10 @@ function buildContext(setup: InterviewSetupInput): string {
   if (setup.stack?.trim()) parts.push(`Stack: ${setup.stack.trim()}`);
   if (setup.extraContext?.trim())
     parts.push(`Contexto: ${setup.extraContext.trim()}`);
+  if (setup.cvText?.trim())
+    parts.push(
+      `CV del candidato (úsalo para personalizar las preguntas):\n${setup.cvText.trim()}`,
+    );
   return parts.join("\n");
 }
 
