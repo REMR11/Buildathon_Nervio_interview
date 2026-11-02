@@ -30,6 +30,17 @@ export const createTicketSchema = z.object({
   priority: z.enum(TICKET_PRIORITIES, "Prioridad inválida"),
 });
 
+/**
+ * Esquema de la API: `priority` es opcional y por defecto es "normal" (nivel
+ * medio). Se acepta "medium" como alias de "normal".
+ */
+export const createTicketApiSchema = createTicketSchema.extend({
+  priority: z.preprocess(
+    (v) => (v === "medium" ? "normal" : v),
+    z.enum(TICKET_PRIORITIES, "Prioridad inválida").default("normal"),
+  ),
+});
+
 export const replySchema = z.object({
   body: z
     .string()

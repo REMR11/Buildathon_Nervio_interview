@@ -6,7 +6,7 @@ import {
   serverError,
   TICKET_LIST_SELECT,
 } from "@/lib/support/tickets";
-import { createTicketSchema } from "@/lib/validations/support";
+import { createTicketApiSchema } from "@/lib/validations/support";
 
 // Tickets del usuario autenticado.
 export async function GET() {
@@ -27,7 +27,7 @@ export async function GET() {
 export async function POST(request: Request) {
   const check = await requireRole("user");
   if (!check.ok) return check.response;
-  const parsed = await parseJson(request, createTicketSchema);
+  const parsed = await parseJson(request, createTicketApiSchema);
   if (!parsed.ok) return parsed.response;
   try {
     const ticket = await prisma.supportTicket.create({
