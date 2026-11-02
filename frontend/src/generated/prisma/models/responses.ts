@@ -20,8 +20,18 @@ export type responsesModel = runtime.Types.Result.DefaultSelection<Prisma.$respo
 
 export type AggregateResponses = {
   _count: ResponsesCountAggregateOutputType | null
+  _avg: ResponsesAvgAggregateOutputType | null
+  _sum: ResponsesSumAggregateOutputType | null
   _min: ResponsesMinAggregateOutputType | null
   _max: ResponsesMaxAggregateOutputType | null
+}
+
+export type ResponsesAvgAggregateOutputType = {
+  score: number | null
+}
+
+export type ResponsesSumAggregateOutputType = {
+  score: number | null
 }
 
 export type ResponsesMinAggregateOutputType = {
@@ -33,6 +43,9 @@ export type ResponsesMinAggregateOutputType = {
   longPauseDetected: boolean | null
   fillerWordsDetected: boolean | null
   confidenceFlag: string | null
+  feedback: string | null
+  score: number | null
+  suggestion: string | null
   createdAt: Date | null
 }
 
@@ -45,6 +58,9 @@ export type ResponsesMaxAggregateOutputType = {
   longPauseDetected: boolean | null
   fillerWordsDetected: boolean | null
   confidenceFlag: string | null
+  feedback: string | null
+  score: number | null
+  suggestion: string | null
   createdAt: Date | null
 }
 
@@ -57,10 +73,21 @@ export type ResponsesCountAggregateOutputType = {
   longPauseDetected: number
   fillerWordsDetected: number
   confidenceFlag: number
+  feedback: number
+  score: number
+  suggestion: number
   createdAt: number
   _all: number
 }
 
+
+export type ResponsesAvgAggregateInputType = {
+  score?: true
+}
+
+export type ResponsesSumAggregateInputType = {
+  score?: true
+}
 
 export type ResponsesMinAggregateInputType = {
   id?: true
@@ -71,6 +98,9 @@ export type ResponsesMinAggregateInputType = {
   longPauseDetected?: true
   fillerWordsDetected?: true
   confidenceFlag?: true
+  feedback?: true
+  score?: true
+  suggestion?: true
   createdAt?: true
 }
 
@@ -83,6 +113,9 @@ export type ResponsesMaxAggregateInputType = {
   longPauseDetected?: true
   fillerWordsDetected?: true
   confidenceFlag?: true
+  feedback?: true
+  score?: true
+  suggestion?: true
   createdAt?: true
 }
 
@@ -95,6 +128,9 @@ export type ResponsesCountAggregateInputType = {
   longPauseDetected?: true
   fillerWordsDetected?: true
   confidenceFlag?: true
+  feedback?: true
+  score?: true
+  suggestion?: true
   createdAt?: true
   _all?: true
 }
@@ -137,6 +173,18 @@ export type ResponsesAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ResponsesAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ResponsesSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ResponsesMinAggregateInputType
@@ -167,6 +215,8 @@ export type responsesGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: ResponsesCountAggregateInputType | true
+  _avg?: ResponsesAvgAggregateInputType
+  _sum?: ResponsesSumAggregateInputType
   _min?: ResponsesMinAggregateInputType
   _max?: ResponsesMaxAggregateInputType
 }
@@ -180,8 +230,13 @@ export type ResponsesGroupByOutputType = {
   longPauseDetected: boolean | null
   fillerWordsDetected: boolean | null
   confidenceFlag: string | null
+  feedback: string | null
+  score: number | null
+  suggestion: string | null
   createdAt: Date
   _count: ResponsesCountAggregateOutputType | null
+  _avg: ResponsesAvgAggregateOutputType | null
+  _sum: ResponsesSumAggregateOutputType | null
   _min: ResponsesMinAggregateOutputType | null
   _max: ResponsesMaxAggregateOutputType | null
 }
@@ -213,6 +268,9 @@ export type responsesWhereInput = {
   longPauseDetected?: Prisma.BoolNullableFilter<"responses"> | boolean | null
   fillerWordsDetected?: Prisma.BoolNullableFilter<"responses"> | boolean | null
   confidenceFlag?: Prisma.StringNullableFilter<"responses"> | string | null
+  feedback?: Prisma.StringNullableFilter<"responses"> | string | null
+  score?: Prisma.IntNullableFilter<"responses"> | number | null
+  suggestion?: Prisma.StringNullableFilter<"responses"> | string | null
   createdAt?: Prisma.DateTimeFilter<"responses"> | Date | string
   question?: Prisma.XOR<Prisma.QuestionsScalarRelationFilter, Prisma.questionsWhereInput>
   interviewSession?: Prisma.XOR<Prisma.InterviewSessionScalarRelationFilter, Prisma.InterviewSessionWhereInput>
@@ -227,6 +285,9 @@ export type responsesOrderByWithRelationInput = {
   longPauseDetected?: Prisma.SortOrderInput | Prisma.SortOrder
   fillerWordsDetected?: Prisma.SortOrderInput | Prisma.SortOrder
   confidenceFlag?: Prisma.SortOrderInput | Prisma.SortOrder
+  feedback?: Prisma.SortOrderInput | Prisma.SortOrder
+  score?: Prisma.SortOrderInput | Prisma.SortOrder
+  suggestion?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   question?: Prisma.questionsOrderByWithRelationInput
   interviewSession?: Prisma.InterviewSessionOrderByWithRelationInput
@@ -244,6 +305,9 @@ export type responsesWhereUniqueInput = Prisma.AtLeast<{
   longPauseDetected?: Prisma.BoolNullableFilter<"responses"> | boolean | null
   fillerWordsDetected?: Prisma.BoolNullableFilter<"responses"> | boolean | null
   confidenceFlag?: Prisma.StringNullableFilter<"responses"> | string | null
+  feedback?: Prisma.StringNullableFilter<"responses"> | string | null
+  score?: Prisma.IntNullableFilter<"responses"> | number | null
+  suggestion?: Prisma.StringNullableFilter<"responses"> | string | null
   createdAt?: Prisma.DateTimeFilter<"responses"> | Date | string
   question?: Prisma.XOR<Prisma.QuestionsScalarRelationFilter, Prisma.questionsWhereInput>
   interviewSession?: Prisma.XOR<Prisma.InterviewSessionScalarRelationFilter, Prisma.InterviewSessionWhereInput>
@@ -258,10 +322,15 @@ export type responsesOrderByWithAggregationInput = {
   longPauseDetected?: Prisma.SortOrderInput | Prisma.SortOrder
   fillerWordsDetected?: Prisma.SortOrderInput | Prisma.SortOrder
   confidenceFlag?: Prisma.SortOrderInput | Prisma.SortOrder
+  feedback?: Prisma.SortOrderInput | Prisma.SortOrder
+  score?: Prisma.SortOrderInput | Prisma.SortOrder
+  suggestion?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.responsesCountOrderByAggregateInput
+  _avg?: Prisma.responsesAvgOrderByAggregateInput
   _max?: Prisma.responsesMaxOrderByAggregateInput
   _min?: Prisma.responsesMinOrderByAggregateInput
+  _sum?: Prisma.responsesSumOrderByAggregateInput
 }
 
 export type responsesScalarWhereWithAggregatesInput = {
@@ -276,6 +345,9 @@ export type responsesScalarWhereWithAggregatesInput = {
   longPauseDetected?: Prisma.BoolNullableWithAggregatesFilter<"responses"> | boolean | null
   fillerWordsDetected?: Prisma.BoolNullableWithAggregatesFilter<"responses"> | boolean | null
   confidenceFlag?: Prisma.StringNullableWithAggregatesFilter<"responses"> | string | null
+  feedback?: Prisma.StringNullableWithAggregatesFilter<"responses"> | string | null
+  score?: Prisma.IntNullableWithAggregatesFilter<"responses"> | number | null
+  suggestion?: Prisma.StringNullableWithAggregatesFilter<"responses"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"responses"> | Date | string
 }
 
@@ -286,6 +358,9 @@ export type responsesCreateInput = {
   longPauseDetected?: boolean | null
   fillerWordsDetected?: boolean | null
   confidenceFlag?: string | null
+  feedback?: string | null
+  score?: number | null
+  suggestion?: string | null
   createdAt?: Date | string
   question: Prisma.questionsCreateNestedOneWithoutResponsesInput
   interviewSession: Prisma.InterviewSessionCreateNestedOneWithoutResponsesInput
@@ -300,6 +375,9 @@ export type responsesUncheckedCreateInput = {
   longPauseDetected?: boolean | null
   fillerWordsDetected?: boolean | null
   confidenceFlag?: string | null
+  feedback?: string | null
+  score?: number | null
+  suggestion?: string | null
   createdAt?: Date | string
 }
 
@@ -310,6 +388,9 @@ export type responsesUpdateInput = {
   longPauseDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   fillerWordsDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   confidenceFlag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  suggestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   question?: Prisma.questionsUpdateOneRequiredWithoutResponsesNestedInput
   interviewSession?: Prisma.InterviewSessionUpdateOneRequiredWithoutResponsesNestedInput
@@ -324,6 +405,9 @@ export type responsesUncheckedUpdateInput = {
   longPauseDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   fillerWordsDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   confidenceFlag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  suggestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -336,6 +420,9 @@ export type responsesCreateManyInput = {
   longPauseDetected?: boolean | null
   fillerWordsDetected?: boolean | null
   confidenceFlag?: string | null
+  feedback?: string | null
+  score?: number | null
+  suggestion?: string | null
   createdAt?: Date | string
 }
 
@@ -346,6 +433,9 @@ export type responsesUpdateManyMutationInput = {
   longPauseDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   fillerWordsDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   confidenceFlag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  suggestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -358,6 +448,9 @@ export type responsesUncheckedUpdateManyInput = {
   longPauseDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   fillerWordsDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   confidenceFlag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  suggestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -380,7 +473,14 @@ export type responsesCountOrderByAggregateInput = {
   longPauseDetected?: Prisma.SortOrder
   fillerWordsDetected?: Prisma.SortOrder
   confidenceFlag?: Prisma.SortOrder
+  feedback?: Prisma.SortOrder
+  score?: Prisma.SortOrder
+  suggestion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type responsesAvgOrderByAggregateInput = {
+  score?: Prisma.SortOrder
 }
 
 export type responsesMaxOrderByAggregateInput = {
@@ -392,6 +492,9 @@ export type responsesMaxOrderByAggregateInput = {
   longPauseDetected?: Prisma.SortOrder
   fillerWordsDetected?: Prisma.SortOrder
   confidenceFlag?: Prisma.SortOrder
+  feedback?: Prisma.SortOrder
+  score?: Prisma.SortOrder
+  suggestion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -404,7 +507,14 @@ export type responsesMinOrderByAggregateInput = {
   longPauseDetected?: Prisma.SortOrder
   fillerWordsDetected?: Prisma.SortOrder
   confidenceFlag?: Prisma.SortOrder
+  feedback?: Prisma.SortOrder
+  score?: Prisma.SortOrder
+  suggestion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type responsesSumOrderByAggregateInput = {
+  score?: Prisma.SortOrder
 }
 
 export type responsesCreateNestedManyWithoutInterviewSessionInput = {
@@ -502,6 +612,9 @@ export type responsesCreateWithoutInterviewSessionInput = {
   longPauseDetected?: boolean | null
   fillerWordsDetected?: boolean | null
   confidenceFlag?: string | null
+  feedback?: string | null
+  score?: number | null
+  suggestion?: string | null
   createdAt?: Date | string
   question: Prisma.questionsCreateNestedOneWithoutResponsesInput
 }
@@ -514,6 +627,9 @@ export type responsesUncheckedCreateWithoutInterviewSessionInput = {
   longPauseDetected?: boolean | null
   fillerWordsDetected?: boolean | null
   confidenceFlag?: string | null
+  feedback?: string | null
+  score?: number | null
+  suggestion?: string | null
   createdAt?: Date | string
 }
 
@@ -555,6 +671,9 @@ export type responsesScalarWhereInput = {
   longPauseDetected?: Prisma.BoolNullableFilter<"responses"> | boolean | null
   fillerWordsDetected?: Prisma.BoolNullableFilter<"responses"> | boolean | null
   confidenceFlag?: Prisma.StringNullableFilter<"responses"> | string | null
+  feedback?: Prisma.StringNullableFilter<"responses"> | string | null
+  score?: Prisma.IntNullableFilter<"responses"> | number | null
+  suggestion?: Prisma.StringNullableFilter<"responses"> | string | null
   createdAt?: Prisma.DateTimeFilter<"responses"> | Date | string
 }
 
@@ -565,6 +684,9 @@ export type responsesCreateWithoutQuestionInput = {
   longPauseDetected?: boolean | null
   fillerWordsDetected?: boolean | null
   confidenceFlag?: string | null
+  feedback?: string | null
+  score?: number | null
+  suggestion?: string | null
   createdAt?: Date | string
   interviewSession: Prisma.InterviewSessionCreateNestedOneWithoutResponsesInput
 }
@@ -577,6 +699,9 @@ export type responsesUncheckedCreateWithoutQuestionInput = {
   longPauseDetected?: boolean | null
   fillerWordsDetected?: boolean | null
   confidenceFlag?: string | null
+  feedback?: string | null
+  score?: number | null
+  suggestion?: string | null
   createdAt?: Date | string
 }
 
@@ -614,6 +739,9 @@ export type responsesCreateManyInterviewSessionInput = {
   longPauseDetected?: boolean | null
   fillerWordsDetected?: boolean | null
   confidenceFlag?: string | null
+  feedback?: string | null
+  score?: number | null
+  suggestion?: string | null
   createdAt?: Date | string
 }
 
@@ -624,6 +752,9 @@ export type responsesUpdateWithoutInterviewSessionInput = {
   longPauseDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   fillerWordsDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   confidenceFlag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  suggestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   question?: Prisma.questionsUpdateOneRequiredWithoutResponsesNestedInput
 }
@@ -636,6 +767,9 @@ export type responsesUncheckedUpdateWithoutInterviewSessionInput = {
   longPauseDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   fillerWordsDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   confidenceFlag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  suggestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -647,6 +781,9 @@ export type responsesUncheckedUpdateManyWithoutInterviewSessionInput = {
   longPauseDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   fillerWordsDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   confidenceFlag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  suggestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -658,6 +795,9 @@ export type responsesCreateManyQuestionInput = {
   longPauseDetected?: boolean | null
   fillerWordsDetected?: boolean | null
   confidenceFlag?: string | null
+  feedback?: string | null
+  score?: number | null
+  suggestion?: string | null
   createdAt?: Date | string
 }
 
@@ -668,6 +808,9 @@ export type responsesUpdateWithoutQuestionInput = {
   longPauseDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   fillerWordsDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   confidenceFlag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  suggestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   interviewSession?: Prisma.InterviewSessionUpdateOneRequiredWithoutResponsesNestedInput
 }
@@ -680,6 +823,9 @@ export type responsesUncheckedUpdateWithoutQuestionInput = {
   longPauseDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   fillerWordsDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   confidenceFlag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  suggestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -691,6 +837,9 @@ export type responsesUncheckedUpdateManyWithoutQuestionInput = {
   longPauseDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   fillerWordsDetected?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   confidenceFlag?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  suggestion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -705,6 +854,9 @@ export type responsesSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   longPauseDetected?: boolean
   fillerWordsDetected?: boolean
   confidenceFlag?: boolean
+  feedback?: boolean
+  score?: boolean
+  suggestion?: boolean
   createdAt?: boolean
   question?: boolean | Prisma.questionsDefaultArgs<ExtArgs>
   interviewSession?: boolean | Prisma.InterviewSessionDefaultArgs<ExtArgs>
@@ -719,6 +871,9 @@ export type responsesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   longPauseDetected?: boolean
   fillerWordsDetected?: boolean
   confidenceFlag?: boolean
+  feedback?: boolean
+  score?: boolean
+  suggestion?: boolean
   createdAt?: boolean
   question?: boolean | Prisma.questionsDefaultArgs<ExtArgs>
   interviewSession?: boolean | Prisma.InterviewSessionDefaultArgs<ExtArgs>
@@ -733,6 +888,9 @@ export type responsesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   longPauseDetected?: boolean
   fillerWordsDetected?: boolean
   confidenceFlag?: boolean
+  feedback?: boolean
+  score?: boolean
+  suggestion?: boolean
   createdAt?: boolean
   question?: boolean | Prisma.questionsDefaultArgs<ExtArgs>
   interviewSession?: boolean | Prisma.InterviewSessionDefaultArgs<ExtArgs>
@@ -747,10 +905,13 @@ export type responsesSelectScalar = {
   longPauseDetected?: boolean
   fillerWordsDetected?: boolean
   confidenceFlag?: boolean
+  feedback?: boolean
+  score?: boolean
+  suggestion?: boolean
   createdAt?: boolean
 }
 
-export type responsesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sessionId" | "questionId" | "responseText" | "audioUrl" | "longPauseDetected" | "fillerWordsDetected" | "confidenceFlag" | "createdAt", ExtArgs["result"]["responses"]>
+export type responsesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sessionId" | "questionId" | "responseText" | "audioUrl" | "longPauseDetected" | "fillerWordsDetected" | "confidenceFlag" | "feedback" | "score" | "suggestion" | "createdAt", ExtArgs["result"]["responses"]>
 export type responsesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   question?: boolean | Prisma.questionsDefaultArgs<ExtArgs>
   interviewSession?: boolean | Prisma.InterviewSessionDefaultArgs<ExtArgs>
@@ -779,6 +940,9 @@ export type $responsesPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     longPauseDetected: boolean | null
     fillerWordsDetected: boolean | null
     confidenceFlag: string | null
+    feedback: string | null
+    score: number | null
+    suggestion: string | null
     createdAt: Date
   }, ExtArgs["result"]["responses"]>
   composites: {}
@@ -1213,6 +1377,9 @@ export interface responsesFieldRefs {
   readonly longPauseDetected: Prisma.FieldRef<"responses", 'Boolean'>
   readonly fillerWordsDetected: Prisma.FieldRef<"responses", 'Boolean'>
   readonly confidenceFlag: Prisma.FieldRef<"responses", 'String'>
+  readonly feedback: Prisma.FieldRef<"responses", 'String'>
+  readonly score: Prisma.FieldRef<"responses", 'Int'>
+  readonly suggestion: Prisma.FieldRef<"responses", 'String'>
   readonly createdAt: Prisma.FieldRef<"responses", 'DateTime'>
 }
     

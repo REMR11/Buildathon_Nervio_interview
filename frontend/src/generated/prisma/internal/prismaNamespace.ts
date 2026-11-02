@@ -394,7 +394,9 @@ export const ModelName = {
   recordings: 'recordings',
   responses: 'responses',
   schedules: 'schedules',
-  webhook_logs: 'webhook_logs'
+  webhook_logs: 'webhook_logs',
+  transcript_turns: 'transcript_turns',
+  report_shares: 'report_shares'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -410,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "interviewSession" | "evaluations" | "questions" | "recordings" | "responses" | "schedules" | "webhook_logs"
+    modelProps: "user" | "session" | "account" | "verification" | "interviewSession" | "evaluations" | "questions" | "recordings" | "responses" | "schedules" | "webhook_logs" | "transcript_turns" | "report_shares"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1228,6 +1230,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    transcript_turns: {
+      payload: Prisma.$transcript_turnsPayload<ExtArgs>
+      fields: Prisma.transcript_turnsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.transcript_turnsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.transcript_turnsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload>
+        }
+        findFirst: {
+          args: Prisma.transcript_turnsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.transcript_turnsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload>
+        }
+        findMany: {
+          args: Prisma.transcript_turnsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload>[]
+        }
+        create: {
+          args: Prisma.transcript_turnsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload>
+        }
+        createMany: {
+          args: Prisma.transcript_turnsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.transcript_turnsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload>[]
+        }
+        delete: {
+          args: Prisma.transcript_turnsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload>
+        }
+        update: {
+          args: Prisma.transcript_turnsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload>
+        }
+        deleteMany: {
+          args: Prisma.transcript_turnsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.transcript_turnsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.transcript_turnsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload>[]
+        }
+        upsert: {
+          args: Prisma.transcript_turnsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$transcript_turnsPayload>
+        }
+        aggregate: {
+          args: Prisma.Transcript_turnsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTranscript_turns>
+        }
+        groupBy: {
+          args: Prisma.transcript_turnsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Transcript_turnsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.transcript_turnsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Transcript_turnsCountAggregateOutputType> | number
+        }
+      }
+    }
+    report_shares: {
+      payload: Prisma.$report_sharesPayload<ExtArgs>
+      fields: Prisma.report_sharesFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.report_sharesFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.report_sharesFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload>
+        }
+        findFirst: {
+          args: Prisma.report_sharesFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.report_sharesFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload>
+        }
+        findMany: {
+          args: Prisma.report_sharesFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload>[]
+        }
+        create: {
+          args: Prisma.report_sharesCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload>
+        }
+        createMany: {
+          args: Prisma.report_sharesCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.report_sharesCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload>[]
+        }
+        delete: {
+          args: Prisma.report_sharesDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload>
+        }
+        update: {
+          args: Prisma.report_sharesUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload>
+        }
+        deleteMany: {
+          args: Prisma.report_sharesDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.report_sharesUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.report_sharesUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload>[]
+        }
+        upsert: {
+          args: Prisma.report_sharesUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$report_sharesPayload>
+        }
+        aggregate: {
+          args: Prisma.Report_sharesAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateReport_shares>
+        }
+        groupBy: {
+          args: Prisma.report_sharesGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Report_sharesGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.report_sharesCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Report_sharesCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1337,7 +1487,8 @@ export const InterviewSessionScalarFieldEnum = {
   status: 'status',
   startedAt: 'startedAt',
   endedAt: 'endedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  elevenlabsConversationId: 'elevenlabsConversationId'
 } as const
 
 export type InterviewSessionScalarFieldEnum = (typeof InterviewSessionScalarFieldEnum)[keyof typeof InterviewSessionScalarFieldEnum]
@@ -1380,7 +1531,10 @@ export const RecordingsScalarFieldEnum = {
   referenceId: 'referenceId',
   audioUrl: 'audioUrl',
   durationSeconds: 'durationSeconds',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  storagePath: 'storagePath',
+  expiresAt: 'expiresAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type RecordingsScalarFieldEnum = (typeof RecordingsScalarFieldEnum)[keyof typeof RecordingsScalarFieldEnum]
@@ -1395,6 +1549,9 @@ export const ResponsesScalarFieldEnum = {
   longPauseDetected: 'longPauseDetected',
   fillerWordsDetected: 'fillerWordsDetected',
   confidenceFlag: 'confidenceFlag',
+  feedback: 'feedback',
+  score: 'score',
+  suggestion: 'suggestion',
   createdAt: 'createdAt'
 } as const
 
@@ -1411,6 +1568,7 @@ export const SchedulesScalarFieldEnum = {
   reminderAt: 'reminderAt',
   reminderEmailSent: 'reminderEmailSent',
   reminderWhatsappSent: 'reminderWhatsappSent',
+  reminderEmailId: 'reminderEmailId',
   createdAt: 'createdAt'
 } as const
 
@@ -1430,6 +1588,32 @@ export const Webhook_logsScalarFieldEnum = {
 } as const
 
 export type Webhook_logsScalarFieldEnum = (typeof Webhook_logsScalarFieldEnum)[keyof typeof Webhook_logsScalarFieldEnum]
+
+
+export const Transcript_turnsScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  orderIndex: 'orderIndex',
+  role: 'role',
+  message: 'message',
+  timeInCallSecs: 'timeInCallSecs',
+  createdAt: 'createdAt'
+} as const
+
+export type Transcript_turnsScalarFieldEnum = (typeof Transcript_turnsScalarFieldEnum)[keyof typeof Transcript_turnsScalarFieldEnum]
+
+
+export const Report_sharesScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  token: 'token',
+  createdById: 'createdById',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type Report_sharesScalarFieldEnum = (typeof Report_sharesScalarFieldEnum)[keyof typeof Report_sharesScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1690,6 +1874,8 @@ export type GlobalOmitConfig = {
   responses?: Prisma.responsesOmit
   schedules?: Prisma.schedulesOmit
   webhook_logs?: Prisma.webhook_logsOmit
+  transcript_turns?: Prisma.transcript_turnsOmit
+  report_shares?: Prisma.report_sharesOmit
 }
 
 /* Types for Logging */

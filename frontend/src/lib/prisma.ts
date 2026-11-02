@@ -1,12 +1,10 @@
-import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
+import { PrismaClient } from "@/generated/prisma/client";
 
 function resolveDatabaseUrl(): string {
   const raw =
-    process.env.POSTGRES_URL?.trim() ??
-    process.env.DATABASE_URL?.trim() ??
-    "";
+    process.env.POSTGRES_URL?.trim() ?? process.env.DATABASE_URL?.trim() ?? "";
   if (!raw) {
     throw new Error("POSTGRES_URL or DATABASE_URL is not set");
   }

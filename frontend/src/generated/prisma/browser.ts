@@ -72,3 +72,13 @@ export type schedules = Prisma.schedulesModel
  * 
  */
 export type webhook_logs = Prisma.webhook_logsModel
+/**
+ * Model transcript_turns
+ * 
+ */
+export type transcript_turns = Prisma.transcript_turnsModel
+/**
+ * Model report_shares
+ * 
+ */
+export type report_shares = Prisma.report_sharesModel

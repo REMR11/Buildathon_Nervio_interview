@@ -61,7 +61,9 @@ export const ModelName = {
   recordings: 'recordings',
   responses: 'responses',
   schedules: 'schedules',
-  webhook_logs: 'webhook_logs'
+  webhook_logs: 'webhook_logs',
+  transcript_turns: 'transcript_turns',
+  report_shares: 'report_shares'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -150,7 +152,8 @@ export const InterviewSessionScalarFieldEnum = {
   status: 'status',
   startedAt: 'startedAt',
   endedAt: 'endedAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  elevenlabsConversationId: 'elevenlabsConversationId'
 } as const
 
 export type InterviewSessionScalarFieldEnum = (typeof InterviewSessionScalarFieldEnum)[keyof typeof InterviewSessionScalarFieldEnum]
@@ -193,7 +196,10 @@ export const RecordingsScalarFieldEnum = {
   referenceId: 'referenceId',
   audioUrl: 'audioUrl',
   durationSeconds: 'durationSeconds',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  storagePath: 'storagePath',
+  expiresAt: 'expiresAt',
+  deletedAt: 'deletedAt'
 } as const
 
 export type RecordingsScalarFieldEnum = (typeof RecordingsScalarFieldEnum)[keyof typeof RecordingsScalarFieldEnum]
@@ -208,6 +214,9 @@ export const ResponsesScalarFieldEnum = {
   longPauseDetected: 'longPauseDetected',
   fillerWordsDetected: 'fillerWordsDetected',
   confidenceFlag: 'confidenceFlag',
+  feedback: 'feedback',
+  score: 'score',
+  suggestion: 'suggestion',
   createdAt: 'createdAt'
 } as const
 
@@ -224,6 +233,7 @@ export const SchedulesScalarFieldEnum = {
   reminderAt: 'reminderAt',
   reminderEmailSent: 'reminderEmailSent',
   reminderWhatsappSent: 'reminderWhatsappSent',
+  reminderEmailId: 'reminderEmailId',
   createdAt: 'createdAt'
 } as const
 
@@ -243,6 +253,32 @@ export const Webhook_logsScalarFieldEnum = {
 } as const
 
 export type Webhook_logsScalarFieldEnum = (typeof Webhook_logsScalarFieldEnum)[keyof typeof Webhook_logsScalarFieldEnum]
+
+
+export const Transcript_turnsScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  orderIndex: 'orderIndex',
+  role: 'role',
+  message: 'message',
+  timeInCallSecs: 'timeInCallSecs',
+  createdAt: 'createdAt'
+} as const
+
+export type Transcript_turnsScalarFieldEnum = (typeof Transcript_turnsScalarFieldEnum)[keyof typeof Transcript_turnsScalarFieldEnum]
+
+
+export const Report_sharesScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  token: 'token',
+  createdById: 'createdById',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type Report_sharesScalarFieldEnum = (typeof Report_sharesScalarFieldEnum)[keyof typeof Report_sharesScalarFieldEnum]
 
 
 export const SortOrder = {

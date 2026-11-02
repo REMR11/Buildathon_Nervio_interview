@@ -10,13 +10,13 @@ datasource db {
 // --- Better Auth ---
 
 model User {
-  id               String             @id
-  name             String
-  email            String
-  emailVerified    Boolean            @default(false)
-  image            String?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  id                String             @id
+  name              String
+  email             String
+  emailVerified     Boolean            @default(false)
+  image             String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
   sessions          Session[]
   accounts          Account[]
   interviewSessions InterviewSession[]
@@ -78,25 +78,28 @@ model Verification {
 
 /// Sesión de simulación de entrevista (no confundir con Session de login).
 model InterviewSession {
-  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId         String?        @map("user_id")
-  interviewType  String         @map("interview_type")
-  role           String
-  level          String
-  stack          String?
-  extraContext   String?        @map("extra_context")
-  stressMode     Boolean        @default(false) @map("stress_mode")
-  status         String         @default("pending")
-  startedAt      DateTime?      @map("started_at") @db.Timestamptz(6)
-  endedAt        DateTime?      @map("ended_at") @db.Timestamptz(6)
-  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
-  user           User?          @relation(fields: [userId], references: [id], onUpdate: NoAction)
-  evaluations    evaluations?
-  questions      questions[]
-  recordings     recordings[]
-  responses      responses[]
-  schedules      schedules[]
-  webhook_logs   webhook_logs[]
+  id                       String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId                   String?            @map("user_id")
+  interviewType            String             @map("interview_type")
+  role                     String
+  level                    String
+  stack                    String?
+  extraContext             String?            @map("extra_context")
+  stressMode               Boolean            @default(false) @map("stress_mode")
+  status                   String             @default("pending")
+  startedAt                DateTime?          @map("started_at") @db.Timestamptz(6)
+  endedAt                  DateTime?          @map("ended_at") @db.Timestamptz(6)
+  createdAt                DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  elevenlabsConversationId String?            @map("elevenlabs_conversation_id")
+  transcriptTurns          transcript_turns[]
+  user                     User?              @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  evaluations              evaluations?
+  questions                questions[]
+  recordings               recordings[]
+  reportShares             report_shares[]
+  responses                responses[]
+  schedules                schedules[]
+  webhook_logs             webhook_logs[]
 
   @@index([status], map: "idx_sessions_status")
   @@index([userId], map: "idx_sessions_user_id")
@@ -121,17 +124,17 @@ model evaluations {
 }
 
 model questions {
-  id                 String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  sessionId          String           @map("session_id") @db.Uuid
-  questionText       String           @map("question_text")
-  orderIndex         Int              @map("order_index")
-  isFollowup         Boolean          @default(false) @map("is_followup")
-  parentQuestionId   String?          @map("parent_question_id") @db.Uuid
-  createdAt          DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
-  parentQuestion     questions?       @relation("questionsToquestions", fields: [parentQuestionId], references: [id], onUpdate: NoAction)
-  followupQuestions  questions[]      @relation("questionsToquestions")
-  interviewSession   InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  responses          responses[]
+  id                String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId         String           @map("session_id") @db.Uuid
+  questionText      String           @map("question_text")
+  orderIndex        Int              @map("order_index")
+  isFollowup        Boolean          @default(false) @map("is_followup")
+  parentQuestionId  String?          @map("parent_question_id") @db.Uuid
+  createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  parentQuestion    questions?       @relation("questionsToquestions", fields: [parentQuestionId], references: [id], onUpdate: NoAction)
+  followupQuestions questions[]      @relation("questionsToquestions")
+  interviewSession  InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  responses         responses[]
 
   @@index([sessionId], map: "idx_questions_session_id")
 }
@@ -144,42 +147,50 @@ model recordings {
   audioUrl         String           @map("audio_url")
   durationSeconds  Int?             @map("duration_seconds")
   createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  storagePath      String?          @map("storage_path")
+  expiresAt        DateTime?        @map("expires_at") @db.Timestamptz(6)
+  deletedAt        DateTime?        @map("deleted_at") @db.Timestamptz(6)
   interviewSession InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
+  @@index([expiresAt], map: "idx_recordings_expires_at")
   @@index([sessionId], map: "idx_recordings_session_id")
   @@index([type], map: "idx_recordings_type")
 }
 
 model responses {
-  id                    String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  sessionId             String           @map("session_id") @db.Uuid
-  questionId            String           @map("question_id") @db.Uuid
-  responseText          String?          @map("response_text")
-  audioUrl              String?          @map("audio_url")
-  longPauseDetected     Boolean?         @default(false) @map("long_pause_detected")
-  fillerWordsDetected   Boolean?         @default(false) @map("filler_words_detected")
-  confidenceFlag        String?          @map("confidence_flag")
-  createdAt             DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
-  question              questions        @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  interviewSession      InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                  String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId           String           @map("session_id") @db.Uuid
+  questionId          String           @map("question_id") @db.Uuid
+  responseText        String?          @map("response_text")
+  audioUrl            String?          @map("audio_url")
+  longPauseDetected   Boolean?         @default(false) @map("long_pause_detected")
+  fillerWordsDetected Boolean?         @default(false) @map("filler_words_detected")
+  confidenceFlag      String?          @map("confidence_flag")
+  feedback            String?
+  score               Int?
+  suggestion          String?
+  createdAt           DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  question            questions        @relation(fields: [questionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  interviewSession    InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([questionId], map: "idx_responses_question_id")
   @@index([sessionId], map: "idx_responses_session_id")
 }
 
 model schedules {
-  id                     String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  sessionId              String?           @map("session_id") @db.Uuid
-  userId                 String?           @map("user_id")
-  scheduledAt            DateTime          @map("scheduled_at") @db.Timestamptz(6)
-  candidateName          String            @default("") @map("candidate_name")
-  reminderOffsetMinutes  Int               @default(60) @map("reminder_offset_minutes")
-  reminderAt             DateTime          @map("reminder_at") @db.Timestamptz(6)
-  reminderEmailSent      Boolean           @default(false) @map("reminder_email_sent")
-  reminderWhatsappSent   Boolean           @default(false) @map("reminder_whatsapp_sent")
-  createdAt              DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
-  interviewSession       InterviewSession? @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  user                   User?             @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  id                    String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId             String?           @map("session_id") @db.Uuid
+  userId                String?           @map("user_id")
+  scheduledAt           DateTime          @map("scheduled_at") @db.Timestamptz(6)
+  candidateName         String            @default("") @map("candidate_name")
+  reminderOffsetMinutes Int               @default(60) @map("reminder_offset_minutes")
+  reminderAt            DateTime          @map("reminder_at") @db.Timestamptz(6)
+  reminderEmailSent     Boolean           @default(false) @map("reminder_email_sent")
+  reminderWhatsappSent  Boolean           @default(false) @map("reminder_whatsapp_sent")
+  reminderEmailId       String?           @map("reminder_email_id")
+  createdAt             DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  interviewSession      InterviewSession? @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user                  User?             @relation(fields: [userId], references: [id], onUpdate: NoAction)
 
   @@index([reminderEmailSent, reminderWhatsappSent], map: "idx_schedules_reminders")
   @@index([reminderEmailSent, reminderAt], map: "idx_schedules_reminder_due")
@@ -200,4 +211,31 @@ model webhook_logs {
 
   @@index([flowName], map: "idx_webhook_logs_flow_name")
   @@index([sessionId], map: "idx_webhook_logs_session_id")
+}
+
+model transcript_turns {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId        String           @map("session_id") @db.Uuid
+  orderIndex       Int              @map("order_index")
+  role             String
+  message          String
+  timeInCallSecs   Int?             @map("time_in_call_secs")
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  interviewSession InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([sessionId, orderIndex], map: "uq_transcript_turns_session_order")
+  @@index([sessionId], map: "idx_transcript_turns_session_id")
+}
+
+model report_shares {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId        String           @map("session_id") @db.Uuid
+  token            String           @unique
+  createdById      String?          @map("created_by_id")
+  expiresAt        DateTime         @map("expires_at") @db.Timestamptz(6)
+  revokedAt        DateTime?        @map("revoked_at") @db.Timestamptz(6)
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  interviewSession InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([sessionId], map: "idx_report_shares_session_id")
 }
