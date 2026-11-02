@@ -64,6 +64,18 @@ El seed (`prisma/seed.ts`) crea credenciales válidas vía Better Auth:
 |---------|--------|-----------|
 | Candidata Demo | `demo@nervio.dev` | `Nervio#2026` |
 | Candidato QA   | `qa@nervio.dev`   | `Nervio#2026` |
+| Admin Nervio (rol `admin`) | `admin@nervio.dev` | `Nervio#2026` |
+
+### Roles y control de acceso
+
+- Plugin **admin** de Better Auth: columna `user.role` (`user` por defecto, `admin`) y baneo
+  (`banned`, `banReason`, `banExpires`). Migración `20261102020000_admin_roles`.
+- API: `requireRole("admin")` en `src/lib/require-role.ts` → `401` sin sesión, `403` sin rol o baneado.
+  El rol `admin` hereda los permisos de `user`.
+- Páginas: `/admin` (listado de usuarios) protegida en `src/proxy.ts` (cookie) y validada en servidor
+  con `requireAdminPage()`; un usuario sin rol admin ve 404.
+- Endpoints admin: `GET /api/admin/users` y los del plugin `POST /api/auth/admin/set-role`,
+  `ban-user`, `unban-user`, `GET /api/auth/admin/list-users` (ver colección Postman, carpeta *Admin*).
 
 Además inserta una entrevista finalizada con preguntas, respuestas, evaluación (reporte) y una
 cita futura, para revisar historial, reporte y agenda sin grabar una entrevista completa.

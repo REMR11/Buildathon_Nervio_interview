@@ -49,15 +49,34 @@ interface SeedUser {
   name: string;
   email: string;
   password: string;
+  role?: "user" | "admin";
 }
 
 // Usuarios de prueba preconfigurados para la revisión de la Fase 3.
 const SEED_USERS: SeedUser[] = [
   { name: "Candidata Demo", email: "demo@nervio.dev", password: "Nervio#2026" },
   { name: "Candidato QA", email: "qa@nervio.dev", password: "Nervio#2026" },
+  {
+    name: "Admin Nervio",
+    email: "admin@nervio.dev",
+    password: "Nervio#2026",
+    role: "admin",
+  },
 ];
 
 async function ensureUser(user: SeedUser): Promise<string> {
+  const id = await ensureUserAccount(user);
+  // Rol preconfigurado (idempotente: solo actualiza si difiere).
+  const role = user.role ?? "user";
+  const { count } = await prisma.user.updateMany({
+    where: { id, NOT: { role } },
+    data: { role },
+  });
+  if (count) console.log(`✓ Rol "${role}" asignado a ${user.email}`);
+  return id;
+}
+
+async function ensureUserAccount(user: SeedUser): Promise<string> {
   const existing = await prisma.user.findUnique({
     where: { email: user.email },
   });

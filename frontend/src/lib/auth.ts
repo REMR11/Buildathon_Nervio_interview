@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
+import { admin } from "better-auth/plugins";
 import { sendPasswordResetEmail } from "@/lib/email/password-reset";
 import { prisma } from "@/lib/prisma";
 
@@ -28,5 +29,9 @@ export const auth = betterAuth({
       "/reset-password": { window: 300, max: 5 },
     },
   },
-  plugins: [nextCookies()],
+  plugins: [
+    // Roles (user/admin), baneo e impersonación. nextCookies debe ir al final.
+    admin({ defaultRole: "user", adminRoles: ["admin"] }),
+    nextCookies(),
+  ],
 });
