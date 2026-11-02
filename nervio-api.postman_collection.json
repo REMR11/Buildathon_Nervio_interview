@@ -1,8 +1,8 @@
 {
   "info": {
-    "name": "Nervio API — Fase 3 (Sprint 1)",
+    "name": "Nervio API",
     "_postman_id": "b1e1b0a0-0000-4000-8000-nervio000001",
-    "description": "Colección de pruebas manuales de la API de Nervio (Next.js Route Handlers). Flujo recomendado: 1) Auth > Sign Up o Sign In (Postman guarda la cookie de sesión HttpOnly automáticamente en su cookie jar para {{baseUrl}}). 2) Interview > Start (copiar sessionId a la variable). 3) Messages / End / Report. 4) Schedule. Compatible con Postman y Thunder Client; importable también en Insomnia. Autenticación por cookie de sesión (Better Auth), no por token en header.",
+    "description": "Colección de pruebas manuales de la API de Nervio (Next.js Route Handlers). Flujo recomendado: 1) Auth > Sign Up o Sign In (Postman guarda la cookie de sesión HttpOnly automáticamente en su cookie jar para {{baseUrl}}). 2) Interview > Start (copiar sessionId a la variable). 3) Messages / End / Report. 4) Schedule. Compatible con Postman y Thunder Client; importable también en Insomnia. Autenticación por cookie de sesión (Better Auth), no por token en header. Variables: baseUrl, sessionId, scheduleId, ticketId, userId, shareToken, cronSecret (puedes importar también nervio-api.postman_environment.json). Todas las rutas de src/app/api están cubiertas; verifica con `node scripts/check-api-collection.mjs`.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -28,6 +28,10 @@
     },
     {
       "key": "ticketId",
+      "value": ""
+    },
+    {
+      "key": "shareToken",
       "value": ""
     }
   ],
@@ -341,6 +345,128 @@
             },
             "description": "Historial de entrevistas finalizadas del usuario autenticado."
           }
+        },
+        {
+          "name": "Recording info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/{{sessionId}}/recording",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "{{sessionId}}",
+                "recording"
+              ]
+            }
+          },
+          "description": "Estado de la grabación (available/processing/expired/unavailable) y URL firmada."
+        },
+        {
+          "name": "Recording audio (stream)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/{{sessionId}}/recording/audio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "{{sessionId}}",
+                "recording",
+                "audio"
+              ]
+            }
+          },
+          "description": "Proxy del audio de la entrevista (soporta Range). 503 si aún no está disponible."
+        },
+        {
+          "name": "Report PDF",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/{{sessionId}}/report/pdf",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "{{sessionId}}",
+                "report",
+                "pdf"
+              ]
+            }
+          },
+          "description": "Descarga el reporte en PDF (dueño de la sesión)."
+        },
+        {
+          "name": "Crear enlace para compartir",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/{{sessionId}}/share",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "{{sessionId}}",
+                "share"
+              ]
+            }
+          },
+          "description": "Crea o reutiliza un enlace público de solo lectura. 409 si el reporte no está listo. Copia el token a {{shareToken}}."
+        },
+        {
+          "name": "Revocar enlaces compartidos",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/{{sessionId}}/share",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "{{sessionId}}",
+                "share"
+              ]
+            }
+          },
+          "description": "Revoca los enlaces activos; responde { revoked }."
+        },
+        {
+          "name": "PDF público por token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/r/{{shareToken}}/pdf",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "r",
+                "{{shareToken}}",
+                "pdf"
+              ]
+            }
+          },
+          "description": "Sin sesión: PDF del reporte compartido. 404 si el token no existe, expiró o fue revocado."
         }
       ]
     },
@@ -451,6 +577,30 @@
             },
             "description": "Dispara el envío de recordatorios pendientes. Requiere Authorization: Bearer {{cronSecret}} (CRON_SECRET). Lo invoca Vercel Cron en producción."
           }
+        },
+        {
+          "name": "Cron recordings cleanup (manual)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{cronSecret}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cron/recordings-cleanup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cron",
+                "recordings-cleanup"
+              ]
+            }
+          },
+          "description": "Borra grabaciones vencidas de Storage. Requiere Authorization: Bearer {{cronSecret}}."
         }
       ]
     },
@@ -549,6 +699,61 @@
             }
           },
           "description": "409 si está cerrado"
+        }
+      ]
+    },
+    {
+      "name": "Tiempo real (SSE)",
+      "item": [
+        {
+          "name": "Eventos de ticket (SSE)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/realtime/support/{{ticketId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "realtime",
+                "support",
+                "{{ticketId}}"
+              ]
+            }
+          },
+          "description": "text/event-stream. Eventos `reply` y `ticket`. Dueño o admin; 401 sin sesión, 404 si es ajeno. Postman muestra el stream; con curl: curl -N -b cookies.txt ..."
+        },
+        {
+          "name": "Reporte listo (SSE)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/realtime/interview/{{sessionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "realtime",
+                "interview",
+                "{{sessionId}}"
+              ]
+            }
+          },
+          "description": "text/event-stream. Emite `report.pending` y `report.ready` (y cierra). Solo el dueño de la sesión."
         }
       ]
     },

@@ -1,7 +1,12 @@
 import { AuthBackground } from "@/components/layout/auth-background";
 import { Spinner } from "@/components/ui/spinner";
 
-export default function Loading() {
+/**
+ * Pantalla de carga compartida. Se usa como `loading.tsx` solo en segmentos que
+ * no llaman a `notFound()`: un boundary de carga envía la respuesta en streaming
+ * con status 200 antes de que la página pueda devolver 404.
+ */
+export function PageLoading() {
   return (
     <>
       <AuthBackground />

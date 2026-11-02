@@ -139,6 +139,11 @@ Importa `../nervio-api.postman_collection.json` (raíz del repo) en Postman / Th
 Insomnia. Autentica con **Auth → Sign In** (la cookie de sesión queda en el cookie jar) y luego
 ejecuta los endpoints de entrevista y agenda. Detalle en el documento de la Fase 3.
 
+- Importa también `../nervio-api.postman_environment.json` (variables `baseUrl`, `sessionId`,
+  `scheduleId`, `ticketId`, `userId`, `shareToken`, `cronSecret`).
+- La colección cubre todas las rutas de `src/app/api`; `pnpm check:api` lo verifica (falla si
+  se agrega una ruta sin su request en Postman).
+
 ## 7. Scripts disponibles
 
 | Script | Acción |
