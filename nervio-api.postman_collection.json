@@ -554,6 +554,26 @@
           }
         },
         {
+          "name": "Descargar archivo original del CV (solo dueño)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cv/{{cvId}}/file",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cv",
+                "{{cvId}}",
+                "file"
+              ]
+            },
+            "description": "Devuelve el PDF/DOCX original guardado en Storage, inline. 401 sin sesión; 404 si es ajeno, no existe o no se guardó el archivo."
+          }
+        },
+        {
           "name": "Eliminar CV",
           "request": {
             "method": "DELETE",

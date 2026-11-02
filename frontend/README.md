@@ -135,13 +135,15 @@ personalice las preguntas:
   **8000 caracteres**. Un PDF escaneado o sin texto devuelve `422` con un mensaje claro.
 - **Vista previa editable:** el candidato corrige el texto antes de iniciar; se envía como
   `cvText` y se agrega al contexto de Nova (`buildContext()`) y al `extra_context` de n8n.
-  Puede reutilizar su **último CV** con un clic.
+  Puede reutilizar su **último CV** con un clic. La tarjeta muestra una **miniatura de la
+  primera página** (pdfjs-dist en el navegador; worker copiado a `public/` en `postinstall`);
+  los DOCX muestran un ícono con el nombre.
 - **Almacenamiento:** el archivo va al bucket **privado** `cvs` de Supabase Storage
   (`<userId>/<cvId>.pdf|docx`), que se crea solo con la service role. Si falta
   `SUPABASE_SERVICE_ROLE_KEY`, el texto se extrae y se guarda igual (sin archivo) y la UI
   avisa que el original no se guardó.
 - **API:** `POST /api/cv` (multipart, campo `file`), `GET /api/cv` (últimos 5),
-  `GET|DELETE /api/cv/[cvId]`. Solo el dueño: un CV ajeno devuelve `404`. Límite de
+  `GET|DELETE /api/cv/[cvId]` y `GET /api/cv/[cvId]/file` (archivo original inline, para la miniatura y abrirlo en otra pestaña). Solo el dueño: un CV ajeno devuelve `404`. Límite de
   5 subidas/min y 20/día por usuario (`429`).
 - **BD:** tabla `candidate_cvs` + columna nullable `interview_sessions.cv_id`
   (migración aditiva `20261102040000_candidate_cvs`).

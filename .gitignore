@@ -11,3 +11,6 @@ frontend/.next
 *.env*.bak
 .env*.bak
 .env.*.bak
+
+# Worker de pdfjs (lo copia postinstall)
+frontend/public/pdf.worker.min.mjs

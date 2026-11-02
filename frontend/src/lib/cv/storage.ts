@@ -49,3 +49,15 @@ export async function removeCvFile(path: string) {
   const { error } = await client.storage.from(CVS_BUCKET).remove([path]);
   if (error) console.warn("No se pudo borrar el CV de Storage:", error.message);
 }
+
+/** Descarga el archivo original desde el bucket privado. Devuelve null si no existe o no hay Storage. */
+export async function downloadCvFile(path: string): Promise<Blob | null> {
+  const client = getStorageClient();
+  if (!client) return null;
+  const { data, error } = await client.storage.from(CVS_BUCKET).download(path);
+  if (error || !data) {
+    console.warn("No se pudo descargar el CV de Storage:", error?.message);
+    return null;
+  }
+  return data;
+}

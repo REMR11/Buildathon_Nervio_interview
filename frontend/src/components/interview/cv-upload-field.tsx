@@ -21,6 +21,7 @@ import {
   type CvUploadResponse,
 } from "@/lib/cv/constants";
 import { cn } from "@/lib/utils";
+import { CvThumbnail } from "./cv-thumbnail";
 
 export interface CvSelection {
   cvId: string;
@@ -36,7 +37,12 @@ interface CvUploadFieldProps {
 type Status =
   | { kind: "idle" }
   | { kind: "uploading"; fileName: string }
-  | { kind: "success"; cv: CandidateCvSummary; warning: string | null }
+  | {
+      kind: "success";
+      cv: CandidateCvSummary;
+      warning: string | null;
+      file: File | null;
+    }
   | { kind: "error"; message: string };
 
 function formatSize(bytes: number) {
@@ -69,8 +75,8 @@ export function CvUploadField({
   }, []);
 
   const select = useCallback(
-    (cv: CandidateCvSummary, warning: string | null) => {
-      setStatus({ kind: "success", cv, warning });
+    (cv: CandidateCvSummary, warning: string | null, file: File | null) => {
+      setStatus({ kind: "success", cv, warning, file });
       onChange({ cvId: cv.id, cvText: cv.extractedText });
     },
     [onChange],
@@ -104,7 +110,7 @@ export function CvUploadField({
         throw new Error(data.error ?? `Error HTTP ${res.status}`);
       }
       setLastCv(data.cv);
-      select(data.cv, data.storageWarning ?? null);
+      select(data.cv, data.storageWarning ?? null, file);
     } catch (error) {
       setStatus({
         kind: "error",
@@ -131,14 +137,23 @@ export function CvUploadField({
   const busy = disabled || status.kind === "uploading";
 
   if (status.kind === "success" && value) {
-    const { cv, warning } = status;
+    const { cv, warning, file } = status;
     return (
       <div className="flex flex-col gap-3 rounded-lg border border-primary/40 bg-primary/5 p-4">
         <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-2 text-sm">
-            <IconCircleCheck className="size-5 shrink-0 text-primary" />
-            <div>
-              <p className="font-medium">{cv.fileName}</p>
+          <div className="flex min-w-0 items-start gap-3 text-sm">
+            <CvThumbnail
+              cvId={cv.id}
+              fileName={cv.fileName}
+              mimeType={cv.mimeType}
+              localFile={file}
+              stored={cv.stored}
+            />
+            <div className="min-w-0 pt-1">
+              <p className="flex items-center gap-1.5 font-medium">
+                <IconCircleCheck className="size-4 shrink-0 text-primary" />
+                <span className="truncate">{cv.fileName}</span>
+              </p>
               <p className="text-xs text-muted-foreground">
                 {formatSize(cv.sizeBytes)}
                 {cv.pageCount ? ` · ${cv.pageCount} pág.` : ""} ·{" "}
@@ -263,7 +278,7 @@ export function CvUploadField({
           size="sm"
           className="self-start"
           disabled={busy}
-          onClick={() => select(lastCv, null)}
+          onClick={() => select(lastCv, null, null)}
         >
           <IconHistory className="size-4" />
           Usar mi último CV
