@@ -1,7 +1,15 @@
 "use client";
 
-import { useConversation } from "@elevenlabs/react";
+import { type DisconnectionDetails, useConversation } from "@elevenlabs/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  INTERVIEW_FAREWELL_SECONDS,
+  INTERVIEW_GRACEFUL_END_SECONDS,
+  INTERVIEW_MAX_SECONDS,
+  INTERVIEW_WARNING_SECONDS,
+  TIME_LIMIT_FAREWELL_UPDATE,
+  TIME_LIMIT_WARNING_UPDATE,
+} from "./constants";
 import { interviewService } from "./service-factory";
 import { getSession, getSessionSetup, saveSession } from "./session-storage";
 import type {
@@ -61,6 +69,26 @@ function buildContext(setup: InterviewSetupInput): string {
       `CV del candidato (úsalo para personalizar las preguntas):\n${setup.cvText.trim()}`,
     );
   return parts.join("\n");
+}
+
+/**
+ * ¿El agente o el servidor cerraron la llamada de forma normal (fin de la
+ * entrevista o límite de duración)? Solo los errores reales cuentan como
+ * mala conexión.
+ */
+function isServerEndedDisconnect(details?: DisconnectionDetails): boolean {
+  if (!details) return false;
+  if (details.reason === "agent") return true;
+  if (details.reason !== "error") return false;
+  const text = `${details.message ?? ""} ${details.closeReason ?? ""}`;
+  return /max(imum)?[\s_-]*(call[\s_-]*)?duration|exceeded/i.test(text);
+}
+
+function isDurationDisconnect(details?: DisconnectionDetails): boolean {
+  const text = details
+    ? `${"message" in details ? (details.message ?? "") : ""} ${"closeReason" in details ? (details.closeReason ?? "") : ""}`
+    : "";
+  return /duration|exceeded/i.test(text);
 }
 
 function phaseToOrb(phase: InterviewPhase, isSpeaking: boolean): OrbState {
@@ -173,6 +201,14 @@ export function useInterviewConversation(sessionId: string) {
   const endPersistedRef = useRef(false);
   const expectedDisconnectRef = useRef(false);
   const poorConnectionHandledRef = useRef(false);
+  const connectedAtRef = useRef<number | null>(null);
+  const warningSentRef = useRef(false);
+  const farewellSentRef = useRef(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(
+    INTERVIEW_MAX_SECONDS,
+  );
+  const [timeWarning, setTimeWarning] = useState(false);
+  const [timeLimitReached, setTimeLimitReached] = useState(false);
 
   const markPoorConnection = useCallback(() => {
     if (poorConnectionHandledRef.current) return;
@@ -228,15 +264,33 @@ export function useInterviewConversation(sessionId: string) {
   const conversation = useConversation({
     onConnect: ({ conversationId }) => {
       setConversationId(conversationId);
+      connectedAtRef.current ??= Date.now();
       setPhase("listening");
       setError(null);
     },
-    onDisconnect: () => {
+    onDisconnect: (details) => {
       if (expectedDisconnectRef.current) {
         setPhase((current) => (current === "ended" ? current : "ended"));
         return;
       }
 
+      const startedAt = connectedAtRef.current;
+      const nearLimit =
+        startedAt !== null &&
+        (Date.now() - startedAt) / 1000 >=
+          INTERVIEW_MAX_SECONDS - INTERVIEW_FAREWELL_SECONDS;
+
+      if (isServerEndedDisconnect(details) || nearLimit) {
+        // Cierre normal (Nova colgó o se alcanzó el límite): flujo de fin, no error.
+        expectedDisconnectRef.current = true;
+        if (nearLimit || isDurationDisconnect(details)) {
+          setTimeLimitReached(true);
+        }
+        setEndEventReceived(true);
+        return;
+      }
+
+      console.warn("Desconexión inesperada del agente:", details);
       markPoorConnection();
     },
     onMessage: (message) => {
@@ -272,11 +326,55 @@ export function useInterviewConversation(sessionId: string) {
     message,
   } = conversation;
 
+  const isSpeakingRef = useRef(false);
+  isSpeakingRef.current = isSpeaking;
+
   const closeForPoorConnection = useCallback(() => {
     expectedDisconnectRef.current = true;
     markPoorConnection();
     endSession();
   }, [endSession, markPoorConnection]);
+
+  // Cuenta regresiva desde que conecta: aviso a los 2 min, despedida a los 30 s
+  // y cierre propio a los 10 s para que ElevenLabs nunca corte de golpe.
+  useEffect(() => {
+    if (status !== "connected") return;
+    const tick = () => {
+      const startedAt = connectedAtRef.current;
+      if (startedAt === null) return;
+      const remaining = Math.max(
+        0,
+        INTERVIEW_MAX_SECONDS - Math.floor((Date.now() - startedAt) / 1000),
+      );
+      setRemainingSeconds(remaining);
+
+      if (remaining <= INTERVIEW_WARNING_SECONDS && !warningSentRef.current) {
+        warningSentRef.current = true;
+        setTimeWarning(true);
+        sendContextualUpdate(TIME_LIMIT_WARNING_UPDATE);
+      }
+      if (remaining <= INTERVIEW_FAREWELL_SECONDS && !farewellSentRef.current) {
+        farewellSentRef.current = true;
+        sendContextualUpdate(TIME_LIMIT_FAREWELL_UPDATE);
+      }
+      // Tras la despedida: colgar cuando Nova termine de hablar, o a los 10 s
+      // restantes como máximo.
+      const farewellDone =
+        farewellSentRef.current &&
+        !isSpeakingRef.current &&
+        remaining <= INTERVIEW_FAREWELL_SECONDS - 12;
+      if (
+        (remaining <= INTERVIEW_GRACEFUL_END_SECONDS || farewellDone) &&
+        !endPersistedRef.current
+      ) {
+        setTimeLimitReached(true);
+        setEndEventReceived(true);
+      }
+    };
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [status, sendContextualUpdate]);
 
   useEffect(() => {
     if (message?.trim()) {
@@ -317,7 +415,7 @@ export function useInterviewConversation(sessionId: string) {
 
       try {
         const result = await interviewService.end(sessionId, conversationId, {
-          reason: "agent",
+          reason: timeLimitReachedRef.current ? "time_limit" : "agent",
         });
         setAgentReportReady(Boolean(result.reportReady));
       } catch (err) {
@@ -329,6 +427,9 @@ export function useInterviewConversation(sessionId: string) {
 
     void closeCall();
   }, [conversationId, endEventReceived, endSession, sessionId]);
+
+  const timeLimitReachedRef = useRef(false);
+  timeLimitReachedRef.current = timeLimitReached;
 
   useEffect(() => {
     if (status !== "connected" || !setup || contextSentRef.current) return;
@@ -421,6 +522,9 @@ export function useInterviewConversation(sessionId: string) {
     agentEnded,
     agentReportReady,
     endedByPoorConnection,
+    timeLimitReached,
+    timeWarning,
+    remainingSeconds,
     conversationId,
     toggleMute,
     endInterview,

@@ -157,6 +157,16 @@ pnpm dev     # http://localhost:3000
 Recorrido del MVP: **Registro → Login → Configurar entrevista → Entrevista en vivo →
 Reporte → Historial → Agendar**.
 
+### Duración máxima de la entrevista
+
+Cada entrevista en vivo dura como máximo **20 minutos** (`INTERVIEW_MAX_SECONDS` en
+`src/lib/interview/constants.ts`, igual a `max_duration_seconds` del agente en ElevenLabs).
+La pantalla muestra el tiempo restante; a los 2 minutos aparece un aviso y la app le
+envía a Nova un mensaje de contexto para que lo anuncie en voz alta y cierre; a los 30 s
+le pide despedirse y la app cuelga sola tras la despedida (o a los 10 s restantes), así
+ElevenLabs nunca corta de golpe. La pantalla final indica *"Se alcanzó el tiempo máximo
+de la entrevista"*. Si el agente cierra la llamada no se trata como mala conexión.
+
 ## 6. Pruebas manuales de la API
 
 Importa `../nervio-api.postman_collection.json` (raíz del repo) en Postman / Thunder Client /

@@ -65,7 +65,11 @@ export interface CloseInterviewResponse {
   reportReady?: boolean;
 }
 
-export type InterviewEndReason = "manual" | "agent" | "poor_connection";
+export type InterviewEndReason =
+  | "manual"
+  | "agent"
+  | "poor_connection"
+  | "time_limit";
 
 export interface EndInterviewOptions {
   reason?: InterviewEndReason;

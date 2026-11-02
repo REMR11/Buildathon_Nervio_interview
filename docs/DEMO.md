@@ -72,3 +72,10 @@ Las entrevistas sembradas no tienen grabación de audio. No inventamos audios, y
 - [ ] Postman con la colección y el entorno importados, y `baseUrl` apuntando a la URL desplegada.
 - [ ] Pestañas abiertas: GitHub (ramas), README, app y Postman.
 - [ ] Plan B probado: `NEXT_PUBLIC_USE_MOCK_INTERVIEW=true` en local.
+
+## Límite de tiempo
+
+La entrevista en vivo dura como máximo 20 minutos. Para la demo basta con mencionarlo:
+el contador muestra el tiempo restante, a los 2 minutos Nova avisa en voz alta y cierra,
+y la app cuelga sola tras su despedida, con la pantalla final *"Se alcanzó el tiempo
+máximo de la entrevista"*.
