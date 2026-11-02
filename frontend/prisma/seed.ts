@@ -273,13 +273,107 @@ async function seedDemoTranscript(sessionId: string): Promise<void> {
   console.log("✓ Transcripción y feedback por respuesta de ejemplo creados.");
 }
 
+interface SeedTicket {
+  ownerEmail: string;
+  subject: string;
+  message: string;
+  status: "open" | "in_progress" | "closed";
+  priority: "low" | "normal" | "high";
+  replies: { by: "owner" | "admin"; body: string }[];
+}
+
+// Tickets de soporte de ejemplo (idempotente por dueño + asunto).
+const SEED_TICKETS: SeedTicket[] = [
+  {
+    ownerEmail: "demo@nervio.dev",
+    subject: "No escucho al entrevistador en Firefox",
+    message:
+      "Al iniciar la entrevista técnica el micrófono funciona pero no escucho la voz del entrevistador. Uso Firefox 131 en Windows.",
+    status: "in_progress",
+    priority: "high",
+    replies: [
+      {
+        by: "admin",
+        body: "Gracias por reportarlo. ¿Puedes revisar que el sitio tenga permiso de reproducción automática de audio y volver a intentar?",
+      },
+      {
+        by: "owner",
+        body: "Lo activé y ahora sí se escucha, pero con algo de retraso.",
+      },
+    ],
+  },
+  {
+    ownerEmail: "demo@nervio.dev",
+    subject: "¿Puedo descargar el reporte en PDF?",
+    message:
+      "Quiero compartir mi reporte con un reclutador. ¿Hay forma de exportarlo?",
+    status: "closed",
+    priority: "low",
+    replies: [
+      {
+        by: "admin",
+        body: "Sí: en la página del reporte usa el botón «Descargar PDF» o «Compartir enlace». ¡Éxito!",
+      },
+    ],
+  },
+  {
+    ownerEmail: "qa@nervio.dev",
+    subject: "No me llegó el recordatorio de mi cita",
+    message:
+      "Agendé una práctica para mañana con recordatorio de 30 minutos, pero no recibí el correo de confirmación.",
+    status: "open",
+    priority: "normal",
+    replies: [],
+  },
+];
+
+async function seedSupportTickets(adminId: string): Promise<void> {
+  for (const t of SEED_TICKETS) {
+    const owner = await prisma.user.findUnique({
+      where: { email: t.ownerEmail },
+      select: { id: true },
+    });
+    if (!owner) continue;
+    const exists = await prisma.supportTicket.findFirst({
+      where: { userId: owner.id, subject: t.subject },
+      select: { id: true },
+    });
+    if (exists) {
+      console.log(`• Ticket ya existe: ${t.subject}`);
+      continue;
+    }
+    await prisma.supportTicket.create({
+      data: {
+        userId: owner.id,
+        subject: t.subject,
+        message: t.message,
+        status: t.status,
+        priority: t.priority,
+        closedAt: t.status === "closed" ? new Date() : null,
+        replies: {
+          create: t.replies.map((r, i) => ({
+            authorId: r.by === "admin" ? adminId : owner.id,
+            body: r.body,
+            isStaff: r.by === "admin",
+            createdAt: new Date(Date.now() - (t.replies.length - i) * 60_000),
+          })),
+        },
+      },
+    });
+    console.log(`✓ Ticket de soporte creado: ${t.subject}`);
+  }
+}
+
 async function main() {
   console.log("→ Sembrando datos de prueba de Nervio...");
   const firstUserId = await ensureUser(SEED_USERS[0]);
+  let adminId = "";
   for (const user of SEED_USERS.slice(1)) {
-    await ensureUser(user);
+    const id = await ensureUser(user);
+    if (user.role === "admin") adminId = id;
   }
   await seedSampleInterview(firstUserId);
+  if (adminId) await seedSupportTickets(adminId);
   console.log("✔ Seed completado.");
 }
 
