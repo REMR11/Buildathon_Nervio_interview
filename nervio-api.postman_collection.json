@@ -139,6 +139,59 @@
       ]
     },
     {
+      "name": "Usuarios",
+      "description": "Perfil del usuario autenticado.",
+      "item": [
+        {
+          "name": "Mi perfil",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            }
+          },
+          "description": "Perfil + estadísticas. 401 sin sesión."
+        },
+        {
+          "name": "Actualizar perfil",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Candidata Demo\",\n  \"image\": \"\"\n}"
+            }
+          },
+          "description": "Valida con zod (name 2-80, image URL o vacío). Campos no permitidos (p. ej. role) → 400."
+        }
+      ]
+    },
+    {
       "name": "Interview",
       "item": [
         {
@@ -565,6 +618,35 @@
             }
           },
           "description": ""
+        },
+        {
+          "name": "Eliminar usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/admin/remove-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "admin",
+                "remove-user"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\"\n}"
+            }
+          },
+          "description": "Elimina definitivamente al usuario."
         }
       ]
     }

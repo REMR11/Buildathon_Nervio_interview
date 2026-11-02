@@ -9,7 +9,15 @@ export function proxy(request: NextRequest) {
   const hasSession = Boolean(getSessionCookie(request));
 
   if (
-    (pathname.startsWith("/interview") || pathname.startsWith("/admin")) &&
+    [
+      "/interview",
+      "/admin",
+      "/profile",
+      "/support/:path*",
+      "/support",
+      "/profile",
+      "/support",
+    ].some((p) => pathname.startsWith(p)) &&
     !hasSession
   ) {
     const loginUrl = new URL("/login", request.url);
@@ -29,6 +37,9 @@ export const config = {
     "/interview/:path*",
     "/admin/:path*",
     "/admin",
+    "/profile",
+    "/support/:path*",
+    "/support",
     "/login",
     "/register",
   ],
