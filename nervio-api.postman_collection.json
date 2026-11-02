@@ -6,10 +6,26 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:3000" },
-    { "key": "sessionId", "value": "" },
-    { "key": "scheduleId", "value": "" },
-    { "key": "cronSecret", "value": "" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "sessionId",
+      "value": ""
+    },
+    {
+      "key": "scheduleId",
+      "value": ""
+    },
+    {
+      "key": "cronSecret",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    }
   ],
   "item": [
     {
@@ -19,8 +35,24 @@
           "name": "Sign Up (email/password)",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{baseUrl}}/api/auth/sign-up/email", "host": ["{{baseUrl}}"], "path": ["api", "auth", "sign-up", "email"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/sign-up/email",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "sign-up",
+                "email"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Candidata Demo\",\n  \"email\": \"demo@nervio.dev\",\n  \"password\": \"Nervio#2026\"\n}"
@@ -32,8 +64,24 @@
           "name": "Sign In (email/password)",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{baseUrl}}/api/auth/sign-in/email", "host": ["{{baseUrl}}"], "path": ["api", "auth", "sign-in", "email"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/sign-in/email",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "sign-in",
+                "email"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"demo@nervio.dev\",\n  \"password\": \"Nervio#2026\"\n}"
@@ -46,7 +94,17 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/auth/get-session", "host": ["{{baseUrl}}"], "path": ["api", "auth", "get-session"] },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/get-session",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "get-session"
+              ]
+            },
             "description": "Devuelve la sesión y el usuario actuales si la cookie es válida."
           }
         },
@@ -54,9 +112,27 @@
           "name": "Sign Out",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{baseUrl}}/api/auth/sign-out", "host": ["{{baseUrl}}"], "path": ["api", "auth", "sign-out"] },
-            "body": { "mode": "raw", "raw": "{}" },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/sign-out",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "sign-out"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
             "description": "Cierra la sesión e invalida la cookie."
           }
         }
@@ -69,8 +145,23 @@
           "name": "Start interview",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{baseUrl}}/api/interview/start", "host": ["{{baseUrl}}"], "path": ["api", "interview", "start"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/start",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "start"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"role\": \"Frontend Developer\",\n  \"candidateName\": \"Candidata Demo\",\n  \"level\": \"mid\",\n  \"language\": \"es\",\n  \"interviewType\": \"tecnico\",\n  \"extraContext\": \"Dos años de experiencia construyendo SPAs con React.\",\n  \"stack\": \"React, Next.js, TypeScript\"\n}"
@@ -82,8 +173,24 @@
           "name": "Post message (turn)",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{baseUrl}}/api/interview/{{sessionId}}/messages", "host": ["{{baseUrl}}"], "path": ["api", "interview", "{{sessionId}}", "messages"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/{{sessionId}}/messages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "{{sessionId}}",
+                "messages"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"role\": \"candidate\",\n  \"text\": \"Lideré el frontend de un panel de métricas en Next.js.\"\n}"
@@ -96,7 +203,17 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/interview/{{sessionId}}", "host": ["{{baseUrl}}"], "path": ["api", "interview", "{{sessionId}}"] },
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/{{sessionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "{{sessionId}}"
+              ]
+            },
             "description": "Recupera la sesión con preguntas, respuestas y datos de setup (solo del propietario)."
           }
         },
@@ -104,8 +221,24 @@
           "name": "End interview",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{baseUrl}}/api/interview/{{sessionId}}/end", "host": ["{{baseUrl}}"], "path": ["api", "interview", "{{sessionId}}", "end"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/{{sessionId}}/end",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "{{sessionId}}",
+                "end"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"conversationId\": null,\n  \"reason\": \"manual\",\n  \"skipEvaluation\": true\n}"
@@ -118,7 +251,18 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/interview/{{sessionId}}/report", "host": ["{{baseUrl}}"], "path": ["api", "interview", "{{sessionId}}", "report"] },
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/{{sessionId}}/report",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "{{sessionId}}",
+                "report"
+              ]
+            },
             "description": "Devuelve scores, fortalezas, debilidades y recomendación. 404 si aún no hay evaluación."
           }
         },
@@ -127,7 +271,17 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/interview/reports", "host": ["{{baseUrl}}"], "path": ["api", "interview", "reports"] },
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/reports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "reports"
+              ]
+            },
             "description": "Historial de entrevistas finalizadas del usuario autenticado."
           }
         }
@@ -140,8 +294,23 @@
           "name": "Create schedule",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{baseUrl}}/api/interview/schedule", "host": ["{{baseUrl}}"], "path": ["api", "interview", "schedule"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/schedule",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "schedule"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"role\": \"Frontend Developer\",\n  \"candidateName\": \"Candidata Demo\",\n  \"level\": \"mid\",\n  \"language\": \"es\",\n  \"interviewType\": \"tecnico\",\n  \"extraContext\": \"Repaso de React antes de la entrevista real.\",\n  \"stack\": \"React, Next.js\",\n  \"scheduledAt\": \"2026-12-01T15:00:00.000Z\",\n  \"reminderOffsetMinutes\": 60\n}"
@@ -153,8 +322,24 @@
           "name": "Update schedule",
           "request": {
             "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": { "raw": "{{baseUrl}}/api/interview/schedule/{{scheduleId}}", "host": ["{{baseUrl}}"], "path": ["api", "interview", "schedule", "{{scheduleId}}"] },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/interview/schedule/{{scheduleId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "interview",
+                "schedule",
+                "{{scheduleId}}"
+              ]
+            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"role\": \"Frontend Developer\",\n  \"candidateName\": \"Candidata Demo\",\n  \"level\": \"senior\",\n  \"language\": \"es\",\n  \"interviewType\": \"agresivo\",\n  \"extraContext\": \"Cambio a modo estrés y nivel senior.\",\n  \"stack\": \"React, Next.js\",\n  \"scheduledAt\": \"2026-12-02T16:00:00.000Z\",\n  \"reminderOffsetMinutes\": 1440\n}"
@@ -172,7 +357,17 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": { "raw": "{{baseUrl}}/api/elevenlabs/token", "host": ["{{baseUrl}}"], "path": ["api", "elevenlabs", "token"] },
+            "url": {
+              "raw": "{{baseUrl}}/api/elevenlabs/token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "elevenlabs",
+                "token"
+              ]
+            },
             "description": "Emite un token efímero firmado para que el cliente abra el WebSocket con el agente sin exponer la API key."
           }
         },
@@ -180,10 +375,196 @@
           "name": "Cron reminders (manual)",
           "request": {
             "method": "GET",
-            "header": [{ "key": "Authorization", "value": "Bearer {{cronSecret}}" }],
-            "url": { "raw": "{{baseUrl}}/api/cron/reminders", "host": ["{{baseUrl}}"], "path": ["api", "cron", "reminders"] },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{cronSecret}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cron/reminders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cron",
+                "reminders"
+              ]
+            },
             "description": "Dispara el envío de recordatorios pendientes. Requiere Authorization: Bearer {{cronSecret}} (CRON_SECRET). Lo invoca Vercel Cron en producción."
           }
+        }
+      ]
+    },
+    {
+      "name": "Admin (rol admin)",
+      "description": "Requiere iniciar sesión como admin@nervio.dev / Nervio#2026. Un usuario normal recibe 403; sin sesión, 401.",
+      "item": [
+        {
+          "name": "Sign In como admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/sign-in/email",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "sign-in",
+                "email"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@nervio.dev\",\n  \"password\": \"Nervio#2026\"\n}"
+            }
+          },
+          "description": "Inicia sesión con el admin sembrado por el seed."
+        },
+        {
+          "name": "Listar usuarios (app)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "description": "Endpoint propio protegido con requireRole('admin')."
+        },
+        {
+          "name": "Listar usuarios (Better Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/admin/list-users?limit=20&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "admin",
+                "list-users"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "description": "Endpoint del plugin admin."
+        },
+        {
+          "name": "Cambiar rol",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/admin/set-role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "admin",
+                "set-role"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"role\": \"admin\"\n}"
+            }
+          },
+          "description": "role: user | admin"
+        },
+        {
+          "name": "Bloquear usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/admin/ban-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "admin",
+                "ban-user"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"banReason\": \"Uso indebido\",\n  \"banExpiresIn\": 86400\n}"
+            }
+          },
+          "description": "Revoca sus sesiones y bloquea el login."
+        },
+        {
+          "name": "Desbloquear usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/admin/unban-user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "admin",
+                "unban-user"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\"\n}"
+            }
+          },
+          "description": ""
         }
       ]
     }
