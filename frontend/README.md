@@ -91,12 +91,38 @@ El seed (`prisma/seed.ts`) crea credenciales válidas vía Better Auth:
 - Admin: `/admin/support` (filtro por estado) y `/admin/support/[id]`; `GET /api/admin/support?status=open`,
   `PATCH /api/admin/support/[id]` con `{ "status": "open|in_progress|closed", "priority": "low|normal|high" }`.
   Una respuesta del staff a un ticket abierto lo pasa a `in_progress`.
+- `POST /api/support`: `priority` es opcional (por defecto `normal`, nivel medio; se acepta `medium` como alias).
 - El seed crea 3 tickets de ejemplo (demo y qa, con respuestas del admin); es idempotente.
 
 Además inserta una entrevista finalizada con preguntas, respuestas, evaluación (reporte) y una
 cita futura, para revisar historial, reporte y agenda sin grabar una entrevista completa.
 
 > Reinicio total de la base (¡borra datos!): `pnpm db:reset`.
+
+### Tiempo real
+
+La app usa **dos canales en tiempo real independientes**:
+
+1. **Voz (ElevenLabs, WebRTC)**: la entrevista en vivo. El navegador pide un token
+   firmado a `GET /api/elevenlabs/token` (la API key nunca llega al cliente) y abre la
+   sesión de audio bidireccional directamente con ElevenLabs.
+2. **Eventos de la app (SSE)**: notificaciones del servidor al navegador con
+   `EventSource`; el sentido cliente → servidor usa los endpoints REST normales
+   (responder, cambiar estado). Endpoints:
+   - `GET /api/realtime/support/[ticketId]` → eventos `reply` (nueva respuesta) y
+     `ticket` (cambio de estado/prioridad). Lo usan `/support/[id]` y `/admin/support/[id]`.
+   - `GET /api/realtime/interview/[sessionId]` → `report.pending` y `report.ready`
+     (cierra el stream). Lo usan `/interview/[id]/ended` y el reporte si aún no está listo;
+     mientras espera, el servidor reintenta el análisis de ElevenLabs.
+
+**Por qué SSE y no Supabase Realtime**: no requiere exponer la anon key de Supabase
+(`NEXT_PUBLIC_SUPABASE_*` no existe en este proyecto) ni políticas RLS sobre
+`realtime.messages`. La autorización es la misma sesión de better-auth: cada stream
+valida dueño/admin al conectar (401 sin sesión, 404 si el recurso es ajeno), así que
+nunca se reciben eventos de otros usuarios. Es stateless y compatible con Vercel: el
+servidor consulta la BD cada 2–3 s, cierra el stream a los ~50 s (`maxDuration = 60`) y
+`EventSource` se reconecta enviando `Last-Event-ID` para no perder respuestas.
+No necesita variables de entorno nuevas.
 
 ## 5. Ejecución en local
 

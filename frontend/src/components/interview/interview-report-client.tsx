@@ -16,6 +16,7 @@ import { InterviewReportActions } from "@/components/interview/interview-report-
 import { AuthBackground } from "@/components/layout/auth-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ReportReadyNotice } from "@/components/realtime/report-ready-notice";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { INTERVIEW_TYPE_OPTIONS, interviewService } from "@/lib/interview";
@@ -216,6 +217,7 @@ export function InterviewReportClient({
 }: InterviewReportClientProps) {
   const [report, setReport] = useState<InterviewReport | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [reloadKey, setReloadKey] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [audioAvailable, setAudioAvailable] = useState(false);
 
@@ -227,12 +229,13 @@ export function InterviewReportClient({
     audio.scrollIntoView({ behavior: "smooth", block: "center" });
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reloadKey fuerza la recarga al llegar `report.ready`
   useEffect(() => {
     interviewService
       .getReport(sessionId)
       .then(setReport)
-      .catch(() => setError("No se encontró el reporte de esta sesión."));
-  }, [sessionId]);
+      .catch(() => setError("Aún no hay reporte para esta sesión."));
+  }, [sessionId, reloadKey]);
 
   if (error) {
     return (
@@ -241,6 +244,13 @@ export function InterviewReportClient({
         <SiteHeader />
         <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-4 px-6">
           <p className="text-muted-foreground">{error}</p>
+          <ReportReadyNotice
+            sessionId={sessionId}
+            onReady={() => {
+              setError(null);
+              setReloadKey((k) => k + 1);
+            }}
+          />
           <Button render={<Link href="/interview/setup" />}>
             Nueva entrevista
           </Button>

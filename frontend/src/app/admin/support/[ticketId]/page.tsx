@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { LiveTicketUpdates } from "@/components/realtime/live-ticket-updates";
 import { PageShell } from "@/components/support/page-shell";
 import { ReplyForm } from "@/components/support/reply-form";
 import { TicketStatusControl } from "@/components/support/ticket-status-control";
@@ -44,6 +45,12 @@ export default async function AdminTicketPage({
         priority={ticket.priority}
       />
       <div className="mt-6">
+        <div className="mb-4">
+          <LiveTicketUpdates
+            ticketId={ticket.id}
+            currentUserId={session.user.id}
+          />
+        </div>
         <TicketThread ticket={ticket} />
       </div>
       <div className="mt-6">

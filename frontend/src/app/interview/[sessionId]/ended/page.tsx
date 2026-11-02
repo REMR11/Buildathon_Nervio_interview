@@ -9,6 +9,7 @@ import Link from "next/link";
 import { AuthBackground } from "@/components/layout/auth-background";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ReportReadyNotice } from "@/components/realtime/report-ready-notice";
 import { Button } from "@/components/ui/button";
 import { requireAuth } from "@/lib/auth-server";
 import { prisma } from "@/lib/prisma";
@@ -66,6 +67,10 @@ export default async function InterviewEndedPage({
                   } Si el análisis post-llamada de ElevenLabs aún no está listo, podrás revisar el reporte cuando la evaluación quede disponible.`}
             </p>
           </div>
+
+          {!endedByPoorConnection && interview ? (
+            <ReportReadyNotice sessionId={sessionId} />
+          ) : null}
 
           <div className="flex flex-col gap-3 sm:flex-row">
             {!endedByPoorConnection ? (
