@@ -8,7 +8,7 @@ Despliegue del MVP (Sprint 1)**.
 | Carpeta / archivo | Contenido |
 |-------------------|-----------|
 | [`frontend/`](./frontend) | Aplicación Next.js (UI + API Route Handlers), Prisma y seeds. **Empieza aquí:** [`frontend/README.md`](./frontend/README.md). |
-| [`docs/`](./docs) | Guion de demo, SOW y, en [`docs/archive/sdd-backend/`](./docs/archive/sdd-backend), la documentación SDD histórica del backend separado que se planeó en la Fase 2 (no hay código: todo el backend vive en `frontend/` como API Route Handlers de Next.js). |
+| [`docs/`](./docs) | Guion de demo y SOW. No hay carpeta `backend/`: toda la API vive en `frontend/` como API Route Handlers de Next.js. |
 | [`nervio-api.postman_collection.json`](./nervio-api.postman_collection.json) | Colección de pruebas manuales de la API (Postman / Thunder / Insomnia). |
 | `Actividad_evaluada_N_4_Nervio.pdf` | Documento maestro: Fase 1 (análisis) + Fase 2 (diseño). |
 | `Actividad_evaluada_Fase3_Nervio.docx` | Informe de la Fase 3 (implementación y despliegue). |

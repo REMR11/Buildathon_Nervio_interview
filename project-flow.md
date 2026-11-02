@@ -1,3 +1,5 @@
+> **Nota (Fase 3):** este documento describe el plan original de la Fase 2, con un backend separado (NestJS/Express). En la implementación final no existe carpeta `backend/`: la capa "Backend" de abajo se implementó dentro de `frontend/` (Next.js API Route Handlers, Prisma, better-auth y SSE para tiempo real).
+
 🧠 Nervio — Arquitectura Completa (App + Backend + N8N)
 📌 Visión General
 Nervio es un sistema distribuido dividido en tres capas principales:

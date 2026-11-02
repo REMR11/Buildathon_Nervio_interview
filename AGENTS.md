@@ -1,4 +1,4 @@
-This repository contains a single full-stack application in the **frontend** folder (Next.js: UI + API Route Handlers, Prisma, auth, realtime). There is no separate backend project; the old `backend/` folder only held planning docs and was archived to `docs/archive/sdd-backend/`.
+This repository contains a single full-stack application in the **frontend** folder (Next.js: UI + API Route Handlers, Prisma, auth, realtime). There is no separate backend project.
 
 The agent must follow these rules:
 
@@ -9,7 +9,7 @@ The agent must follow these rules:
 
 2. **Historical docs**
 
-   * `docs/archive/sdd-backend/` and `project-flow.md` describe the original Fase 2 plan (separate NestJS/Express backend). Treat them as background, not as the current architecture.
+   * `project-flow.md` describes the original Fase 2 plan (separate NestJS/Express backend). Treat them as background, not as the current architecture.
 
 ALSO READ THE project-flow.md and project-overview.md at the root.
 
