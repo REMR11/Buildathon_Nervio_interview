@@ -63,7 +63,9 @@ export const ModelName = {
   schedules: 'schedules',
   webhook_logs: 'webhook_logs',
   transcript_turns: 'transcript_turns',
-  report_shares: 'report_shares'
+  report_shares: 'report_shares',
+  SupportTicket: 'SupportTicket',
+  SupportReply: 'SupportReply'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -284,6 +286,33 @@ export const Report_sharesScalarFieldEnum = {
 } as const
 
 export type Report_sharesScalarFieldEnum = (typeof Report_sharesScalarFieldEnum)[keyof typeof Report_sharesScalarFieldEnum]
+
+
+export const SupportTicketScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  subject: 'subject',
+  message: 'message',
+  status: 'status',
+  priority: 'priority',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  closedAt: 'closedAt'
+} as const
+
+export type SupportTicketScalarFieldEnum = (typeof SupportTicketScalarFieldEnum)[keyof typeof SupportTicketScalarFieldEnum]
+
+
+export const SupportReplyScalarFieldEnum = {
+  id: 'id',
+  ticketId: 'ticketId',
+  authorId: 'authorId',
+  body: 'body',
+  isStaff: 'isStaff',
+  createdAt: 'createdAt'
+} as const
+
+export type SupportReplyScalarFieldEnum = (typeof SupportReplyScalarFieldEnum)[keyof typeof SupportReplyScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -25,6 +25,10 @@
     {
       "key": "userId",
       "value": ""
+    },
+    {
+      "key": "ticketId",
+      "value": ""
     }
   ],
   "item": [
@@ -451,6 +455,104 @@
       ]
     },
     {
+      "name": "Soporte",
+      "item": [
+        {
+          "name": "Mis tickets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/support",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "support"
+              ]
+            }
+          },
+          "description": ""
+        },
+        {
+          "name": "Crear ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/support",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "support"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"No escucho al entrevistador\",\n  \"message\": \"Describe el problema con al menos 10 caracteres\",\n  \"priority\": \"normal\"\n}"
+            }
+          },
+          "description": "201; copia ticket.id a {{ticketId}}"
+        },
+        {
+          "name": "Detalle de ticket",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/support/{{ticketId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "support",
+                "{{ticketId}}"
+              ]
+            }
+          },
+          "description": "404 si no eres dueño ni admin"
+        },
+        {
+          "name": "Responder ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/support/{{ticketId}}/replies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "support",
+                "{{ticketId}}",
+                "replies"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"body\": \"Gracias, sigue pasando.\"\n}"
+            }
+          },
+          "description": "409 si está cerrado"
+        }
+      ]
+    },
+    {
       "name": "Admin (rol admin)",
       "description": "Requiere iniciar sesión como admin@nervio.dev / Nervio#2026. Un usuario normal recibe 403; sin sesión, 401.",
       "item": [
@@ -647,6 +749,66 @@
             }
           },
           "description": "Elimina definitivamente al usuario."
+        }
+      ]
+    },
+    {
+      "name": "Admin soporte",
+      "item": [
+        {
+          "name": "Listar tickets (admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/support?status=open",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "support"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "open"
+                }
+              ]
+            }
+          },
+          "description": ""
+        },
+        {
+          "name": "Cambiar estado/prioridad",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/support/{{ticketId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "support",
+                "{{ticketId}}"
+              ],
+              "query": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"closed\",\n  \"priority\": \"high\"\n}"
+            }
+          },
+          "description": ""
         }
       ]
     }

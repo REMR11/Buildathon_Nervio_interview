@@ -106,3 +106,13 @@ export type transcript_turns = Prisma.transcript_turnsModel
  * 
  */
 export type report_shares = Prisma.report_sharesModel
+/**
+ * Model SupportTicket
+ * Módulo de soporte: tickets abiertos por usuarios y atendidos por admins.
+ */
+export type SupportTicket = Prisma.SupportTicketModel
+/**
+ * Model SupportReply
+ * 
+ */
+export type SupportReply = Prisma.SupportReplyModel

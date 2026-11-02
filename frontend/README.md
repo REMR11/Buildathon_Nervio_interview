@@ -83,6 +83,16 @@ El seed (`prisma/seed.ts`) crea credenciales válidas vía Better Auth:
 - `/admin`: cambiar rol (user ⇄ admin) y bloquear/desbloquear usuarios con las APIs del plugin admin,
   con estados de carga, error y éxito. Un admin no puede modificarse a sí mismo desde el panel.
 
+### Soporte (tickets)
+
+- Usuario: `/support` (mis tickets), `/support/new` (formulario validado), `/support/[id]` (hilo + respuesta).
+- API: `GET/POST /api/support`, `GET /api/support/[id]`, `POST /api/support/[id]/replies`.
+  Solo el dueño o un admin ven/responden un ticket (otros reciben 404). Responder un ticket cerrado → 409.
+- Admin: `/admin/support` (filtro por estado) y `/admin/support/[id]`; `GET /api/admin/support?status=open`,
+  `PATCH /api/admin/support/[id]` con `{ "status": "open|in_progress|closed", "priority": "low|normal|high" }`.
+  Una respuesta del staff a un ticket abierto lo pasa a `in_progress`.
+- El seed crea 3 tickets de ejemplo (demo y qa, con respuestas del admin); es idempotente.
+
 Además inserta una entrevista finalizada con preguntas, respuestas, evaluación (reporte) y una
 cita futura, para revisar historial, reporte y agenda sin grabar una entrevista completa.
 
