@@ -17,7 +17,9 @@ interface RouteContext {
 
 const endSchema = z.object({
   conversationId: z.string().min(1).optional().nullable(),
-  reason: z.enum(["manual", "agent", "poor_connection"]).optional(),
+  reason: z
+    .enum(["manual", "agent", "poor_connection", "time_limit"])
+    .optional(),
   skipEvaluation: z.boolean().optional(),
 });
 

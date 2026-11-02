@@ -37,6 +37,9 @@ function InterviewLiveInner({ sessionId }: { sessionId: string }) {
     agentEnded,
     agentReportReady,
     endedByPoorConnection,
+    timeLimitReached,
+    timeWarning,
+    remainingSeconds,
     conversationId,
     toggleMute,
     endInterview,
@@ -97,12 +100,14 @@ function InterviewLiveInner({ sessionId }: { sessionId: string }) {
   useEffect(() => {
     if (agentEnded) {
       router.push(
-        agentReportReady
-          ? `/interview/${sessionId}/report`
-          : `/interview/${sessionId}/ended`,
+        timeLimitReached
+          ? `/interview/${sessionId}/ended?reason=time-limit`
+          : agentReportReady
+            ? `/interview/${sessionId}/report`
+            : `/interview/${sessionId}/ended`,
       );
     }
-  }, [agentEnded, agentReportReady, router, sessionId]);
+  }, [agentEnded, agentReportReady, router, sessionId, timeLimitReached]);
 
   if (!setup) return null;
 
@@ -112,6 +117,8 @@ function InterviewLiveInner({ sessionId }: { sessionId: string }) {
       interviewType={setup.interviewType}
       role={setup.role}
       elapsedSeconds={elapsedSeconds}
+      remainingSeconds={remainingSeconds}
+      timeWarning={timeWarning && phase !== "ended"}
       phase={phase}
       orbState={orbState}
       currentQuestion={currentQuestion}
