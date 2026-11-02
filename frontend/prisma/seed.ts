@@ -18,6 +18,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import pg from "pg";
 import { PrismaClient } from "../src/generated/prisma/client";
+import { seedDemoData } from "./seed-demo";
 
 function resolveDatabaseUrl(): string {
   const raw =
@@ -317,6 +318,15 @@ const SEED_TICKETS: SeedTicket[] = [
     ],
   },
   {
+    ownerEmail: "demo@nervio.dev",
+    subject: "Sugerencia: practicar entrevistas en inglés",
+    message:
+      "Me encantaría practicar entrevistas en inglés para aplicar a empresas remotas. ¿Está en sus planes?",
+    status: "open",
+    priority: "normal",
+    replies: [],
+  },
+  {
     ownerEmail: "qa@nervio.dev",
     subject: "No me llegó el recordatorio de mi cita",
     message:
@@ -373,6 +383,7 @@ async function main() {
     if (user.role === "admin") adminId = id;
   }
   await seedSampleInterview(firstUserId);
+  await seedDemoData(prisma, firstUserId);
   if (adminId) await seedSupportTickets(adminId);
   console.log("✔ Seed completado.");
 }

@@ -31,3 +31,8 @@ Detalle de prerrequisitos, variables de entorno, base de datos, pruebas de API y
 
 Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS · Better Auth · Prisma ORM +
 PostgreSQL · ElevenLabs (ConvAI / TTS) · Resend · Vercel (hosting + cron).
+
+## Ramas y demo
+
+- Estrategia de ramas (`feature/*` → `develop` → `main` vía PR): ver [CONTRIBUTING.md](CONTRIBUTING.md).
+- Guion de demo en vivo, cuentas y plan B: ver [docs/DEMO.md](docs/DEMO.md).
