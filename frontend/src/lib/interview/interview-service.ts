@@ -16,7 +16,11 @@ export interface InterviewService {
   start(input: InterviewSetupInput): Promise<StartInterviewResponse>;
   sendMessage(
     sessionId: string,
-    payload: { role?: "interviewer" | "candidate"; text?: string; audioBlob?: Blob },
+    payload: {
+      role?: "interviewer" | "candidate";
+      text?: string;
+      audioBlob?: Blob;
+    },
   ): Promise<InterviewTurn>;
   end(
     sessionId: string,

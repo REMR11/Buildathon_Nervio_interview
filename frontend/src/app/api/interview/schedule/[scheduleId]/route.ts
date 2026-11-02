@@ -1,8 +1,12 @@
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import {
+  queueReminderForSchedule,
+  resetReminderForSchedule,
+} from "@/lib/email/send-due-reminders";
 import { reminderAtFrom } from "@/lib/interview/reminder";
+import { prisma } from "@/lib/prisma";
 import { updateScheduleSchema } from "@/lib/validations/interview";
 
 type RouteContext = { params: Promise<{ scheduleId: string }> };
@@ -24,7 +28,10 @@ export async function PATCH(request: Request, context: RouteContext) {
     });
 
     if (!existing?.interviewSession) {
-      return NextResponse.json({ error: "Cita no encontrada" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Cita no encontrada" },
+        { status: 404 },
+      );
     }
 
     if (existing.scheduledAt.getTime() <= Date.now()) {
@@ -51,12 +58,10 @@ export async function PATCH(request: Request, context: RouteContext) {
     const timingChanged =
       existing.scheduledAt.getTime() !== scheduledAt.getTime() ||
       existing.reminderOffsetMinutes !== parsed.data.reminderOffsetMinutes;
-    const resetReminderEmail =
-      timingChanged && reminderAt.getTime() > Date.now();
 
     await prisma.$transaction([
       prisma.interviewSession.update({
-        where: { id: existing.sessionId! },
+        where: { id: existing.interviewSession.id },
         data: {
           interviewType: parsed.data.interviewType,
           role: parsed.data.role,
@@ -73,12 +78,21 @@ export async function PATCH(request: Request, context: RouteContext) {
           candidateName: parsed.data.candidateName,
           reminderOffsetMinutes: parsed.data.reminderOffsetMinutes,
           reminderAt,
-          reminderEmailSent: resetReminderEmail
-            ? false
-            : existing.reminderEmailSent,
         },
       }),
     ]);
+
+    if (timingChanged) {
+      // Cancela el envío programado anterior y programa uno con la nueva hora.
+      after(async () => {
+        try {
+          await resetReminderForSchedule(scheduleId);
+          await queueReminderForSchedule(scheduleId);
+        } catch (error) {
+          console.error("Reschedule reminder error:", error);
+        }
+      });
+    }
 
     return NextResponse.json({
       scheduleId,

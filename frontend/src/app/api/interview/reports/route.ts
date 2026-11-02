@@ -26,7 +26,8 @@ export async function GET() {
     const summaries: InterviewReportSummary[] = interviews.map((interview) => ({
       sessionId: interview.id,
       role: interview.role,
-      interviewType: interview.interviewType as InterviewReportSummary["interviewType"],
+      interviewType:
+        interview.interviewType as InterviewReportSummary["interviewType"],
       scoreGlobal:
         interview.evaluations?.scoreGlobal != null
           ? Number(interview.evaluations.scoreGlobal)

@@ -12,16 +12,24 @@ const INTERVIEW_TYPE_LABELS: Record<InterviewType, string> = {
 const EVENT_DURATION_MS = 45 * 60 * 1000;
 
 function formatIcsUtc(date: Date): string {
-  return date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+  return date
+    .toISOString()
+    .replace(/[-:]/g, "")
+    .replace(/\.\d{3}Z$/, "Z");
 }
 
 function escapeIcsText(value: string): string {
-  return value.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  return value
+    .replace(/\\/g, "\\\\")
+    .replace(/;/g, "\\;")
+    .replace(/,/g, "\\,")
+    .replace(/\n/g, "\\n");
 }
 
 export function buildInterviewJoinUrl(sessionId: string): string {
   const base =
-    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ?? "http://localhost:3000";
+    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ??
+    "http://localhost:3000";
   return `${base}/interview/${sessionId}`;
 }
 
@@ -37,7 +45,10 @@ export function buildGoogleCalendarUrl(params: {
   url.searchParams.set("text", params.title);
   url.searchParams.set("details", params.details);
   url.searchParams.set("location", params.location);
-  url.searchParams.set("dates", `${formatIcsUtc(params.start)}/${formatIcsUtc(params.end)}`);
+  url.searchParams.set(
+    "dates",
+    `${formatIcsUtc(params.start)}/${formatIcsUtc(params.end)}`,
+  );
   return url.toString();
 }
 
@@ -127,7 +138,8 @@ export async function sendScheduleConfirmationEmail(
     preheader: `Cita agendada: ${input.role} — ${formattedDate}`,
     badge: "Confirmación",
     heading: `Hola, ${input.candidateName}`,
-    intro: "Tu entrevista simulada quedó agendada. Guarda la fecha y entra desde el enlace cuando llegue el momento.",
+    intro:
+      "Tu entrevista simulada quedó agendada. Guarda la fecha y entra desde el enlace cuando llegue el momento.",
     detailRows: [
       { label: "Puesto", value: input.role },
       { label: "Tipo", value: typeLabel },
@@ -139,7 +151,8 @@ export async function sendScheduleConfirmationEmail(
       href: googleCalendarUrl,
       label: "Añadir a Google Calendar",
     },
-    footerNote: "Adjuntamos un archivo .ics por si prefieres importarlo a tu calendario.",
+    footerNote:
+      "Adjuntamos un archivo .ics por si prefieres importarlo a tu calendario.",
   });
 
   const resend = new Resend(apiKey);

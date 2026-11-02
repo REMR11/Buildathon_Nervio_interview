@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { checkTokenRateLimit } from "@/lib/rate-limit";
 
 export async function GET() {
   try {
@@ -10,6 +11,17 @@ export async function GET() {
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+
+    const limit = checkTokenRateLimit(session.user.id);
+    if (!limit.ok) {
+      return NextResponse.json(
+        { error: limit.message },
+        {
+          status: 429,
+          headers: { "Retry-After": String(limit.retryAfterSeconds) },
+        },
+      );
     }
 
     const apiKey = process.env.ELEVENLABS_API_KEY;

@@ -9,7 +9,5 @@ import type { z } from "zod";
 export function createZodResolver<TSchema extends z.ZodType<FieldValues>>(
   schema: TSchema,
 ): Resolver<z.infer<TSchema>> {
-  return zodResolver(schema as never) as unknown as Resolver<
-    z.infer<TSchema>
-  >;
+  return zodResolver(schema as never) as unknown as Resolver<z.infer<TSchema>>;
 }

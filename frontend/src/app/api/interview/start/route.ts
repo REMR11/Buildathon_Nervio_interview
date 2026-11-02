@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
 import { headers } from "next/headers";
+import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { getMockQuestions } from "@/lib/interview/constants";
 import {
   arrayBufferToDataUrlNode,
   synthesizeSpeech,
@@ -10,9 +11,11 @@ import {
   type N8nGenerateInterviewResponse,
   toN8nGenerateInterviewPayload,
 } from "@/lib/interview/n8n";
-import { getMockQuestions } from "@/lib/interview/constants";
 import { syncN8nSessionToPrisma } from "@/lib/interview/sync-session";
-import type { InterviewSetupInput, StartInterviewResponse } from "@/lib/interview/types";
+import type {
+  InterviewSetupInput,
+  StartInterviewResponse,
+} from "@/lib/interview/types";
 import { interviewSetupSchema } from "@/lib/validations/interview";
 
 async function generateInterview(
@@ -30,12 +33,14 @@ async function generateInterview(
   }
 
   const sessionId = crypto.randomUUID();
-  const questions = getMockQuestions(setup.interviewType).map((text, index) => ({
-    session_id: sessionId,
-    question_text: text,
-    order_index: index + 1,
-    is_followup: false,
-  }));
+  const questions = getMockQuestions(setup.interviewType).map(
+    (text, index) => ({
+      session_id: sessionId,
+      question_text: text,
+      order_index: index + 1,
+      is_followup: false,
+    }),
+  );
 
   return { sessionId, questions };
 }
@@ -105,8 +110,9 @@ export async function POST(request: Request) {
     return NextResponse.json(response);
   } catch (error) {
     console.error("POST /api/interview/start error:", error);
-    const message =
-      error instanceof Error ? error.message : "Error al iniciar entrevista";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: "No se pudo iniciar la entrevista. Intenta de nuevo." },
+      { status: 500 },
+    );
   }
 }

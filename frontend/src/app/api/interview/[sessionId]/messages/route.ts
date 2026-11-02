@@ -2,8 +2,8 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
 import type { InterviewTurn } from "@/lib/interview/types";
+import { prisma } from "@/lib/prisma";
 
 interface RouteContext {
   params: Promise<{ sessionId: string }>;
@@ -39,7 +39,10 @@ export async function POST(request: Request, { params }: RouteContext) {
     });
 
     if (!interview) {
-      return NextResponse.json({ error: "Sesión no encontrada" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Sesión no encontrada" },
+        { status: 404 },
+      );
     }
 
     if (interview.status === "ended") {

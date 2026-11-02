@@ -1,16 +1,23 @@
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
 import {
   buildInterviewJoinUrl,
   sendScheduleConfirmationEmail,
 } from "@/lib/email/schedule-confirmation";
-import type { InterviewType, ScheduleInterviewResponse } from "@/lib/interview/types";
+import { queueReminderForSchedule } from "@/lib/email/send-due-reminders";
 import { reminderAtFrom } from "@/lib/interview/reminder";
+import type {
+  InterviewType,
+  ScheduleInterviewResponse,
+} from "@/lib/interview/types";
+import { prisma } from "@/lib/prisma";
 import { scheduleInterviewSchema } from "@/lib/validations/interview";
 
-async function notifySchedule(sessionId: string, payload: Record<string, string>) {
+async function notifySchedule(
+  sessionId: string,
+  payload: Record<string, string>,
+) {
   const endpoint = process.env.N8N_WEBHOOK_SCHEDULE_NOTIFICATION_URL;
   if (!endpoint) return;
 
@@ -113,6 +120,13 @@ export async function POST(request: Request) {
       reminder_offset_minutes: String(parsed.data.reminderOffsetMinutes),
       reminder_at: reminderAt.toISOString(),
     });
+
+    // Recordatorio programado en Resend (scheduledAt): no depende de un cron por minuto.
+    after(() =>
+      queueReminderForSchedule(schedule.id).catch((error) =>
+        console.error("Queue reminder error:", error),
+      ),
+    );
 
     const joinUrl = buildInterviewJoinUrl(interview.id);
     let emailSent = false;

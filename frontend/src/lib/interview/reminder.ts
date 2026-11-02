@@ -61,10 +61,7 @@ export function formatReminderOffset(offsetMinutes: number): string {
   return `${days} día${days === 1 ? "" : "s"} antes`;
 }
 
-export function reminderAtFrom(
-  scheduledAt: Date,
-  offsetMinutes: number,
-): Date {
+export function reminderAtFrom(scheduledAt: Date, offsetMinutes: number): Date {
   return new Date(scheduledAt.getTime() - offsetMinutes * 60 * 1000);
 }
 

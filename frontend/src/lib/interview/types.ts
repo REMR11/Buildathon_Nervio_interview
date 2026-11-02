@@ -81,6 +81,22 @@ export interface InterviewReport {
   interviewType: InterviewType;
   role: string;
   candidateName: string;
+  transcript: TranscriptItem[];
+  /** elevenlabs: transcripción oficial; local: reconstruida desde los mensajes; none: no hay datos. */
+  transcriptSource: "elevenlabs" | "local" | "none";
+}
+
+export interface TranscriptItem {
+  order: number;
+  question: string;
+  answer: string;
+  questionAtSecs: number | null;
+  answerAtSecs: number | null;
+  feedback: string;
+  score: number | null;
+  suggestion: string | null;
+  /** elevenlabs: análisis de IA post-llamada; heuristic: análisis automático básico local. */
+  feedbackSource: "elevenlabs" | "heuristic";
 }
 
 export interface PersistedInterviewSession {

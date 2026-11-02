@@ -1,12 +1,14 @@
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import {
-  fetchElevenLabsEvaluation,
+  fetchElevenLabsConversation,
+  persistConversationArtifacts,
   rememberElevenLabsConversation,
   saveEvaluation,
 } from "@/lib/interview/elevenlabs-analysis";
+import { archiveConversationAudio } from "@/lib/interview/recordings";
 import { prisma } from "@/lib/prisma";
 
 interface RouteContext {
@@ -39,7 +41,10 @@ export async function POST(request: Request, { params }: RouteContext) {
     });
 
     if (!interview) {
-      return NextResponse.json({ error: "Sesión no encontrada" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Sesión no encontrada" },
+        { status: 404 },
+      );
     }
 
     await prisma.interviewSession.update({
@@ -52,14 +57,27 @@ export async function POST(request: Request, { params }: RouteContext) {
 
     if (conversationId) {
       await rememberElevenLabsConversation(sessionId, conversationId);
+      // El audio puede tardar en generarse: se copia a Storage después de responder.
+      after(() =>
+        archiveConversationAudio(sessionId, conversationId).catch((error) =>
+          console.error("Recording archive error:", error),
+        ),
+      );
     }
 
-    const evaluation = conversationId && !payload.skipEvaluation
-      ? await fetchElevenLabsEvaluation(conversationId)
-      : null;
+    const { evaluation, conversation } =
+      conversationId && !payload.skipEvaluation
+        ? await fetchElevenLabsConversation(conversationId)
+        : { evaluation: null, conversation: null };
 
     if (evaluation) {
       await saveEvaluation(sessionId, evaluation);
+    }
+
+    if (conversation) {
+      await persistConversationArtifacts(sessionId, conversation).catch(
+        (error) => console.error("Transcript sync error:", error),
+      );
     }
 
     return NextResponse.json({

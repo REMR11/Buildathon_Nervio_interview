@@ -5,9 +5,20 @@ import {
   fetchElevenLabsEvaluation,
   getRememberedElevenLabsConversationId,
   saveEvaluation,
+  syncTranscriptIfMissing,
 } from "@/lib/interview/elevenlabs-analysis";
 import { toInterviewReport } from "@/lib/interview/reporting";
 import { prisma } from "@/lib/prisma";
+
+const REPORT_INCLUDE = {
+  evaluations: true,
+  user: true,
+  transcriptTurns: { orderBy: { orderIndex: "asc" as const } },
+  questions: {
+    orderBy: { orderIndex: "asc" as const },
+    include: { responses: { orderBy: { createdAt: "asc" as const } } },
+  },
+};
 
 interface RouteContext {
   params: Promise<{ sessionId: string }>;
@@ -26,14 +37,14 @@ export async function GET(_request: Request, { params }: RouteContext) {
     const { sessionId } = await params;
     let interview = await prisma.interviewSession.findFirst({
       where: { id: sessionId, userId: session.user.id },
-      include: {
-        evaluations: true,
-        user: true,
-      },
+      include: REPORT_INCLUDE,
     });
 
     if (!interview) {
-      return NextResponse.json({ error: "Sesión no encontrada" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Sesión no encontrada" },
+        { status: 404 },
+      );
     }
 
     if (!interview.evaluations) {
@@ -47,10 +58,20 @@ export async function GET(_request: Request, { params }: RouteContext) {
         await saveEvaluation(sessionId, evaluation);
         interview = await prisma.interviewSession.findFirst({
           where: { id: sessionId, userId: session.user.id },
-          include: {
-            evaluations: true,
-            user: true,
-          },
+          include: REPORT_INCLUDE,
+        });
+      }
+    }
+
+    if (interview?.evaluations && interview.transcriptTurns.length === 0) {
+      const synced = await syncTranscriptIfMissing(sessionId).catch((error) => {
+        console.error("Transcript sync error:", error);
+        return false;
+      });
+      if (synced) {
+        interview = await prisma.interviewSession.findFirst({
+          where: { id: sessionId, userId: session.user.id },
+          include: REPORT_INCLUDE,
         });
       }
     }

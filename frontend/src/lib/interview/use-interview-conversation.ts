@@ -2,12 +2,8 @@
 
 import { useConversation } from "@elevenlabs/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  getSession,
-  getSessionSetup,
-  saveSession,
-} from "./session-storage";
 import { interviewService } from "./service-factory";
+import { getSession, getSessionSetup, saveSession } from "./session-storage";
 import type {
   InterviewMessage,
   InterviewPhase,
@@ -58,7 +54,8 @@ function buildContext(setup: InterviewSetupInput): string {
     `Tipo de entrevista: ${setup.interviewType}`,
   ];
   if (setup.stack?.trim()) parts.push(`Stack: ${setup.stack.trim()}`);
-  if (setup.extraContext?.trim()) parts.push(`Contexto: ${setup.extraContext.trim()}`);
+  if (setup.extraContext?.trim())
+    parts.push(`Contexto: ${setup.extraContext.trim()}`);
   return parts.join("\n");
 }
 
@@ -143,7 +140,9 @@ function extractMessagePayload(raw: unknown): {
 
   if (!text.trim()) return null;
 
-  const source = String(record.source ?? record.role ?? record.type ?? "").toLowerCase();
+  const source = String(
+    record.source ?? record.role ?? record.type ?? "",
+  ).toLowerCase();
   const role =
     source.includes("user") || source.includes("human")
       ? "candidate"
@@ -352,14 +351,23 @@ export function useInterviewConversation(sessionId: string) {
           const body = (await response.json().catch(() => ({}))) as {
             error?: string;
           };
-          throw new Error(body.error ?? "No se pudo conectar con ElevenLabs");
+          throw new Error(
+            response.status === 429
+              ? (body.error ??
+                  "Has alcanzado el límite de entrevistas. Espera un momento.")
+              : (body.error ?? "No se pudo conectar con ElevenLabs"),
+          );
         }
 
         const { token } = (await response.json()) as { token: string };
-        startSession({ conversationToken: token });
+        const inputDeviceId =
+          window.sessionStorage.getItem("nervio:input-device") || undefined;
+        startSession({ conversationToken: token, inputDeviceId });
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Error al iniciar la conversación",
+          err instanceof Error
+            ? err.message
+            : "Error al iniciar la conversación",
         );
         setPhase("ended");
       }
