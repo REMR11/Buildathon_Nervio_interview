@@ -75,7 +75,13 @@ El seed (`prisma/seed.ts`) crea credenciales válidas vía Better Auth:
 - Páginas: `/admin` (listado de usuarios) protegida en `src/proxy.ts` (cookie) y validada en servidor
   con `requireAdminPage()`; un usuario sin rol admin ve 404.
 - Endpoints admin: `GET /api/admin/users` y los del plugin `POST /api/auth/admin/set-role`,
-  `ban-user`, `unban-user`, `GET /api/auth/admin/list-users` (ver colección Postman, carpeta *Admin*).
+  `ban-user`, `unban-user`, `remove-user`, `GET /api/auth/admin/list-users` (ver colección Postman, carpeta *Admin*).
+
+### Gestión de usuarios
+
+- `GET /api/users/me` y `PATCH /api/users/me` (nombre, foto; validado con zod) → página `/profile`.
+- `/admin`: cambiar rol (user ⇄ admin) y bloquear/desbloquear usuarios con las APIs del plugin admin,
+  con estados de carga, error y éxito. Un admin no puede modificarse a sí mismo desde el panel.
 
 Además inserta una entrevista finalizada con preguntas, respuestas, evaluación (reporte) y una
 cita futura, para revisar historial, reporte y agenda sin grabar una entrevista completa.
