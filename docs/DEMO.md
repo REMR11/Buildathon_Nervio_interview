@@ -36,7 +36,7 @@ Las entrevistas sembradas no tienen grabación de audio. No inventamos audios, y
 | 6 | 6:00–7:00 | **Soporte** | `/support/new`: crear un ticket (probar el envío vacío para ver la validación). Como admin, `/admin/support`: cambiar estado y prioridad y responder. |
 | 7 | 7:00–8:15 | **Tiempo real (2 ventanas)** | Ventana A (normal): `demo@nervio.dev` en `/support/[ticketId]`. Ventana B (incógnito): `admin@nervio.dev` en `/admin/support/[ticketId]` del mismo ticket. Responder en B y ver el mensaje aparecer en A sin recargar (SSE); cambiar el estado en B y ver cómo se actualiza en A. |
 | 8 | 8:15–9:00 | **Estados de error y validación** | Formularios con campos inválidos, URL inexistente (página 404 real), `/interview/<uuid-falso>/report` → 404 y API sin sesión → `401` en Postman. |
-| 9 | 9:00–10:00 | **Postman** | Importar `nervio-api.postman_collection.json` + `nervio-api.postman_environment.json`; ejecutar Login → endpoints protegidos y de admin; mostrar `pnpm check:api` (42 requests, 0 faltantes; carpeta **CV** con subir/listar/ver/eliminar). |
+| 9 | 9:00–10:00 | **Postman** | Importar `nervio-api.postman_collection.json` + `nervio-api.postman_environment.json`; ejecutar Login → endpoints protegidos y de admin; mostrar `pnpm check:api` (43 requests, 0 faltantes; carpeta **CV** con subir/listar/ver/archivo/eliminar). |
 
 ## Plan B
 
