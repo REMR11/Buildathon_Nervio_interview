@@ -49,7 +49,7 @@ function hasPoorConnection(): boolean {
     connection.effectiveType === "slow-2g" ||
     connection.effectiveType === "2g" ||
     (typeof connection.downlink === "number" && connection.downlink < 0.5) ||
-    (typeof connection.rtt === "number" && connection.rtt > 1200)
+    (typeof connection.rtt === "number" && connection.rtt > 10000)
   );
 }
 
