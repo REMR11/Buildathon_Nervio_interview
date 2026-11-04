@@ -115,6 +115,7 @@ export interface PersistedInterviewSession {
   status: "active" | "ended" | "scheduled";
   startedAt: number | null;
   scheduledAt?: string | null;
+  reportReady?: boolean;
 }
 
 export interface ScheduleInterviewInput extends InterviewSetupInput {

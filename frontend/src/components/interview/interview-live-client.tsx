@@ -141,23 +141,23 @@ export function InterviewLiveClient({ sessionId }: InterviewLiveClientProps) {
   const router = useRouter();
   const [setup, setSetup] = useState<InterviewSetupInput | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [reportReady, setReportReady] = useState(false);
   const [micChecked, setMicChecked] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
     const loadSession = async () => {
-      const stored = getSessionSetup(sessionId);
-      if (stored) {
-        setSetup(stored);
-        setIsReady(true);
-        return;
-      }
-
       try {
         const persisted = await interviewService.getSession(sessionId);
         if (cancelled) return;
-        setSetup(persisted.setup);
+        if (persisted.status === "ended") {
+          setIsCompleted(true);
+          setReportReady(Boolean(persisted.reportReady));
+        } else {
+          setSetup(getSessionSetup(sessionId) ?? persisted.setup);
+        }
       } catch {
         if (!cancelled) router.replace("/interview/setup");
       } finally {
@@ -172,9 +172,43 @@ export function InterviewLiveClient({ sessionId }: InterviewLiveClientProps) {
     };
   }, [sessionId, router]);
 
-  if (!isReady || !setup) {
+  if (!isReady) {
     return <InterviewLiveLoading />;
   }
+
+  if (isCompleted) {
+    return (
+      <>
+        <AuthBackground />
+        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
+          <h1 className="text-2xl font-semibold">Entrevista completada</h1>
+          <p className="max-w-lg text-muted-foreground">
+            {reportReady
+              ? "Esta entrevista ya fue completada y evaluada. No es posible volver a iniciarla ni modificar sus respuestas."
+              : "Esta entrevista ya fue finalizada. No es posible volver a iniciarla ni modificar sus respuestas."}
+          </p>
+          {reportReady ? (
+            <button
+              className="rounded-md bg-primary px-4 py-2 text-primary-foreground"
+              onClick={() => router.replace(`/interview/${sessionId}/report`)}
+              type="button"
+            >
+              Ver reporte
+            </button>
+          ) : null}
+          <button
+            className="text-sm text-muted-foreground underline"
+            onClick={() => router.replace("/interview/setup")}
+            type="button"
+          >
+            Volver a entrevistas
+          </button>
+        </main>
+      </>
+    );
+  }
+
+  if (!setup) return <InterviewLiveLoading />;
 
   if (!micChecked) {
     return (

@@ -445,7 +445,9 @@ export function useInterviewConversation(sessionId: string) {
 
         await navigator.mediaDevices.getUserMedia({ audio: true });
 
-        const response = await fetch("/api/elevenlabs/token");
+        const response = await fetch(
+          `/api/elevenlabs/token?sessionId=${encodeURIComponent(sessionId)}`,
+        );
         if (!response.ok) {
           const body = (await response.json().catch(() => ({}))) as {
             error?: string;

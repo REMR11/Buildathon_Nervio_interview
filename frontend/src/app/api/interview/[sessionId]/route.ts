@@ -32,6 +32,7 @@ export async function GET(_request: Request, { params }: RouteContext) {
         responses: { orderBy: { createdAt: "asc" } },
         schedules: { orderBy: { scheduledAt: "asc" }, take: 1 },
         user: true,
+        evaluations: { select: { id: true } },
         cv: { select: { id: true, extractedText: true } },
       },
     });
@@ -83,6 +84,7 @@ export async function GET(_request: Request, { params }: RouteContext) {
         is_followup: question.isFollowup,
       })),
       status: mapStatus(interview.status),
+      reportReady: Boolean(interview.evaluations),
       startedAt: interview.startedAt?.getTime() ?? null,
       scheduledAt: interview.schedules[0]?.scheduledAt.toISOString() ?? null,
     };
