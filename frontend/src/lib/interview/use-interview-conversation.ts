@@ -40,17 +40,11 @@ function getNetworkConnection(): BrowserNetworkInformation | null {
 }
 
 function hasPoorConnection(): boolean {
-  if (!navigator.onLine) return true;
-
-  const connection = getNetworkConnection();
-  if (!connection) return false;
-
-  return (
-    connection.effectiveType === "slow-2g" ||
-    connection.effectiveType === "2g" ||
-    (typeof connection.downlink === "number" && connection.downlink < 0.5) ||
-    (typeof connection.rtt === "number" && connection.rtt > 1200)
-  );
+  // Solo cuenta estar offline de verdad. Los heurísticos de rtt/downlink/
+  // effectiveType de la Network Information API daban falsos positivos durante
+  // la llamada y colgaban la entrevista sola a los pocos segundos.
+  // shortcut: sin pre-aviso de red lenta; reactivar con un heurístico estable si hace falta.
+  return !navigator.onLine;
 }
 
 function buildContext(setup: InterviewSetupInput): string {
