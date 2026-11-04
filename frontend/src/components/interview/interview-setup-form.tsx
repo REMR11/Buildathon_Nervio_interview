@@ -356,7 +356,7 @@ export function InterviewSetupForm({
           <Field>
             <FieldLabel>CV (opcional)</FieldLabel>
             <p className="text-xs text-muted-foreground">
-              Nova usará tu experiencia real para personalizar las preguntas.
+              Nervio usará tu experiencia real para personalizar las preguntas.
             </p>
             <CvUploadField
               value={cv}
