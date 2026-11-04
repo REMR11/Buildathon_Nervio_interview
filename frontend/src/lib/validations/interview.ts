@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CV_MAX_TEXT_CHARS } from "@/lib/cv/constants";
 import {
   REMINDER_OFFSET_MAX_MINUTES,
   REMINDER_OFFSET_MIN,
@@ -20,6 +21,11 @@ export const interviewSetupSchema = z.object({
     .string()
     .min(10, "Describe el perfil con al menos 10 caracteres"),
   stack: z.string().optional(),
+  cvId: z.string().uuid("CV inválido").nullish(),
+  cvText: z
+    .string()
+    .max(CV_MAX_TEXT_CHARS, "El texto del CV no puede superar 8000 caracteres")
+    .optional(),
 });
 
 export const scheduleInterviewSchema = interviewSetupSchema

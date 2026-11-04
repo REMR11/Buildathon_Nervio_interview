@@ -124,6 +124,30 @@ servidor consulta la BD cada 2–3 s, cierra el stream a los ~50 s (`maxDuration
 `EventSource` se reconecta enviando `Last-Event-ID` para no perder respuestas.
 No necesita variables de entorno nuevas.
 
+### Subida de CV (RF-CV-01 / RF-CV-02)
+
+En `/interview/setup` el candidato puede adjuntar su CV (opcional) para que Nova
+personalice las preguntas:
+
+- **Formatos:** PDF o DOCX, máx. **5 MB** y **10 páginas**. El tipo se valida por
+  *magic bytes* (`%PDF-` / ZIP con `word/`), no solo por la extensión → `415` si no coincide.
+- **Extracción:** `unpdf` (PDF) y `mammoth` (DOCX); el texto se limpia y se recorta a
+  **8000 caracteres**. Un PDF escaneado o sin texto devuelve `422` con un mensaje claro.
+- **Vista previa editable:** el candidato corrige el texto antes de iniciar; se envía como
+  `cvText` y se agrega al contexto de Nova (`buildContext()`) y al `extra_context` de n8n.
+  Puede reutilizar su **último CV** con un clic. La tarjeta muestra una **miniatura de la
+  primera página** (pdfjs-dist en el navegador; worker copiado a `public/` en `postinstall`);
+  los DOCX muestran un ícono con el nombre.
+- **Almacenamiento:** el archivo va al bucket **privado** `cvs` de Supabase Storage
+  (`<userId>/<cvId>.pdf|docx`), que se crea solo con la service role. Si falta
+  `SUPABASE_SERVICE_ROLE_KEY`, el texto se extrae y se guarda igual (sin archivo) y la UI
+  avisa que el original no se guardó.
+- **API:** `POST /api/cv` (multipart, campo `file`), `GET /api/cv` (últimos 5),
+  `GET|DELETE /api/cv/[cvId]` y `GET /api/cv/[cvId]/file` (archivo original inline, para la miniatura y abrirlo en otra pestaña). Solo el dueño: un CV ajeno devuelve `404`. Límite de
+  5 subidas/min y 20/día por usuario (`429`).
+- **BD:** tabla `candidate_cvs` + columna nullable `interview_sessions.cv_id`
+  (migración aditiva `20261102040000_candidate_cvs`).
+
 ## 5. Ejecución en local
 
 ```bash
@@ -132,6 +156,16 @@ pnpm dev     # http://localhost:3000
 
 Recorrido del MVP: **Registro → Login → Configurar entrevista → Entrevista en vivo →
 Reporte → Historial → Agendar**.
+
+### Duración máxima de la entrevista
+
+Cada entrevista en vivo dura como máximo **20 minutos** (`INTERVIEW_MAX_SECONDS` en
+`src/lib/interview/constants.ts`, igual a `max_duration_seconds` del agente en ElevenLabs).
+La pantalla muestra el tiempo restante; a los 2 minutos aparece un aviso y la app le
+envía a Nova un mensaje de contexto para que lo anuncie en voz alta y cierre; a los 30 s
+le pide despedirse y la app cuelga sola tras la despedida (o a los 10 s restantes), así
+ElevenLabs nunca corta de golpe. La pantalla final indica *"Se alcanzó el tiempo máximo
+de la entrevista"*. Si el agente cierra la llamada no se trata como mala conexión.
 
 ## 6. Pruebas manuales de la API
 

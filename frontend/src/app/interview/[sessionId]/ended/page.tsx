@@ -26,6 +26,7 @@ export default async function InterviewEndedPage({
   const { sessionId } = await params;
   const { reason } = await searchParams;
   const endedByPoorConnection = reason === "poor-connection";
+  const endedByTimeLimit = reason === "time-limit";
   const session = await requireAuth(`/interview/${sessionId}/ended`);
   const interview = await prisma.interviewSession.findFirst({
     where: { id: sessionId, userId: session.user.id },
@@ -50,7 +51,9 @@ export default async function InterviewEndedPage({
             <p className="text-sm text-muted-foreground">
               {endedByPoorConnection
                 ? "Conexión insuficiente"
-                : "Llamada finalizada"}
+                : endedByTimeLimit
+                  ? "Se alcanzó el tiempo máximo de la entrevista"
+                  : "Llamada finalizada"}
             </p>
             <h1 className="mt-2 font-[family-name:var(--font-heading)] text-3xl font-bold gradient-text">
               {endedByPoorConnection
@@ -61,6 +64,10 @@ export default async function InterviewEndedPage({
               {endedByPoorConnection
                 ? "La entrevista terminó porque la calidad de conexión/audio no fue suficiente para evaluar al candidato con justicia."
                 : `${
+                    endedByTimeLimit
+                      ? "La entrevista llegó a su duración máxima (20 minutos) y Nova la cerró. "
+                      : ""
+                  }${
                     interview?.role
                       ? `La llamada para ${interview.role} terminó correctamente.`
                       : "La llamada terminó correctamente."
