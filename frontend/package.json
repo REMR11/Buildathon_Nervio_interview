@@ -12,7 +12,12 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:reset": "prisma migrate reset --force",
     "postinstall": "prisma generate && node scripts/copy-pdf-worker.mjs",
-    "check:api": "node scripts/check-api-collection.mjs"
+    "check:api": "node scripts/check-api-collection.mjs",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -49,9 +54,11 @@
     "@types/pg": "^8.20.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@vitest/coverage-v8": "^5.1.0",
     "babel-plugin-react-compiler": "1.0.0",
     "tailwindcss": "^4",
     "tsx": "^4.20.6",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.1.0"
   }
 }

@@ -480,7 +480,7 @@ export function useInterviewConversation(sessionId: string) {
       expectedDisconnectRef.current = true;
       endSession();
     };
-  }, [setup, startSession, endSession, closeForPoorConnection]);
+  }, [setup, startSession, endSession, closeForPoorConnection, sessionId]);
 
   const toggleMute = useCallback(() => {
     setMuted(!isMuted);

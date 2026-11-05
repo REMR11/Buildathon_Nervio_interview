@@ -4,7 +4,9 @@ frontend/*.tsbuildinfo
 
 frontend/env
 frontend/.env
+frontend/.env.test
 frontend/.next
+frontend/coverage
 # Backups de variables de entorno
 *.env*.bak
 .env*.bak

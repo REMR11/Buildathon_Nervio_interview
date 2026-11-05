@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+jobs:
+  quality:
+    name: lint, typecheck y pruebas
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: nervio
+          POSTGRES_PASSWORD: nervio
+          POSTGRES_DB: nervio_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      NODE_ENV: test
+      POSTGRES_URL: postgresql://nervio:nervio@localhost:5432/nervio_test
+      DATABASE_URL: postgresql://nervio:nervio@localhost:5432/nervio_test
+      DIRECT_URL: postgresql://nervio:nervio@localhost:5432/nervio_test
+      BETTER_AUTH_SECRET: test-secret-at-least-32-characters-long
+      BETTER_AUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_BETTER_AUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      CRON_SECRET: test-cron-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+      - name: Lint (Biome)
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+      - name: Migraciones Prisma
+        run: pnpm db:migrate
+      - name: Pruebas con cobertura
+        run: pnpm test:coverage
