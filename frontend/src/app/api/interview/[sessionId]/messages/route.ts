@@ -46,7 +46,10 @@ export async function POST(request: Request, { params }: RouteContext) {
     }
 
     if (interview.status === "ended") {
-      return NextResponse.json({ isComplete: true, phase: "ended" });
+      return NextResponse.json(
+        { error: "La entrevista ya fue completada y no puede modificarse" },
+        { status: 409 },
+      );
     }
 
     const parsed = messageSchema.safeParse(await request.json());

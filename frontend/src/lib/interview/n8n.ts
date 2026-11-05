@@ -25,7 +25,12 @@ export interface N8nGenerateInterviewResponse {
 }
 
 export function buildExtraContext(form: InterviewSetupInput): string {
-  return [`Candidato: ${form.candidateName}`, form.extraContext]
+  const cv = form.cvText?.trim();
+  return [
+    `Candidato: ${form.candidateName}`,
+    form.extraContext,
+    cv ? `CV del candidato:\n${cv}` : "",
+  ]
     .filter(Boolean)
     .join("\n\n");
 }

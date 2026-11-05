@@ -19,7 +19,9 @@ export const auth = betterAuth({
     },
   },
   rateLimit: {
-    enabled: true,
+    // En pruebas se crean muchas cuentas/sesiones; el límite en memoria
+    // bloquearía el suite. En producción sigue activo.
+    enabled: process.env.NODE_ENV !== "test",
     window: 60,
     max: 100,
     customRules: {

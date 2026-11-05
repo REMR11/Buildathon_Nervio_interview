@@ -22,6 +22,7 @@ export async function syncN8nSessionToPrisma(
       level: setup.level,
       stack: setup.stack ?? null,
       extraContext: setup.extraContext,
+      cvId: setup.cvId ?? null,
       stressMode: setup.interviewType === "agresivo",
       status: "in_progress",
       startedAt: new Date(),

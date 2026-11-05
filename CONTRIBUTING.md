@@ -22,8 +22,9 @@ feature/*  ──PR──▶  develop  ──PR──▶  main  ──▶  Verce
 2. Haz commits pequeños con mensajes descriptivos (`feat:`, `fix:`, `docs:`, `chore:`).
 3. Antes de abrir el PR, corre en `frontend/`:
    ```bash
-   pnpm lint && npx tsc --noEmit && pnpm build && pnpm check:api
+   pnpm lint && npx tsc --noEmit && pnpm test && pnpm build && pnpm check:api
    ```
+   Las pruebas unitarias e de integración se documentan en [`docs/TESTING.md`](docs/TESTING.md). El workflow de GitHub Actions (`.github/workflows/ci.yml`) ejecuta lint, typecheck y el suite contra PostgreSQL en PRs hacia `develop` y `main`.
 4. Abre un **Pull Request `feature/*` → `develop`**. Se fusiona con merge commit (`--no-ff`) para conservar el historial de la feature.
 5. Cuando `develop` esté estable, abre un **PR `develop` → `main`** (también `--no-ff`). Vercel despliega `main` automáticamente.
 

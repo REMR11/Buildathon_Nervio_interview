@@ -10,7 +10,10 @@ export type RoleCheck =
   | { ok: true; session: Session }
   | { ok: false; response: NextResponse };
 
-function hasRole(userRole: string | null | undefined, allowed: AppRole[]) {
+export function hasRole(
+  userRole: string | null | undefined,
+  allowed: AppRole[],
+) {
   // Better Auth guarda varios roles separados por coma ("user,admin").
   const roles = (userRole ?? "user").split(",").map((r) => r.trim());
   // admin hereda todos los permisos.
