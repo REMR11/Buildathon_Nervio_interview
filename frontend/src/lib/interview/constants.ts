@@ -97,3 +97,35 @@ export const TIME_LIMIT_WARNING_UPDATE =
   "Aviso del sistema: quedan 2 minutos de entrevista. En tu próximo turno dilo en voz alta, por ejemplo: «Tenemos unos 2 minutos antes de terminar». Después no abras temas nuevos y prepara el cierre.";
 export const TIME_LIMIT_FAREWELL_UPDATE =
   "Aviso del sistema: quedan 30 segundos. En tu próximo turno agradece al candidato y despídete con cortesía en una o dos frases. No hagas más preguntas.";
+
+export type InterviewTimePhase =
+  | "running"
+  | "warning"
+  | "farewell"
+  | "graceful_end"
+  | "expired";
+
+/** Segundos restantes según el instante de conexión y el tope de 20 minutos. */
+export function remainingInterviewSeconds(
+  startedAtMs: number,
+  nowMs = Date.now(),
+  maxSeconds = INTERVIEW_MAX_SECONDS,
+): number {
+  const elapsed = Math.floor((nowMs - startedAtMs) / 1000);
+  return Math.max(0, maxSeconds - elapsed);
+}
+
+/**
+ * Fase del cierre suave. Los umbrales coinciden con el temporizador del
+ * cliente (`use-interview-conversation`): aviso a 2 min, despedida a 30 s,
+ * colgado a 10 s.
+ */
+export function getInterviewTimePhase(
+  remainingSeconds: number,
+): InterviewTimePhase {
+  if (remainingSeconds <= 0) return "expired";
+  if (remainingSeconds <= INTERVIEW_GRACEFUL_END_SECONDS) return "graceful_end";
+  if (remainingSeconds <= INTERVIEW_FAREWELL_SECONDS) return "farewell";
+  if (remainingSeconds <= INTERVIEW_WARNING_SECONDS) return "warning";
+  return "running";
+}
