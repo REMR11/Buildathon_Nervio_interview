@@ -14,7 +14,8 @@
       "!dist",
       "!build",
       "!src/generated",
-      "!public/pdf.worker.min.mjs"
+      "!public/pdf.worker.min.mjs",
+      "!coverage"
     ]
   },
   "formatter": {

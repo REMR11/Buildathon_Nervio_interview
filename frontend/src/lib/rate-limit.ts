@@ -78,3 +78,9 @@ export function checkCvUploadRateLimit(userId: string): RateLimitResult {
   bucket.day.push(now);
   return { ok: true };
 }
+
+/** Vacía los cubos en memoria. Solo para aislar pruebas unitarias. */
+export function resetRateLimitBucketsForTests() {
+  buckets.clear();
+  cvBuckets.clear();
+}

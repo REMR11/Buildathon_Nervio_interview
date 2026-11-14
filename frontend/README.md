@@ -190,6 +190,12 @@ ejecuta los endpoints de entrevista y agenda. Detalle en el documento de la Fase
 | `pnpm db:migrate` | Aplica migraciones |
 | `pnpm db:seed` | Siembra datos de prueba |
 | `pnpm db:reset` | Reinicia la base y re-migra |
+| `pnpm test` | Vitest: unitarias + integración |
+| `pnpm test:unit` | Solo pruebas unitarias |
+| `pnpm test:integration` | Route Handlers contra PostgreSQL de prueba |
+| `pnpm test:coverage` | Suite + reporte de cobertura (V8) |
+
+El plan de pruebas, mocks y cómo levantar Postgres está en [`docs/TESTING.md`](../docs/TESTING.md).
 
 ## 8. Despliegue (Vercel)
 

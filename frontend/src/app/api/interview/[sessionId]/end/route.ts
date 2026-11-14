@@ -52,7 +52,8 @@ export async function POST(request: Request, { params }: RouteContext) {
     if (interview.status === "ended") {
       return NextResponse.json(
         {
-          error: "La entrevista ya fue completada y no puede volver a finalizarse",
+          error:
+            "La entrevista ya fue completada y no puede volver a finalizarse",
           status: "ended",
           reportReady: Boolean(interview.evaluations),
         },
