@@ -38,6 +38,7 @@ export type InterviewSessionMinAggregateOutputType = {
   endedAt: Date | null
   createdAt: Date | null
   elevenlabsConversationId: string | null
+  cvId: string | null
 }
 
 export type InterviewSessionMaxAggregateOutputType = {
@@ -54,6 +55,7 @@ export type InterviewSessionMaxAggregateOutputType = {
   endedAt: Date | null
   createdAt: Date | null
   elevenlabsConversationId: string | null
+  cvId: string | null
 }
 
 export type InterviewSessionCountAggregateOutputType = {
@@ -70,6 +72,7 @@ export type InterviewSessionCountAggregateOutputType = {
   endedAt: number
   createdAt: number
   elevenlabsConversationId: number
+  cvId: number
   _all: number
 }
 
@@ -88,6 +91,7 @@ export type InterviewSessionMinAggregateInputType = {
   endedAt?: true
   createdAt?: true
   elevenlabsConversationId?: true
+  cvId?: true
 }
 
 export type InterviewSessionMaxAggregateInputType = {
@@ -104,6 +108,7 @@ export type InterviewSessionMaxAggregateInputType = {
   endedAt?: true
   createdAt?: true
   elevenlabsConversationId?: true
+  cvId?: true
 }
 
 export type InterviewSessionCountAggregateInputType = {
@@ -120,6 +125,7 @@ export type InterviewSessionCountAggregateInputType = {
   endedAt?: true
   createdAt?: true
   elevenlabsConversationId?: true
+  cvId?: true
   _all?: true
 }
 
@@ -209,6 +215,7 @@ export type InterviewSessionGroupByOutputType = {
   endedAt: Date | null
   createdAt: Date
   elevenlabsConversationId: string | null
+  cvId: string | null
   _count: InterviewSessionCountAggregateOutputType | null
   _min: InterviewSessionMinAggregateOutputType | null
   _max: InterviewSessionMaxAggregateOutputType | null
@@ -246,6 +253,8 @@ export type InterviewSessionWhereInput = {
   endedAt?: Prisma.DateTimeNullableFilter<"InterviewSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"InterviewSession"> | Date | string
   elevenlabsConversationId?: Prisma.StringNullableFilter<"InterviewSession"> | string | null
+  cvId?: Prisma.UuidNullableFilter<"InterviewSession"> | string | null
+  cv?: Prisma.XOR<Prisma.CandidateCvNullableScalarRelationFilter, Prisma.CandidateCvWhereInput> | null
   transcriptTurns?: Prisma.Transcript_turnsListRelationFilter
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   evaluations?: Prisma.XOR<Prisma.EvaluationsNullableScalarRelationFilter, Prisma.evaluationsWhereInput> | null
@@ -271,6 +280,8 @@ export type InterviewSessionOrderByWithRelationInput = {
   endedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   elevenlabsConversationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cvId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cv?: Prisma.CandidateCvOrderByWithRelationInput
   transcriptTurns?: Prisma.transcript_turnsOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
   evaluations?: Prisma.evaluationsOrderByWithRelationInput
@@ -299,6 +310,8 @@ export type InterviewSessionWhereUniqueInput = Prisma.AtLeast<{
   endedAt?: Prisma.DateTimeNullableFilter<"InterviewSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"InterviewSession"> | Date | string
   elevenlabsConversationId?: Prisma.StringNullableFilter<"InterviewSession"> | string | null
+  cvId?: Prisma.UuidNullableFilter<"InterviewSession"> | string | null
+  cv?: Prisma.XOR<Prisma.CandidateCvNullableScalarRelationFilter, Prisma.CandidateCvWhereInput> | null
   transcriptTurns?: Prisma.Transcript_turnsListRelationFilter
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   evaluations?: Prisma.XOR<Prisma.EvaluationsNullableScalarRelationFilter, Prisma.evaluationsWhereInput> | null
@@ -324,6 +337,7 @@ export type InterviewSessionOrderByWithAggregationInput = {
   endedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   elevenlabsConversationId?: Prisma.SortOrderInput | Prisma.SortOrder
+  cvId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.InterviewSessionCountOrderByAggregateInput
   _max?: Prisma.InterviewSessionMaxOrderByAggregateInput
   _min?: Prisma.InterviewSessionMinOrderByAggregateInput
@@ -346,6 +360,7 @@ export type InterviewSessionScalarWhereWithAggregatesInput = {
   endedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"InterviewSession"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"InterviewSession"> | Date | string
   elevenlabsConversationId?: Prisma.StringNullableWithAggregatesFilter<"InterviewSession"> | string | null
+  cvId?: Prisma.UuidNullableWithAggregatesFilter<"InterviewSession"> | string | null
 }
 
 export type InterviewSessionCreateInput = {
@@ -361,6 +376,7 @@ export type InterviewSessionCreateInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cv?: Prisma.CandidateCvCreateNestedOneWithoutInterviewSessionsInput
   transcriptTurns?: Prisma.transcript_turnsCreateNestedManyWithoutInterviewSessionInput
   user?: Prisma.UserCreateNestedOneWithoutInterviewSessionsInput
   evaluations?: Prisma.evaluationsCreateNestedOneWithoutInterviewSessionInput
@@ -386,6 +402,7 @@ export type InterviewSessionUncheckedCreateInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedCreateNestedManyWithoutInterviewSessionInput
   evaluations?: Prisma.evaluationsUncheckedCreateNestedOneWithoutInterviewSessionInput
   questions?: Prisma.questionsUncheckedCreateNestedManyWithoutInterviewSessionInput
@@ -409,6 +426,7 @@ export type InterviewSessionUpdateInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cv?: Prisma.CandidateCvUpdateOneWithoutInterviewSessionsNestedInput
   transcriptTurns?: Prisma.transcript_turnsUpdateManyWithoutInterviewSessionNestedInput
   user?: Prisma.UserUpdateOneWithoutInterviewSessionsNestedInput
   evaluations?: Prisma.evaluationsUpdateOneWithoutInterviewSessionNestedInput
@@ -434,6 +452,7 @@ export type InterviewSessionUncheckedUpdateInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   evaluations?: Prisma.evaluationsUncheckedUpdateOneWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUncheckedUpdateManyWithoutInterviewSessionNestedInput
@@ -458,6 +477,7 @@ export type InterviewSessionCreateManyInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
 }
 
 export type InterviewSessionUpdateManyMutationInput = {
@@ -489,6 +509,7 @@ export type InterviewSessionUncheckedUpdateManyInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type InterviewSessionListRelationFilter = {
@@ -515,6 +536,7 @@ export type InterviewSessionCountOrderByAggregateInput = {
   endedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   elevenlabsConversationId?: Prisma.SortOrder
+  cvId?: Prisma.SortOrder
 }
 
 export type InterviewSessionMaxOrderByAggregateInput = {
@@ -531,6 +553,7 @@ export type InterviewSessionMaxOrderByAggregateInput = {
   endedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   elevenlabsConversationId?: Prisma.SortOrder
+  cvId?: Prisma.SortOrder
 }
 
 export type InterviewSessionMinOrderByAggregateInput = {
@@ -547,6 +570,7 @@ export type InterviewSessionMinOrderByAggregateInput = {
   endedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   elevenlabsConversationId?: Prisma.SortOrder
+  cvId?: Prisma.SortOrder
 }
 
 export type InterviewSessionScalarRelationFilter = {
@@ -598,6 +622,48 @@ export type InterviewSessionUncheckedUpdateManyWithoutUserNestedInput = {
   connect?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
   update?: Prisma.InterviewSessionUpdateWithWhereUniqueWithoutUserInput | Prisma.InterviewSessionUpdateWithWhereUniqueWithoutUserInput[]
   updateMany?: Prisma.InterviewSessionUpdateManyWithWhereWithoutUserInput | Prisma.InterviewSessionUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.InterviewSessionScalarWhereInput | Prisma.InterviewSessionScalarWhereInput[]
+}
+
+export type InterviewSessionCreateNestedManyWithoutCvInput = {
+  create?: Prisma.XOR<Prisma.InterviewSessionCreateWithoutCvInput, Prisma.InterviewSessionUncheckedCreateWithoutCvInput> | Prisma.InterviewSessionCreateWithoutCvInput[] | Prisma.InterviewSessionUncheckedCreateWithoutCvInput[]
+  connectOrCreate?: Prisma.InterviewSessionCreateOrConnectWithoutCvInput | Prisma.InterviewSessionCreateOrConnectWithoutCvInput[]
+  createMany?: Prisma.InterviewSessionCreateManyCvInputEnvelope
+  connect?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
+}
+
+export type InterviewSessionUncheckedCreateNestedManyWithoutCvInput = {
+  create?: Prisma.XOR<Prisma.InterviewSessionCreateWithoutCvInput, Prisma.InterviewSessionUncheckedCreateWithoutCvInput> | Prisma.InterviewSessionCreateWithoutCvInput[] | Prisma.InterviewSessionUncheckedCreateWithoutCvInput[]
+  connectOrCreate?: Prisma.InterviewSessionCreateOrConnectWithoutCvInput | Prisma.InterviewSessionCreateOrConnectWithoutCvInput[]
+  createMany?: Prisma.InterviewSessionCreateManyCvInputEnvelope
+  connect?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
+}
+
+export type InterviewSessionUpdateManyWithoutCvNestedInput = {
+  create?: Prisma.XOR<Prisma.InterviewSessionCreateWithoutCvInput, Prisma.InterviewSessionUncheckedCreateWithoutCvInput> | Prisma.InterviewSessionCreateWithoutCvInput[] | Prisma.InterviewSessionUncheckedCreateWithoutCvInput[]
+  connectOrCreate?: Prisma.InterviewSessionCreateOrConnectWithoutCvInput | Prisma.InterviewSessionCreateOrConnectWithoutCvInput[]
+  upsert?: Prisma.InterviewSessionUpsertWithWhereUniqueWithoutCvInput | Prisma.InterviewSessionUpsertWithWhereUniqueWithoutCvInput[]
+  createMany?: Prisma.InterviewSessionCreateManyCvInputEnvelope
+  set?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
+  disconnect?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
+  delete?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
+  connect?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
+  update?: Prisma.InterviewSessionUpdateWithWhereUniqueWithoutCvInput | Prisma.InterviewSessionUpdateWithWhereUniqueWithoutCvInput[]
+  updateMany?: Prisma.InterviewSessionUpdateManyWithWhereWithoutCvInput | Prisma.InterviewSessionUpdateManyWithWhereWithoutCvInput[]
+  deleteMany?: Prisma.InterviewSessionScalarWhereInput | Prisma.InterviewSessionScalarWhereInput[]
+}
+
+export type InterviewSessionUncheckedUpdateManyWithoutCvNestedInput = {
+  create?: Prisma.XOR<Prisma.InterviewSessionCreateWithoutCvInput, Prisma.InterviewSessionUncheckedCreateWithoutCvInput> | Prisma.InterviewSessionCreateWithoutCvInput[] | Prisma.InterviewSessionUncheckedCreateWithoutCvInput[]
+  connectOrCreate?: Prisma.InterviewSessionCreateOrConnectWithoutCvInput | Prisma.InterviewSessionCreateOrConnectWithoutCvInput[]
+  upsert?: Prisma.InterviewSessionUpsertWithWhereUniqueWithoutCvInput | Prisma.InterviewSessionUpsertWithWhereUniqueWithoutCvInput[]
+  createMany?: Prisma.InterviewSessionCreateManyCvInputEnvelope
+  set?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
+  disconnect?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
+  delete?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
+  connect?: Prisma.InterviewSessionWhereUniqueInput | Prisma.InterviewSessionWhereUniqueInput[]
+  update?: Prisma.InterviewSessionUpdateWithWhereUniqueWithoutCvInput | Prisma.InterviewSessionUpdateWithWhereUniqueWithoutCvInput[]
+  updateMany?: Prisma.InterviewSessionUpdateManyWithWhereWithoutCvInput | Prisma.InterviewSessionUpdateManyWithWhereWithoutCvInput[]
   deleteMany?: Prisma.InterviewSessionScalarWhereInput | Prisma.InterviewSessionScalarWhereInput[]
 }
 
@@ -730,6 +796,7 @@ export type InterviewSessionCreateWithoutUserInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cv?: Prisma.CandidateCvCreateNestedOneWithoutInterviewSessionsInput
   transcriptTurns?: Prisma.transcript_turnsCreateNestedManyWithoutInterviewSessionInput
   evaluations?: Prisma.evaluationsCreateNestedOneWithoutInterviewSessionInput
   questions?: Prisma.questionsCreateNestedManyWithoutInterviewSessionInput
@@ -753,6 +820,7 @@ export type InterviewSessionUncheckedCreateWithoutUserInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedCreateNestedManyWithoutInterviewSessionInput
   evaluations?: Prisma.evaluationsUncheckedCreateNestedOneWithoutInterviewSessionInput
   questions?: Prisma.questionsUncheckedCreateNestedManyWithoutInterviewSessionInput
@@ -806,6 +874,81 @@ export type InterviewSessionScalarWhereInput = {
   endedAt?: Prisma.DateTimeNullableFilter<"InterviewSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"InterviewSession"> | Date | string
   elevenlabsConversationId?: Prisma.StringNullableFilter<"InterviewSession"> | string | null
+  cvId?: Prisma.UuidNullableFilter<"InterviewSession"> | string | null
+}
+
+export type InterviewSessionCreateWithoutCvInput = {
+  id?: string
+  interviewType: string
+  role: string
+  level: string
+  stack?: string | null
+  extraContext?: string | null
+  stressMode?: boolean
+  status?: string
+  startedAt?: Date | string | null
+  endedAt?: Date | string | null
+  createdAt?: Date | string
+  elevenlabsConversationId?: string | null
+  transcriptTurns?: Prisma.transcript_turnsCreateNestedManyWithoutInterviewSessionInput
+  user?: Prisma.UserCreateNestedOneWithoutInterviewSessionsInput
+  evaluations?: Prisma.evaluationsCreateNestedOneWithoutInterviewSessionInput
+  questions?: Prisma.questionsCreateNestedManyWithoutInterviewSessionInput
+  recordings?: Prisma.recordingsCreateNestedManyWithoutInterviewSessionInput
+  reportShares?: Prisma.report_sharesCreateNestedManyWithoutInterviewSessionInput
+  responses?: Prisma.responsesCreateNestedManyWithoutInterviewSessionInput
+  schedules?: Prisma.schedulesCreateNestedManyWithoutInterviewSessionInput
+  webhook_logs?: Prisma.webhook_logsCreateNestedManyWithoutInterviewSessionInput
+}
+
+export type InterviewSessionUncheckedCreateWithoutCvInput = {
+  id?: string
+  userId?: string | null
+  interviewType: string
+  role: string
+  level: string
+  stack?: string | null
+  extraContext?: string | null
+  stressMode?: boolean
+  status?: string
+  startedAt?: Date | string | null
+  endedAt?: Date | string | null
+  createdAt?: Date | string
+  elevenlabsConversationId?: string | null
+  transcriptTurns?: Prisma.transcript_turnsUncheckedCreateNestedManyWithoutInterviewSessionInput
+  evaluations?: Prisma.evaluationsUncheckedCreateNestedOneWithoutInterviewSessionInput
+  questions?: Prisma.questionsUncheckedCreateNestedManyWithoutInterviewSessionInput
+  recordings?: Prisma.recordingsUncheckedCreateNestedManyWithoutInterviewSessionInput
+  reportShares?: Prisma.report_sharesUncheckedCreateNestedManyWithoutInterviewSessionInput
+  responses?: Prisma.responsesUncheckedCreateNestedManyWithoutInterviewSessionInput
+  schedules?: Prisma.schedulesUncheckedCreateNestedManyWithoutInterviewSessionInput
+  webhook_logs?: Prisma.webhook_logsUncheckedCreateNestedManyWithoutInterviewSessionInput
+}
+
+export type InterviewSessionCreateOrConnectWithoutCvInput = {
+  where: Prisma.InterviewSessionWhereUniqueInput
+  create: Prisma.XOR<Prisma.InterviewSessionCreateWithoutCvInput, Prisma.InterviewSessionUncheckedCreateWithoutCvInput>
+}
+
+export type InterviewSessionCreateManyCvInputEnvelope = {
+  data: Prisma.InterviewSessionCreateManyCvInput | Prisma.InterviewSessionCreateManyCvInput[]
+  skipDuplicates?: boolean
+}
+
+export type InterviewSessionUpsertWithWhereUniqueWithoutCvInput = {
+  where: Prisma.InterviewSessionWhereUniqueInput
+  update: Prisma.XOR<Prisma.InterviewSessionUpdateWithoutCvInput, Prisma.InterviewSessionUncheckedUpdateWithoutCvInput>
+  create: Prisma.XOR<Prisma.InterviewSessionCreateWithoutCvInput, Prisma.InterviewSessionUncheckedCreateWithoutCvInput>
+}
+
+export type InterviewSessionUpdateWithWhereUniqueWithoutCvInput = {
+  where: Prisma.InterviewSessionWhereUniqueInput
+  data: Prisma.XOR<Prisma.InterviewSessionUpdateWithoutCvInput, Prisma.InterviewSessionUncheckedUpdateWithoutCvInput>
+}
+
+export type InterviewSessionUpdateManyWithWhereWithoutCvInput = {
+  where: Prisma.InterviewSessionScalarWhereInput
+  data: Prisma.XOR<Prisma.InterviewSessionUpdateManyMutationInput, Prisma.InterviewSessionUncheckedUpdateManyWithoutCvInput>
 }
 
 export type InterviewSessionCreateWithoutEvaluationsInput = {
@@ -821,6 +964,7 @@ export type InterviewSessionCreateWithoutEvaluationsInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cv?: Prisma.CandidateCvCreateNestedOneWithoutInterviewSessionsInput
   transcriptTurns?: Prisma.transcript_turnsCreateNestedManyWithoutInterviewSessionInput
   user?: Prisma.UserCreateNestedOneWithoutInterviewSessionsInput
   questions?: Prisma.questionsCreateNestedManyWithoutInterviewSessionInput
@@ -845,6 +989,7 @@ export type InterviewSessionUncheckedCreateWithoutEvaluationsInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedCreateNestedManyWithoutInterviewSessionInput
   questions?: Prisma.questionsUncheckedCreateNestedManyWithoutInterviewSessionInput
   recordings?: Prisma.recordingsUncheckedCreateNestedManyWithoutInterviewSessionInput
@@ -883,6 +1028,7 @@ export type InterviewSessionUpdateWithoutEvaluationsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cv?: Prisma.CandidateCvUpdateOneWithoutInterviewSessionsNestedInput
   transcriptTurns?: Prisma.transcript_turnsUpdateManyWithoutInterviewSessionNestedInput
   user?: Prisma.UserUpdateOneWithoutInterviewSessionsNestedInput
   questions?: Prisma.questionsUpdateManyWithoutInterviewSessionNestedInput
@@ -907,6 +1053,7 @@ export type InterviewSessionUncheckedUpdateWithoutEvaluationsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   recordings?: Prisma.recordingsUncheckedUpdateManyWithoutInterviewSessionNestedInput
@@ -929,6 +1076,7 @@ export type InterviewSessionCreateWithoutQuestionsInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cv?: Prisma.CandidateCvCreateNestedOneWithoutInterviewSessionsInput
   transcriptTurns?: Prisma.transcript_turnsCreateNestedManyWithoutInterviewSessionInput
   user?: Prisma.UserCreateNestedOneWithoutInterviewSessionsInput
   evaluations?: Prisma.evaluationsCreateNestedOneWithoutInterviewSessionInput
@@ -953,6 +1101,7 @@ export type InterviewSessionUncheckedCreateWithoutQuestionsInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedCreateNestedManyWithoutInterviewSessionInput
   evaluations?: Prisma.evaluationsUncheckedCreateNestedOneWithoutInterviewSessionInput
   recordings?: Prisma.recordingsUncheckedCreateNestedManyWithoutInterviewSessionInput
@@ -991,6 +1140,7 @@ export type InterviewSessionUpdateWithoutQuestionsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cv?: Prisma.CandidateCvUpdateOneWithoutInterviewSessionsNestedInput
   transcriptTurns?: Prisma.transcript_turnsUpdateManyWithoutInterviewSessionNestedInput
   user?: Prisma.UserUpdateOneWithoutInterviewSessionsNestedInput
   evaluations?: Prisma.evaluationsUpdateOneWithoutInterviewSessionNestedInput
@@ -1015,6 +1165,7 @@ export type InterviewSessionUncheckedUpdateWithoutQuestionsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   evaluations?: Prisma.evaluationsUncheckedUpdateOneWithoutInterviewSessionNestedInput
   recordings?: Prisma.recordingsUncheckedUpdateManyWithoutInterviewSessionNestedInput
@@ -1037,6 +1188,7 @@ export type InterviewSessionCreateWithoutRecordingsInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cv?: Prisma.CandidateCvCreateNestedOneWithoutInterviewSessionsInput
   transcriptTurns?: Prisma.transcript_turnsCreateNestedManyWithoutInterviewSessionInput
   user?: Prisma.UserCreateNestedOneWithoutInterviewSessionsInput
   evaluations?: Prisma.evaluationsCreateNestedOneWithoutInterviewSessionInput
@@ -1061,6 +1213,7 @@ export type InterviewSessionUncheckedCreateWithoutRecordingsInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedCreateNestedManyWithoutInterviewSessionInput
   evaluations?: Prisma.evaluationsUncheckedCreateNestedOneWithoutInterviewSessionInput
   questions?: Prisma.questionsUncheckedCreateNestedManyWithoutInterviewSessionInput
@@ -1099,6 +1252,7 @@ export type InterviewSessionUpdateWithoutRecordingsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cv?: Prisma.CandidateCvUpdateOneWithoutInterviewSessionsNestedInput
   transcriptTurns?: Prisma.transcript_turnsUpdateManyWithoutInterviewSessionNestedInput
   user?: Prisma.UserUpdateOneWithoutInterviewSessionsNestedInput
   evaluations?: Prisma.evaluationsUpdateOneWithoutInterviewSessionNestedInput
@@ -1123,6 +1277,7 @@ export type InterviewSessionUncheckedUpdateWithoutRecordingsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   evaluations?: Prisma.evaluationsUncheckedUpdateOneWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUncheckedUpdateManyWithoutInterviewSessionNestedInput
@@ -1145,6 +1300,7 @@ export type InterviewSessionCreateWithoutResponsesInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cv?: Prisma.CandidateCvCreateNestedOneWithoutInterviewSessionsInput
   transcriptTurns?: Prisma.transcript_turnsCreateNestedManyWithoutInterviewSessionInput
   user?: Prisma.UserCreateNestedOneWithoutInterviewSessionsInput
   evaluations?: Prisma.evaluationsCreateNestedOneWithoutInterviewSessionInput
@@ -1169,6 +1325,7 @@ export type InterviewSessionUncheckedCreateWithoutResponsesInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedCreateNestedManyWithoutInterviewSessionInput
   evaluations?: Prisma.evaluationsUncheckedCreateNestedOneWithoutInterviewSessionInput
   questions?: Prisma.questionsUncheckedCreateNestedManyWithoutInterviewSessionInput
@@ -1207,6 +1364,7 @@ export type InterviewSessionUpdateWithoutResponsesInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cv?: Prisma.CandidateCvUpdateOneWithoutInterviewSessionsNestedInput
   transcriptTurns?: Prisma.transcript_turnsUpdateManyWithoutInterviewSessionNestedInput
   user?: Prisma.UserUpdateOneWithoutInterviewSessionsNestedInput
   evaluations?: Prisma.evaluationsUpdateOneWithoutInterviewSessionNestedInput
@@ -1231,6 +1389,7 @@ export type InterviewSessionUncheckedUpdateWithoutResponsesInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   evaluations?: Prisma.evaluationsUncheckedUpdateOneWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUncheckedUpdateManyWithoutInterviewSessionNestedInput
@@ -1253,6 +1412,7 @@ export type InterviewSessionCreateWithoutSchedulesInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cv?: Prisma.CandidateCvCreateNestedOneWithoutInterviewSessionsInput
   transcriptTurns?: Prisma.transcript_turnsCreateNestedManyWithoutInterviewSessionInput
   user?: Prisma.UserCreateNestedOneWithoutInterviewSessionsInput
   evaluations?: Prisma.evaluationsCreateNestedOneWithoutInterviewSessionInput
@@ -1277,6 +1437,7 @@ export type InterviewSessionUncheckedCreateWithoutSchedulesInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedCreateNestedManyWithoutInterviewSessionInput
   evaluations?: Prisma.evaluationsUncheckedCreateNestedOneWithoutInterviewSessionInput
   questions?: Prisma.questionsUncheckedCreateNestedManyWithoutInterviewSessionInput
@@ -1315,6 +1476,7 @@ export type InterviewSessionUpdateWithoutSchedulesInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cv?: Prisma.CandidateCvUpdateOneWithoutInterviewSessionsNestedInput
   transcriptTurns?: Prisma.transcript_turnsUpdateManyWithoutInterviewSessionNestedInput
   user?: Prisma.UserUpdateOneWithoutInterviewSessionsNestedInput
   evaluations?: Prisma.evaluationsUpdateOneWithoutInterviewSessionNestedInput
@@ -1339,6 +1501,7 @@ export type InterviewSessionUncheckedUpdateWithoutSchedulesInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   evaluations?: Prisma.evaluationsUncheckedUpdateOneWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUncheckedUpdateManyWithoutInterviewSessionNestedInput
@@ -1361,6 +1524,7 @@ export type InterviewSessionCreateWithoutWebhook_logsInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cv?: Prisma.CandidateCvCreateNestedOneWithoutInterviewSessionsInput
   transcriptTurns?: Prisma.transcript_turnsCreateNestedManyWithoutInterviewSessionInput
   user?: Prisma.UserCreateNestedOneWithoutInterviewSessionsInput
   evaluations?: Prisma.evaluationsCreateNestedOneWithoutInterviewSessionInput
@@ -1385,6 +1549,7 @@ export type InterviewSessionUncheckedCreateWithoutWebhook_logsInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedCreateNestedManyWithoutInterviewSessionInput
   evaluations?: Prisma.evaluationsUncheckedCreateNestedOneWithoutInterviewSessionInput
   questions?: Prisma.questionsUncheckedCreateNestedManyWithoutInterviewSessionInput
@@ -1423,6 +1588,7 @@ export type InterviewSessionUpdateWithoutWebhook_logsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cv?: Prisma.CandidateCvUpdateOneWithoutInterviewSessionsNestedInput
   transcriptTurns?: Prisma.transcript_turnsUpdateManyWithoutInterviewSessionNestedInput
   user?: Prisma.UserUpdateOneWithoutInterviewSessionsNestedInput
   evaluations?: Prisma.evaluationsUpdateOneWithoutInterviewSessionNestedInput
@@ -1447,6 +1613,7 @@ export type InterviewSessionUncheckedUpdateWithoutWebhook_logsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   evaluations?: Prisma.evaluationsUncheckedUpdateOneWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUncheckedUpdateManyWithoutInterviewSessionNestedInput
@@ -1469,6 +1636,7 @@ export type InterviewSessionCreateWithoutTranscriptTurnsInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cv?: Prisma.CandidateCvCreateNestedOneWithoutInterviewSessionsInput
   user?: Prisma.UserCreateNestedOneWithoutInterviewSessionsInput
   evaluations?: Prisma.evaluationsCreateNestedOneWithoutInterviewSessionInput
   questions?: Prisma.questionsCreateNestedManyWithoutInterviewSessionInput
@@ -1493,6 +1661,7 @@ export type InterviewSessionUncheckedCreateWithoutTranscriptTurnsInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
   evaluations?: Prisma.evaluationsUncheckedCreateNestedOneWithoutInterviewSessionInput
   questions?: Prisma.questionsUncheckedCreateNestedManyWithoutInterviewSessionInput
   recordings?: Prisma.recordingsUncheckedCreateNestedManyWithoutInterviewSessionInput
@@ -1531,6 +1700,7 @@ export type InterviewSessionUpdateWithoutTranscriptTurnsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cv?: Prisma.CandidateCvUpdateOneWithoutInterviewSessionsNestedInput
   user?: Prisma.UserUpdateOneWithoutInterviewSessionsNestedInput
   evaluations?: Prisma.evaluationsUpdateOneWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUpdateManyWithoutInterviewSessionNestedInput
@@ -1555,6 +1725,7 @@ export type InterviewSessionUncheckedUpdateWithoutTranscriptTurnsInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   evaluations?: Prisma.evaluationsUncheckedUpdateOneWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   recordings?: Prisma.recordingsUncheckedUpdateManyWithoutInterviewSessionNestedInput
@@ -1577,6 +1748,7 @@ export type InterviewSessionCreateWithoutReportSharesInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cv?: Prisma.CandidateCvCreateNestedOneWithoutInterviewSessionsInput
   transcriptTurns?: Prisma.transcript_turnsCreateNestedManyWithoutInterviewSessionInput
   user?: Prisma.UserCreateNestedOneWithoutInterviewSessionsInput
   evaluations?: Prisma.evaluationsCreateNestedOneWithoutInterviewSessionInput
@@ -1601,6 +1773,7 @@ export type InterviewSessionUncheckedCreateWithoutReportSharesInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedCreateNestedManyWithoutInterviewSessionInput
   evaluations?: Prisma.evaluationsUncheckedCreateNestedOneWithoutInterviewSessionInput
   questions?: Prisma.questionsUncheckedCreateNestedManyWithoutInterviewSessionInput
@@ -1639,6 +1812,7 @@ export type InterviewSessionUpdateWithoutReportSharesInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cv?: Prisma.CandidateCvUpdateOneWithoutInterviewSessionsNestedInput
   transcriptTurns?: Prisma.transcript_turnsUpdateManyWithoutInterviewSessionNestedInput
   user?: Prisma.UserUpdateOneWithoutInterviewSessionsNestedInput
   evaluations?: Prisma.evaluationsUpdateOneWithoutInterviewSessionNestedInput
@@ -1663,6 +1837,7 @@ export type InterviewSessionUncheckedUpdateWithoutReportSharesInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   evaluations?: Prisma.evaluationsUncheckedUpdateOneWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUncheckedUpdateManyWithoutInterviewSessionNestedInput
@@ -1685,6 +1860,7 @@ export type InterviewSessionCreateManyUserInput = {
   endedAt?: Date | string | null
   createdAt?: Date | string
   elevenlabsConversationId?: string | null
+  cvId?: string | null
 }
 
 export type InterviewSessionUpdateWithoutUserInput = {
@@ -1700,6 +1876,7 @@ export type InterviewSessionUpdateWithoutUserInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cv?: Prisma.CandidateCvUpdateOneWithoutInterviewSessionsNestedInput
   transcriptTurns?: Prisma.transcript_turnsUpdateManyWithoutInterviewSessionNestedInput
   evaluations?: Prisma.evaluationsUpdateOneWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUpdateManyWithoutInterviewSessionNestedInput
@@ -1723,6 +1900,7 @@ export type InterviewSessionUncheckedUpdateWithoutUserInput = {
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transcriptTurns?: Prisma.transcript_turnsUncheckedUpdateManyWithoutInterviewSessionNestedInput
   evaluations?: Prisma.evaluationsUncheckedUpdateOneWithoutInterviewSessionNestedInput
   questions?: Prisma.questionsUncheckedUpdateManyWithoutInterviewSessionNestedInput
@@ -1735,6 +1913,87 @@ export type InterviewSessionUncheckedUpdateWithoutUserInput = {
 
 export type InterviewSessionUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  interviewType?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  level?: Prisma.StringFieldUpdateOperationsInput | string
+  stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  extraContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stressMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cvId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type InterviewSessionCreateManyCvInput = {
+  id?: string
+  userId?: string | null
+  interviewType: string
+  role: string
+  level: string
+  stack?: string | null
+  extraContext?: string | null
+  stressMode?: boolean
+  status?: string
+  startedAt?: Date | string | null
+  endedAt?: Date | string | null
+  createdAt?: Date | string
+  elevenlabsConversationId?: string | null
+}
+
+export type InterviewSessionUpdateWithoutCvInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  interviewType?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  level?: Prisma.StringFieldUpdateOperationsInput | string
+  stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  extraContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stressMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcriptTurns?: Prisma.transcript_turnsUpdateManyWithoutInterviewSessionNestedInput
+  user?: Prisma.UserUpdateOneWithoutInterviewSessionsNestedInput
+  evaluations?: Prisma.evaluationsUpdateOneWithoutInterviewSessionNestedInput
+  questions?: Prisma.questionsUpdateManyWithoutInterviewSessionNestedInput
+  recordings?: Prisma.recordingsUpdateManyWithoutInterviewSessionNestedInput
+  reportShares?: Prisma.report_sharesUpdateManyWithoutInterviewSessionNestedInput
+  responses?: Prisma.responsesUpdateManyWithoutInterviewSessionNestedInput
+  schedules?: Prisma.schedulesUpdateManyWithoutInterviewSessionNestedInput
+  webhook_logs?: Prisma.webhook_logsUpdateManyWithoutInterviewSessionNestedInput
+}
+
+export type InterviewSessionUncheckedUpdateWithoutCvInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interviewType?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  level?: Prisma.StringFieldUpdateOperationsInput | string
+  stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  extraContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stressMode?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  elevenlabsConversationId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcriptTurns?: Prisma.transcript_turnsUncheckedUpdateManyWithoutInterviewSessionNestedInput
+  evaluations?: Prisma.evaluationsUncheckedUpdateOneWithoutInterviewSessionNestedInput
+  questions?: Prisma.questionsUncheckedUpdateManyWithoutInterviewSessionNestedInput
+  recordings?: Prisma.recordingsUncheckedUpdateManyWithoutInterviewSessionNestedInput
+  reportShares?: Prisma.report_sharesUncheckedUpdateManyWithoutInterviewSessionNestedInput
+  responses?: Prisma.responsesUncheckedUpdateManyWithoutInterviewSessionNestedInput
+  schedules?: Prisma.schedulesUncheckedUpdateManyWithoutInterviewSessionNestedInput
+  webhook_logs?: Prisma.webhook_logsUncheckedUpdateManyWithoutInterviewSessionNestedInput
+}
+
+export type InterviewSessionUncheckedUpdateManyWithoutCvInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   interviewType?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
   level?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1847,6 +2106,8 @@ export type InterviewSessionSelect<ExtArgs extends runtime.Types.Extensions.Inte
   endedAt?: boolean
   createdAt?: boolean
   elevenlabsConversationId?: boolean
+  cvId?: boolean
+  cv?: boolean | Prisma.InterviewSession$cvArgs<ExtArgs>
   transcriptTurns?: boolean | Prisma.InterviewSession$transcriptTurnsArgs<ExtArgs>
   user?: boolean | Prisma.InterviewSession$userArgs<ExtArgs>
   evaluations?: boolean | Prisma.InterviewSession$evaluationsArgs<ExtArgs>
@@ -1873,6 +2134,8 @@ export type InterviewSessionSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   endedAt?: boolean
   createdAt?: boolean
   elevenlabsConversationId?: boolean
+  cvId?: boolean
+  cv?: boolean | Prisma.InterviewSession$cvArgs<ExtArgs>
   user?: boolean | Prisma.InterviewSession$userArgs<ExtArgs>
 }, ExtArgs["result"]["interviewSession"]>
 
@@ -1890,6 +2153,8 @@ export type InterviewSessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   endedAt?: boolean
   createdAt?: boolean
   elevenlabsConversationId?: boolean
+  cvId?: boolean
+  cv?: boolean | Prisma.InterviewSession$cvArgs<ExtArgs>
   user?: boolean | Prisma.InterviewSession$userArgs<ExtArgs>
 }, ExtArgs["result"]["interviewSession"]>
 
@@ -1907,10 +2172,12 @@ export type InterviewSessionSelectScalar = {
   endedAt?: boolean
   createdAt?: boolean
   elevenlabsConversationId?: boolean
+  cvId?: boolean
 }
 
-export type InterviewSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "interviewType" | "role" | "level" | "stack" | "extraContext" | "stressMode" | "status" | "startedAt" | "endedAt" | "createdAt" | "elevenlabsConversationId", ExtArgs["result"]["interviewSession"]>
+export type InterviewSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "interviewType" | "role" | "level" | "stack" | "extraContext" | "stressMode" | "status" | "startedAt" | "endedAt" | "createdAt" | "elevenlabsConversationId" | "cvId", ExtArgs["result"]["interviewSession"]>
 export type InterviewSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  cv?: boolean | Prisma.InterviewSession$cvArgs<ExtArgs>
   transcriptTurns?: boolean | Prisma.InterviewSession$transcriptTurnsArgs<ExtArgs>
   user?: boolean | Prisma.InterviewSession$userArgs<ExtArgs>
   evaluations?: boolean | Prisma.InterviewSession$evaluationsArgs<ExtArgs>
@@ -1923,15 +2190,18 @@ export type InterviewSessionInclude<ExtArgs extends runtime.Types.Extensions.Int
   _count?: boolean | Prisma.InterviewSessionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InterviewSessionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  cv?: boolean | Prisma.InterviewSession$cvArgs<ExtArgs>
   user?: boolean | Prisma.InterviewSession$userArgs<ExtArgs>
 }
 export type InterviewSessionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  cv?: boolean | Prisma.InterviewSession$cvArgs<ExtArgs>
   user?: boolean | Prisma.InterviewSession$userArgs<ExtArgs>
 }
 
 export type $InterviewSessionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "InterviewSession"
   objects: {
+    cv: Prisma.$CandidateCvPayload<ExtArgs> | null
     transcriptTurns: Prisma.$transcript_turnsPayload<ExtArgs>[]
     user: Prisma.$UserPayload<ExtArgs> | null
     evaluations: Prisma.$evaluationsPayload<ExtArgs> | null
@@ -1956,6 +2226,7 @@ export type $InterviewSessionPayload<ExtArgs extends runtime.Types.Extensions.In
     endedAt: Date | null
     createdAt: Date
     elevenlabsConversationId: string | null
+    cvId: string | null
   }, ExtArgs["result"]["interviewSession"]>
   composites: {}
 }
@@ -2350,6 +2621,7 @@ readonly fields: InterviewSessionFieldRefs;
  */
 export interface Prisma__InterviewSessionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  cv<T extends Prisma.InterviewSession$cvArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InterviewSession$cvArgs<ExtArgs>>): Prisma.Prisma__CandidateCvClient<runtime.Types.Result.GetResult<Prisma.$CandidateCvPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   transcriptTurns<T extends Prisma.InterviewSession$transcriptTurnsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InterviewSession$transcriptTurnsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$transcript_turnsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user<T extends Prisma.InterviewSession$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InterviewSession$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   evaluations<T extends Prisma.InterviewSession$evaluationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InterviewSession$evaluationsArgs<ExtArgs>>): Prisma.Prisma__evaluationsClient<runtime.Types.Result.GetResult<Prisma.$evaluationsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -2401,6 +2673,7 @@ export interface InterviewSessionFieldRefs {
   readonly endedAt: Prisma.FieldRef<"InterviewSession", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"InterviewSession", 'DateTime'>
   readonly elevenlabsConversationId: Prisma.FieldRef<"InterviewSession", 'String'>
+  readonly cvId: Prisma.FieldRef<"InterviewSession", 'String'>
 }
     
 
@@ -2799,6 +3072,25 @@ export type InterviewSessionDeleteManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many InterviewSessions to delete.
    */
   limit?: number
+}
+
+/**
+ * InterviewSession.cv
+ */
+export type InterviewSession$cvArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CandidateCv
+   */
+  select?: Prisma.CandidateCvSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CandidateCv
+   */
+  omit?: Prisma.CandidateCvOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CandidateCvInclude<ExtArgs> | null
+  where?: Prisma.CandidateCvWhereInput
 }
 
 /**

@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { CvNotFoundError, resolveCvForSetup } from "@/lib/cv/resolve";
 import { getMockQuestions } from "@/lib/interview/constants";
 import {
   arrayBufferToDataUrlNode,
@@ -65,7 +66,21 @@ export async function POST(request: Request) {
       );
     }
 
-    const setup: InterviewSetupInput = parsed.data;
+    let setup: InterviewSetupInput;
+    try {
+      setup = {
+        ...parsed.data,
+        ...(await resolveCvForSetup(parsed.data, session.user.id)),
+      };
+    } catch (cvError) {
+      if (cvError instanceof CvNotFoundError) {
+        return NextResponse.json(
+          { error: "CV no encontrado" },
+          { status: 404 },
+        );
+      }
+      throw cvError;
+    }
     const n8nResponse = await generateInterview(setup, session.user.id);
 
     await syncN8nSessionToPrisma(n8nResponse, setup, session.user.id);

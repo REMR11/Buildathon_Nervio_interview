@@ -67,6 +67,11 @@ export type Verification = Prisma.VerificationModel
  */
 export type InterviewSession = Prisma.InterviewSessionModel
 /**
+ * Model CandidateCv
+ * CV subido por el candidato (RF-CV-01 / RF-CV-02). El archivo vive en el bucket privado `cvs`.
+ */
+export type CandidateCv = Prisma.CandidateCvModel
+/**
  * Model evaluations
  * 
  */

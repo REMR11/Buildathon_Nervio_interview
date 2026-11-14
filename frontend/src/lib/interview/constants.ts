@@ -83,3 +83,17 @@ export const MOCK_ANSWER_PLACEHOLDERS = [
 ];
 
 export const SESSION_STORAGE_KEY = "nervio:interview-sessions";
+
+/** Duración máxima de una entrevista en vivo. Debe coincidir con max_duration_seconds del agente en ElevenLabs. */
+export const INTERVIEW_MAX_SECONDS = 20 * 60;
+/** Segundos restantes en que Nova anuncia que quedan ~2 minutos y empieza a cerrar. */
+export const INTERVIEW_WARNING_SECONDS = 120;
+/** Segundos restantes en que Nova se despide. */
+export const INTERVIEW_FAREWELL_SECONDS = 30;
+/** Segundos restantes en que la app cuelga sola (antes del corte duro de ElevenLabs). */
+export const INTERVIEW_GRACEFUL_END_SECONDS = 10;
+
+export const TIME_LIMIT_WARNING_UPDATE =
+  "Aviso del sistema: quedan 2 minutos de entrevista. En tu próximo turno dilo en voz alta, por ejemplo: «Tenemos unos 2 minutos antes de terminar». Después no abras temas nuevos y prepara el cierre.";
+export const TIME_LIMIT_FAREWELL_UPDATE =
+  "Aviso del sistema: quedan 30 segundos. En tu próximo turno agradece al candidato y despídete con cortesía en una o dos frases. No hagas más preguntas.";

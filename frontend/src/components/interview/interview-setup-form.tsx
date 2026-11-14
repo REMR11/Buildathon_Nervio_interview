@@ -10,6 +10,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import {
+  type CvSelection,
+  CvUploadField,
+} from "@/components/interview/cv-upload-field";
 import { InterviewSetupCard } from "@/components/interview/interview-setup-card";
 import {
   ReminderOffsetField,
@@ -74,6 +78,7 @@ export function InterviewSetupForm({
   const [scheduledAt, setScheduledAt] = useState("");
   const reminderState = useReminderOffsetState(60);
   const [scheduleError, setScheduleError] = useState<string | null>(null);
+  const [cv, setCv] = useState<CvSelection | null>(null);
   const [reminderError, setReminderError] = useState<string | null>(null);
   const [scheduleConfirmation, setScheduleConfirmation] = useState<{
     formattedDate: string;
@@ -101,7 +106,10 @@ export function InterviewSetupForm({
     },
   });
 
-  const onSubmit = async (values: InterviewSetupFormValues) => {
+  const onSubmit = async (formValues: InterviewSetupFormValues) => {
+    const values = cv
+      ? { ...formValues, cvId: cv.cvId, cvText: cv.cvText }
+      : formValues;
     setScheduleError(null);
     setReminderError(null);
     setScheduleConfirmation(null);
@@ -342,6 +350,18 @@ export function InterviewSetupForm({
               placeholder="Ej. React, TypeScript, Node.js"
               disabled={isSubmitting}
               {...register("stack")}
+            />
+          </Field>
+
+          <Field>
+            <FieldLabel>CV (opcional)</FieldLabel>
+            <p className="text-xs text-muted-foreground">
+              Nervio usará tu experiencia real para personalizar las preguntas.
+            </p>
+            <CvUploadField
+              value={cv}
+              onChange={setCv}
+              disabled={isSubmitting}
             />
           </Field>
 

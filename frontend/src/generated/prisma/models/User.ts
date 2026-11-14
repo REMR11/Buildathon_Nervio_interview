@@ -236,6 +236,7 @@ export type UserWhereInput = {
   schedules?: Prisma.SchedulesListRelationFilter
   supportTickets?: Prisma.SupportTicketListRelationFilter
   supportReplies?: Prisma.SupportReplyListRelationFilter
+  candidateCvs?: Prisma.CandidateCvListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -256,6 +257,7 @@ export type UserOrderByWithRelationInput = {
   schedules?: Prisma.schedulesOrderByRelationAggregateInput
   supportTickets?: Prisma.SupportTicketOrderByRelationAggregateInput
   supportReplies?: Prisma.SupportReplyOrderByRelationAggregateInput
+  candidateCvs?: Prisma.CandidateCvOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -279,6 +281,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   schedules?: Prisma.SchedulesListRelationFilter
   supportTickets?: Prisma.SupportTicketListRelationFilter
   supportReplies?: Prisma.SupportReplyListRelationFilter
+  candidateCvs?: Prisma.CandidateCvListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -333,6 +336,7 @@ export type UserCreateInput = {
   schedules?: Prisma.schedulesCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -353,6 +357,7 @@ export type UserUncheckedCreateInput = {
   schedules?: Prisma.schedulesUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyUncheckedCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -373,6 +378,7 @@ export type UserUpdateInput = {
   schedules?: Prisma.schedulesUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -393,6 +399,7 @@ export type UserUncheckedUpdateInput = {
   schedules?: Prisma.schedulesUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUncheckedUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -553,6 +560,20 @@ export type UserUpdateOneWithoutInterviewSessionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInterviewSessionsInput, Prisma.UserUpdateWithoutInterviewSessionsInput>, Prisma.UserUncheckedUpdateWithoutInterviewSessionsInput>
 }
 
+export type UserCreateNestedOneWithoutCandidateCvsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCandidateCvsInput, Prisma.UserUncheckedCreateWithoutCandidateCvsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCandidateCvsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCandidateCvsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCandidateCvsInput, Prisma.UserUncheckedCreateWithoutCandidateCvsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCandidateCvsInput
+  upsert?: Prisma.UserUpsertWithoutCandidateCvsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCandidateCvsInput, Prisma.UserUpdateWithoutCandidateCvsInput>, Prisma.UserUncheckedUpdateWithoutCandidateCvsInput>
+}
+
 export type UserCreateNestedOneWithoutSchedulesInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutSchedulesInput, Prisma.UserUncheckedCreateWithoutSchedulesInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutSchedulesInput
@@ -614,6 +635,7 @@ export type UserCreateWithoutSessionsInput = {
   schedules?: Prisma.schedulesCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -633,6 +655,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   schedules?: Prisma.schedulesUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyUncheckedCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -668,6 +691,7 @@ export type UserUpdateWithoutSessionsInput = {
   schedules?: Prisma.schedulesUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -687,6 +711,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   schedules?: Prisma.schedulesUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUncheckedUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -706,6 +731,7 @@ export type UserCreateWithoutAccountsInput = {
   schedules?: Prisma.schedulesCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -725,6 +751,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   schedules?: Prisma.schedulesUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyUncheckedCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -760,6 +787,7 @@ export type UserUpdateWithoutAccountsInput = {
   schedules?: Prisma.schedulesUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -779,6 +807,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   schedules?: Prisma.schedulesUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUncheckedUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInterviewSessionsInput = {
@@ -798,6 +827,7 @@ export type UserCreateWithoutInterviewSessionsInput = {
   schedules?: Prisma.schedulesCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInterviewSessionsInput = {
@@ -817,6 +847,7 @@ export type UserUncheckedCreateWithoutInterviewSessionsInput = {
   schedules?: Prisma.schedulesUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyUncheckedCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInterviewSessionsInput = {
@@ -852,6 +883,7 @@ export type UserUpdateWithoutInterviewSessionsInput = {
   schedules?: Prisma.schedulesUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInterviewSessionsInput = {
@@ -868,6 +900,103 @@ export type UserUncheckedUpdateWithoutInterviewSessionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  schedules?: Prisma.schedulesUncheckedUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  supportReplies?: Prisma.SupportReplyUncheckedUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCandidateCvsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  role?: string
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  interviewSessions?: Prisma.InterviewSessionCreateNestedManyWithoutUserInput
+  schedules?: Prisma.schedulesCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  supportReplies?: Prisma.SupportReplyCreateNestedManyWithoutAuthorInput
+}
+
+export type UserUncheckedCreateWithoutCandidateCvsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  role?: string
+  banned?: boolean
+  banReason?: string | null
+  banExpires?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  interviewSessions?: Prisma.InterviewSessionUncheckedCreateNestedManyWithoutUserInput
+  schedules?: Prisma.schedulesUncheckedCreateNestedManyWithoutUserInput
+  supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  supportReplies?: Prisma.SupportReplyUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type UserCreateOrConnectWithoutCandidateCvsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCandidateCvsInput, Prisma.UserUncheckedCreateWithoutCandidateCvsInput>
+}
+
+export type UserUpsertWithoutCandidateCvsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCandidateCvsInput, Prisma.UserUncheckedUpdateWithoutCandidateCvsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCandidateCvsInput, Prisma.UserUncheckedCreateWithoutCandidateCvsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCandidateCvsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCandidateCvsInput, Prisma.UserUncheckedUpdateWithoutCandidateCvsInput>
+}
+
+export type UserUpdateWithoutCandidateCvsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  interviewSessions?: Prisma.InterviewSessionUpdateManyWithoutUserNestedInput
+  schedules?: Prisma.schedulesUpdateManyWithoutUserNestedInput
+  supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  supportReplies?: Prisma.SupportReplyUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCandidateCvsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  banned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  interviewSessions?: Prisma.InterviewSessionUncheckedUpdateManyWithoutUserNestedInput
   schedules?: Prisma.schedulesUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUncheckedUpdateManyWithoutAuthorNestedInput
@@ -890,6 +1019,7 @@ export type UserCreateWithoutSchedulesInput = {
   interviewSessions?: Prisma.InterviewSessionCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSchedulesInput = {
@@ -909,6 +1039,7 @@ export type UserUncheckedCreateWithoutSchedulesInput = {
   interviewSessions?: Prisma.InterviewSessionUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyUncheckedCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSchedulesInput = {
@@ -944,6 +1075,7 @@ export type UserUpdateWithoutSchedulesInput = {
   interviewSessions?: Prisma.InterviewSessionUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSchedulesInput = {
@@ -963,6 +1095,7 @@ export type UserUncheckedUpdateWithoutSchedulesInput = {
   interviewSessions?: Prisma.InterviewSessionUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUncheckedUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSupportTicketsInput = {
@@ -982,6 +1115,7 @@ export type UserCreateWithoutSupportTicketsInput = {
   interviewSessions?: Prisma.InterviewSessionCreateNestedManyWithoutUserInput
   schedules?: Prisma.schedulesCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSupportTicketsInput = {
@@ -1001,6 +1135,7 @@ export type UserUncheckedCreateWithoutSupportTicketsInput = {
   interviewSessions?: Prisma.InterviewSessionUncheckedCreateNestedManyWithoutUserInput
   schedules?: Prisma.schedulesUncheckedCreateNestedManyWithoutUserInput
   supportReplies?: Prisma.SupportReplyUncheckedCreateNestedManyWithoutAuthorInput
+  candidateCvs?: Prisma.CandidateCvUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSupportTicketsInput = {
@@ -1036,6 +1171,7 @@ export type UserUpdateWithoutSupportTicketsInput = {
   interviewSessions?: Prisma.InterviewSessionUpdateManyWithoutUserNestedInput
   schedules?: Prisma.schedulesUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSupportTicketsInput = {
@@ -1055,6 +1191,7 @@ export type UserUncheckedUpdateWithoutSupportTicketsInput = {
   interviewSessions?: Prisma.InterviewSessionUncheckedUpdateManyWithoutUserNestedInput
   schedules?: Prisma.schedulesUncheckedUpdateManyWithoutUserNestedInput
   supportReplies?: Prisma.SupportReplyUncheckedUpdateManyWithoutAuthorNestedInput
+  candidateCvs?: Prisma.CandidateCvUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSupportRepliesInput = {
@@ -1074,6 +1211,7 @@ export type UserCreateWithoutSupportRepliesInput = {
   interviewSessions?: Prisma.InterviewSessionCreateNestedManyWithoutUserInput
   schedules?: Prisma.schedulesCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput
+  candidateCvs?: Prisma.CandidateCvCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSupportRepliesInput = {
@@ -1093,6 +1231,7 @@ export type UserUncheckedCreateWithoutSupportRepliesInput = {
   interviewSessions?: Prisma.InterviewSessionUncheckedCreateNestedManyWithoutUserInput
   schedules?: Prisma.schedulesUncheckedCreateNestedManyWithoutUserInput
   supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput
+  candidateCvs?: Prisma.CandidateCvUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSupportRepliesInput = {
@@ -1128,6 +1267,7 @@ export type UserUpdateWithoutSupportRepliesInput = {
   interviewSessions?: Prisma.InterviewSessionUpdateManyWithoutUserNestedInput
   schedules?: Prisma.schedulesUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput
+  candidateCvs?: Prisma.CandidateCvUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSupportRepliesInput = {
@@ -1147,6 +1287,7 @@ export type UserUncheckedUpdateWithoutSupportRepliesInput = {
   interviewSessions?: Prisma.InterviewSessionUncheckedUpdateManyWithoutUserNestedInput
   schedules?: Prisma.schedulesUncheckedUpdateManyWithoutUserNestedInput
   supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+  candidateCvs?: Prisma.CandidateCvUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1161,6 +1302,7 @@ export type UserCountOutputType = {
   schedules: number
   supportTickets: number
   supportReplies: number
+  candidateCvs: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1170,6 +1312,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   schedules?: boolean | UserCountOutputTypeCountSchedulesArgs
   supportTickets?: boolean | UserCountOutputTypeCountSupportTicketsArgs
   supportReplies?: boolean | UserCountOutputTypeCountSupportRepliesArgs
+  candidateCvs?: boolean | UserCountOutputTypeCountCandidateCvsArgs
 }
 
 /**
@@ -1224,6 +1367,13 @@ export type UserCountOutputTypeCountSupportRepliesArgs<ExtArgs extends runtime.T
   where?: Prisma.SupportReplyWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCandidateCvsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CandidateCvWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1243,6 +1393,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   schedules?: boolean | Prisma.User$schedulesArgs<ExtArgs>
   supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>
   supportReplies?: boolean | Prisma.User$supportRepliesArgs<ExtArgs>
+  candidateCvs?: boolean | Prisma.User$candidateCvsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1296,6 +1447,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   schedules?: boolean | Prisma.User$schedulesArgs<ExtArgs>
   supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>
   supportReplies?: boolean | Prisma.User$supportRepliesArgs<ExtArgs>
+  candidateCvs?: boolean | Prisma.User$candidateCvsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1310,6 +1462,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     schedules: Prisma.$schedulesPayload<ExtArgs>[]
     supportTickets: Prisma.$SupportTicketPayload<ExtArgs>[]
     supportReplies: Prisma.$SupportReplyPayload<ExtArgs>[]
+    candidateCvs: Prisma.$CandidateCvPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1723,6 +1876,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   schedules<T extends Prisma.User$schedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$schedulesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   supportTickets<T extends Prisma.User$supportTicketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   supportReplies<T extends Prisma.User$supportRepliesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportRepliesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportReplyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  candidateCvs<T extends Prisma.User$candidateCvsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$candidateCvsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CandidateCvPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2297,6 +2451,30 @@ export type User$supportRepliesArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.SupportReplyScalarFieldEnum | Prisma.SupportReplyScalarFieldEnum[]
+}
+
+/**
+ * User.candidateCvs
+ */
+export type User$candidateCvsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CandidateCv
+   */
+  select?: Prisma.CandidateCvSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CandidateCv
+   */
+  omit?: Prisma.CandidateCvOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CandidateCvInclude<ExtArgs> | null
+  where?: Prisma.CandidateCvWhereInput
+  orderBy?: Prisma.CandidateCvOrderByWithRelationInput | Prisma.CandidateCvOrderByWithRelationInput[]
+  cursor?: Prisma.CandidateCvWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CandidateCvScalarFieldEnum | Prisma.CandidateCvScalarFieldEnum[]
 }
 
 /**

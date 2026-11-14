@@ -17,7 +17,7 @@ flowchart LR
 | `/interview/[sessionId]` | `src/app/interview/[sessionId]/page.tsx` | Entrevista en vivo (orbe + controles) |
 | `/interview/[sessionId]/report` | `src/app/interview/[sessionId]/report/page.tsx` | Reporte final simulado |
 
-Todas las rutas requieren sesión (`requireAuth` en `src/lib/auth-server.ts`).
+Todas las rutas requieren sesión (`requireAuth` en `src/lib/auth-server.ts`). Si una sesión tiene estado `ended`, la vista en vivo consulta el estado persistido antes de pedir acceso al micrófono y muestra el aviso de entrevista completada; las API rechazan escrituras adicionales. El reporte continúa disponible en modo de solo lectura.
 
 ## Contrato `InterviewService`
 

@@ -21,6 +21,10 @@ export interface InterviewSetupInput {
   interviewType: InterviewType;
   stack?: string;
   extraContext: string;
+  /** CV subido (candidate_cvs.id), si el candidato adjuntó uno. */
+  cvId?: string | null;
+  /** Texto del CV (editable en la vista previa), máx. 8000 caracteres. */
+  cvText?: string;
 }
 
 export interface InterviewQuestion {
@@ -61,7 +65,11 @@ export interface CloseInterviewResponse {
   reportReady?: boolean;
 }
 
-export type InterviewEndReason = "manual" | "agent" | "poor_connection";
+export type InterviewEndReason =
+  | "manual"
+  | "agent"
+  | "poor_connection"
+  | "time_limit";
 
 export interface EndInterviewOptions {
   reason?: InterviewEndReason;
@@ -107,6 +115,7 @@ export interface PersistedInterviewSession {
   status: "active" | "ended" | "scheduled";
   startedAt: number | null;
   scheduledAt?: string | null;
+  reportReady?: boolean;
 }
 
 export interface ScheduleInterviewInput extends InterviewSetupInput {

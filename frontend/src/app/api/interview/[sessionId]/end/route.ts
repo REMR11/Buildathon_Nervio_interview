@@ -17,7 +17,9 @@ interface RouteContext {
 
 const endSchema = z.object({
   conversationId: z.string().min(1).optional().nullable(),
-  reason: z.enum(["manual", "agent", "poor_connection"]).optional(),
+  reason: z
+    .enum(["manual", "agent", "poor_connection", "time_limit"])
+    .optional(),
   skipEvaluation: z.boolean().optional(),
 });
 
@@ -37,13 +39,24 @@ export async function POST(request: Request, { params }: RouteContext) {
     const conversationId = payload.conversationId ?? null;
     const interview = await prisma.interviewSession.findFirst({
       where: { id: sessionId, userId: session.user.id },
-      select: { id: true },
+      select: { id: true, status: true, evaluations: { select: { id: true } } },
     });
 
     if (!interview) {
       return NextResponse.json(
         { error: "Sesión no encontrada" },
         { status: 404 },
+      );
+    }
+
+    if (interview.status === "ended") {
+      return NextResponse.json(
+        {
+          error: "La entrevista ya fue completada y no puede volver a finalizarse",
+          status: "ended",
+          reportReady: Boolean(interview.evaluations),
+        },
+        { status: 409 },
       );
     }
 
