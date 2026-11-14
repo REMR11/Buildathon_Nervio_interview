@@ -5,10 +5,9 @@
  * Caso de prueba: Un usuario no puede iniciar múltiples entrevistas activas a la vez.
  */
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { POST as signUpHandler } from "@/app/api/auth/sign-up/route";
 import { POST as signInHandler } from "@/app/api/auth/sign-in/route";
+import { POST as signUpHandler } from "@/app/api/auth/sign-up/route";
 import { POST as startHandler } from "@/app/api/interview/start/route";
-import { GET as sessionHandler } from "@/app/api/interview/[sessionId]/route";
 import { prisma } from "@/lib/prisma";
 
 const testEmail = "concurrency@test.example";
@@ -40,10 +39,12 @@ beforeAll(async () => {
   });
   const signInRes = await signInHandler(signInReq);
   const cookies = signInRes.headers.getSetCookie();
-  testCookie = cookies.find((c) => c.startsWith("better-auth.session_token=")) ?? "";
+  testCookie =
+    cookies.find((c) => c.startsWith("better-auth.session_token=")) ?? "";
 
   const user = await prisma.user.findUnique({ where: { email: testEmail } });
-  testUserId = user!.id;
+  if (!user) throw new Error("User not found after signup");
+  testUserId = user.id;
 });
 
 afterAll(async () => {
@@ -98,7 +99,7 @@ describe("Concurrencia — Recursos limitados", () => {
       body: JSON.stringify(payload),
     });
     const res2 = await startHandler(req2);
-    
+
     // El sistema debe rechazar la segunda entrevista porque ya hay una activa
     expect(res2.status).toBe(409);
     const data2 = await res2.json();
@@ -186,19 +187,21 @@ describe("Concurrencia — Recursos limitados", () => {
     };
 
     // Lanzar 3 solicitudes simultáneas con Promise.all (race condition real)
-    const requests = Array.from({ length: 3 }, () =>
-      new Request("http://test/api/interview/start", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          cookie: testCookie,
-        },
-        body: JSON.stringify(payload),
-      })
+    const requests = Array.from(
+      { length: 3 },
+      () =>
+        new Request("http://test/api/interview/start", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            cookie: testCookie,
+          },
+          body: JSON.stringify(payload),
+        }),
     );
 
     const responses = await Promise.all(
-      requests.map((req) => startHandler(req))
+      requests.map((req) => startHandler(req)),
     );
 
     // Verificar códigos de respuesta
@@ -206,7 +209,7 @@ describe("Concurrencia — Recursos limitados", () => {
       responses.map(async (res) => ({
         status: res.status,
         data: await res.json(),
-      }))
+      })),
     );
 
     // Solo UNA debe tener éxito (200), las demás deben ser 409

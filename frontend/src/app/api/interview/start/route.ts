@@ -17,8 +17,8 @@ import type {
   InterviewSetupInput,
   StartInterviewResponse,
 } from "@/lib/interview/types";
-import { interviewSetupSchema } from "@/lib/validations/interview";
 import { prisma } from "@/lib/prisma";
+import { interviewSetupSchema } from "@/lib/validations/interview";
 
 async function generateInterview(
   setup: InterviewSetupInput,
