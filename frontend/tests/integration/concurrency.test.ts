@@ -72,7 +72,8 @@ describe("Concurrencia — Recursos limitados", () => {
       level: "senior",
       language: "es",
       interviewType: "tecnico",
-      extraContext: "Desarrollador full stack con experiencia en React y Node.js",
+      extraContext:
+        "Desarrollador full stack con experiencia en React y Node.js",
       stack: "React",
       cvId: null,
     };
