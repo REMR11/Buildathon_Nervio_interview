@@ -10,6 +10,11 @@ import {
   TIME_LIMIT_FAREWELL_UPDATE,
   TIME_LIMIT_WARNING_UPDATE,
 } from "./constants";
+import {
+  buildDynamicVariables,
+  mapExperienceLevelToDifficulty,
+  mapInterviewTypeToAgentRole,
+} from "./dynamic-variables";
 import { interviewService } from "./service-factory";
 import { getSession, getSessionSetup, saveSession } from "./session-storage";
 import type {
@@ -52,8 +57,9 @@ function buildContext(setup: InterviewSetupInput): string {
     `Entrevista simulada en español.`,
     `Candidato: ${setup.candidateName}`,
     `Puesto: ${setup.role}`,
-    `Nivel: ${setup.level}`,
-    `Tipo de entrevista: ${setup.interviewType}`,
+    `Nivel / dificultad: ${mapExperienceLevelToDifficulty(setup.level)}`,
+    `Rol del entrevistador: ${mapInterviewTypeToAgentRole(setup.interviewType)}`,
+    `Tipo de entrevista (app): ${setup.interviewType}`,
   ];
   if (setup.stack?.trim()) parts.push(`Stack: ${setup.stack.trim()}`);
   if (setup.extraContext?.trim())
@@ -428,6 +434,8 @@ export function useInterviewConversation(sessionId: string) {
   useEffect(() => {
     if (status !== "connected" || !setup || contextSentRef.current) return;
     contextSentRef.current = true;
+    // Mantener el contexto textual como información adicional.
+    // Las variables dinámicas ya fueron pasadas en startSession().
     sendContextualUpdate(buildContext(setup));
   }, [status, setup, sendContextualUpdate]);
 
@@ -463,7 +471,19 @@ export function useInterviewConversation(sessionId: string) {
         const { token } = (await response.json()) as { token: string };
         const inputDeviceId =
           window.sessionStorage.getItem("nervio:input-device") || undefined;
-        startSession({ conversationToken: token, inputDeviceId });
+
+        // Obtener las preguntas de la sesión guardada
+        const session = getSession(sessionId);
+        const questions = session?.questions ?? [];
+
+        // Construir las variables dinámicas que espera el agente Nova de ElevenLabs
+        const dynamicVariables = buildDynamicVariables(setup, questions);
+
+        startSession({
+          conversationToken: token,
+          inputDeviceId,
+          dynamicVariables,
+        });
       } catch (err) {
         setError(
           err instanceof Error
