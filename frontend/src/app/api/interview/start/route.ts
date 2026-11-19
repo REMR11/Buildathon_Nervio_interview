@@ -17,6 +17,7 @@ import type {
   InterviewSetupInput,
   StartInterviewResponse,
 } from "@/lib/interview/types";
+import { prisma } from "@/lib/prisma";
 import { interviewSetupSchema } from "@/lib/validations/interview";
 
 async function generateInterview(
@@ -54,6 +55,25 @@ export async function POST(request: Request) {
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+
+    // Verificar que el usuario no tenga una entrevista activa (recurso limitado)
+    const activeSession = await prisma.interviewSession.findFirst({
+      where: {
+        userId: session.user.id,
+        status: "in_progress",
+      },
+    });
+
+    if (activeSession) {
+      return NextResponse.json(
+        {
+          error:
+            "Ya tienes una entrevista en progreso. Finaliza la actual antes de iniciar otra.",
+          activeSessionId: activeSession.id,
+        },
+        { status: 409 },
+      );
     }
 
     const body = await request.json();
