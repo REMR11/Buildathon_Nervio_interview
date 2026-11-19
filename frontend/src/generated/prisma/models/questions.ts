@@ -493,14 +493,6 @@ export type questionsUncheckedCreateNestedManyWithoutParentQuestionInput = {
   connect?: Prisma.questionsWhereUniqueInput | Prisma.questionsWhereUniqueInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type questionsUpdateOneWithoutFollowupQuestionsNestedInput = {
   create?: Prisma.XOR<Prisma.questionsCreateWithoutFollowupQuestionsInput, Prisma.questionsUncheckedCreateWithoutFollowupQuestionsInput>
   connectOrCreate?: Prisma.questionsCreateOrConnectWithoutFollowupQuestionsInput

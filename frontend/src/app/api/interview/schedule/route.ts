@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { after, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { CvNotFoundError, resolveCvForSetup } from "@/lib/cv/resolve";
 import {
   buildInterviewJoinUrl,
   sendScheduleConfirmationEmail,
@@ -73,6 +74,19 @@ export async function POST(request: Request) {
       );
     }
 
+    let cvId: string | null = null;
+    try {
+      cvId = (await resolveCvForSetup(parsed.data, session.user.id)).cvId;
+    } catch (cvError) {
+      if (cvError instanceof CvNotFoundError) {
+        return NextResponse.json(
+          { error: "CV no encontrado" },
+          { status: 404 },
+        );
+      }
+      throw cvError;
+    }
+
     const scheduledAt = new Date(parsed.data.scheduledAt);
     const reminderAt = reminderAtFrom(
       scheduledAt,
@@ -86,6 +100,7 @@ export async function POST(request: Request) {
         level: parsed.data.level,
         stack: parsed.data.stack?.trim() || null,
         extraContext: parsed.data.extraContext,
+        cvId,
         stressMode: parsed.data.interviewType === "agresivo",
         status: "scheduled",
         schedules: {

@@ -1,34 +1,16 @@
-This repository is a monorepo containing two separate projects: **frontend** and **backend**, each located in its respective folder.
+This repository contains a single full-stack application in the **frontend** folder (Next.js: UI + API Route Handlers, Prisma, auth, realtime). There is no separate backend project.
 
 The agent must follow these rules:
 
-1. **Context Identification**
+1. **Scope**
 
-   * If the user's request is related to **frontend** (UI, components, styling, React, Vue, Angular, etc.), it should be treated as a frontend task.
-   * If the request is related to **backend** (APIs, databases, business logic, endpoints, authentication, etc.), it should be treated as a backend task.
+   * All code tasks (UI, APIs, database, business logic, endpoints, authentication) are resolved inside the `frontend` folder.
+   * Look for any defined **skills** and **rules** files within that directory and prioritize them over general knowledge.
 
-2. **Skills and Rules Lookup**
+2. **Historical docs**
 
-   * For **frontend** tasks:
-
-     * Search exclusively within the `frontend` folder.
-     * Look for any defined **skills** and **rules** files within that directory.
-   * For **backend** tasks:
-
-     * Search exclusively within the `backend` folder.
-     * Look for any defined **skills** and **rules** files within that directory.
-
-3. **Context Isolation**
-
-   * Do not mix rules or skills between frontend and backend.
-   * Each request must be resolved using only the context of the relevant project.
-
-4. **Priority**
-
-   * Always prioritize **rules** and **skills** found in the corresponding folder over any general knowledge.
-
-In summary: the agent must determine whether a task is frontend or backend and restrict its search and execution to the corresponding folder within the monorepo.
+   * `project-flow.md` describes the original Fase 2 plan (separate NestJS/Express backend). Treat them as background, not as the current architecture.
 
 ALSO READ THE project-flow.md and project-overview.md at the root.
 
-Use caveman if you find the skill in front or backend
+Use caveman if you find the skill in frontend

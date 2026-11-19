@@ -1,6 +1,6 @@
 "use client";
 
-import { IconArrowLeft } from "@tabler/icons-react";
+import { IconArrowLeft, IconClock } from "@tabler/icons-react";
 import Link from "next/link";
 import { InterviewBubble } from "@/components/interview/interview-bubble";
 import { InterviewControls } from "@/components/interview/interview-controls";
@@ -20,6 +20,10 @@ interface InterviewLiveShellProps {
   interviewType: InterviewType;
   role: string;
   elapsedSeconds: number;
+  /** Segundos que quedan antes del límite de duración. */
+  remainingSeconds: number;
+  /** Mostrar el aviso de "quedan 2 minutos". */
+  timeWarning?: boolean;
   phase: InterviewPhase;
   orbState: OrbState;
   currentQuestion: string;
@@ -43,6 +47,8 @@ export function InterviewLiveShell({
   interviewType,
   role,
   elapsedSeconds,
+  remainingSeconds,
+  timeWarning,
   phase,
   orbState,
   currentQuestion,
@@ -79,10 +85,28 @@ export function InterviewLiveShell({
             <span className="text-sm text-muted-foreground">{role}</span>
           </div>
 
-          <span className="font-mono text-sm text-muted-foreground">
-            {formatTime(elapsedSeconds)}
+          <span
+            className="flex flex-col items-end font-mono text-sm text-muted-foreground"
+            title="Tiempo transcurrido / restante"
+          >
+            <span>{formatTime(elapsedSeconds)}</span>
+            <span
+              className={
+                remainingSeconds <= 120
+                  ? "text-xs font-semibold text-amber-400"
+                  : "text-xs"
+              }
+            >
+              −{formatTime(remainingSeconds)}
+            </span>
           </span>
         </header>
+        {timeWarning ? (
+          <output className="fixed top-20 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-amber-400/40 bg-amber-500/15 px-4 py-2 text-sm text-amber-200 shadow-lg backdrop-blur-md">
+            <IconClock className="size-4" />
+            Quedan unos 2 minutos: Nova va a cerrar la entrevista.
+          </output>
+        ) : null}
 
         <main className="flex flex-1 flex-col items-center justify-center gap-5 px-6 py-6 sm:gap-6">
           <InterviewOrb state={orbState} className="size-64 sm:size-80" />

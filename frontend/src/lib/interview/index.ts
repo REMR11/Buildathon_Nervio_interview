@@ -4,6 +4,7 @@ export {
   getSessionSetup,
 } from "./api-service";
 export * from "./constants";
+export * from "./dynamic-variables";
 export * from "./interview-service";
 export {
   getMockSessionMessages,
